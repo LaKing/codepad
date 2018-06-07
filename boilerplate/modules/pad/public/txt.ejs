@@ -1,0 +1,68 @@
+<!doctype html>
+<title>
+    <%- file %>
+</title>
+<meta charset="utf-8" />
+
+<link rel="stylesheet" href="/pad.css">
+<link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/codemirror/addon/display/fullscreen.css">
+<link rel="stylesheet" href="/codemirror/theme/<%- theme %>.css">
+
+<script src="/codemirror/lib/codemirror.js"></script>
+<script src="/codemirror/addon/display/fullscreen.js"></script>
+
+<script src="/socket.io/socket.io.js" type="text/javascript"></script>
+
+<script src="/ot/text-operation.js"></script>
+<script src="/ot/selection.js"></script>
+<script src="/ot/wrapped-operation.js"></script>
+<script src="/ot/undo-manager.js"></script>
+<script src="/ot/client.js"></script>
+<script src="/ot/codemirror-adapter.js"></script>
+<script src="/ot/socketio-adapter.js"></script>
+<script src="/ot/editor-client.js"></script>
+
+<textarea id="code" name="code" rows="5"></textarea>
+<script>
+    // get url query parameters
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    var line = getParameterByName('line');
+    var char = getParameterByName('char');
+
+    var socket = io();
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        theme: "<%- theme %>",
+        fullScreen: true,
+    });
+
+
+    socket.on('doc', function(data) {
+        editor.setValue(data.str);
+        const serverAdapter = new ot.SocketIOAdapter(socket);
+        const editorAdapter = new ot.CodeMirrorAdapter(editor);
+        const client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter);
+
+        editor.focus()
+        editor.setCursor({
+            line: line - 1,
+            ch: char
+        })
+
+    });
+
+    socket.on('disconnect', function() {
+        location.reload();
+    });
+</script>
