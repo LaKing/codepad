@@ -4,7 +4,7 @@
 - codemirror with the most important features enabled, like syntax highlighting and linting
 - logging, search and replace, beautifyer for html, css, js
 
-# see the demo to get the idea
+# Demo
 
 [codepad-demo](https://codepad-demo.d250.hu:9001)
 
