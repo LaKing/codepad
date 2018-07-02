@@ -1,13 +1,13 @@
 /*jshint esnext: true */
 
 var crypto = require('crypto');
-
+var basicAuth = require('express-basic-auth');
 var hashcash = {};
 
 const passwords = ß.lib.basicauth.passwords();
 
-function authorizer(username, password, cb) {
-
+function codepad_authorizer(username, password, cb) {
+  
     var hash = crypto.createHash(ß.hash_typ).update(password).digest(ß.hash_dig);
     var path = ß.hash_dir + "/" + username.toLowerCase() + '/' + ß.hash_ext;
 
@@ -28,11 +28,13 @@ function authorizer(username, password, cb) {
 
 /// ---- auth ----------
 
-ß.app.use(ß.basicAuth({
-    authorizer: authorizer,
+ß.app.use(basicAuth({
+    authorizer: codepad_authorizer,
     authorizeAsync: true,
     challenge: true,
     realm: ß.HOSTNAME
 }));
+
+console.log("- using basic-auth");
 
 // ----------------------

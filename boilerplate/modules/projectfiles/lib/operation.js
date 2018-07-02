@@ -3,7 +3,7 @@
 module.exports = function(socket, revision) {
 
     var filepath = socket.projectfile;
-    var username = socket.handshake.session.username;
+    var username = socket.handshake.session.username || 'guest';
 
     if (!filepath) return;
     if (!ß.projectfiles[filepath]) return;

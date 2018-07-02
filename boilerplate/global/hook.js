@@ -51,7 +51,6 @@ for (let i = 0; i < files.length; i++) {
     if (!ß.hooks) ß.hooks = {};
     if (!ß.hooks[hook]) ß.hooks[hook] = {};
     if (!ß.hooks[hook][name]) ß.hooks[hook][name] = require(file);
-
 }
 
 

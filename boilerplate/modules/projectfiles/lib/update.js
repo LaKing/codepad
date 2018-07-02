@@ -36,6 +36,6 @@ function traverse(path) {
 module.exports = function() {
     purge();
     traverse('');
-    ß.fs.writeJson(ß.CWD + '/projectfiles.json', ß.projectfiles);
+    // ß.fs.writeJson(ß.CWD + '/projectfiles.json', ß.projectfiles);
 };
 

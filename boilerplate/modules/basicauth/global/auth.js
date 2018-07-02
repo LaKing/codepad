@@ -1,1 +1,0 @@
-ß.basicAuth = require('express-basic-auth');

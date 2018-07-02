@@ -1,6 +1,6 @@
 /*jshint esnext: true */
 
-if (!ß.pidfile) ß.pidfile = "/var/codepad/project.pid";
+if (!ß.pidfile) ß.pidfile = "/var/codepad/codepad.pid";
 
 if (process.getuid() === 0 || process.geteuid() === 0) return console.log("Process shall not be started as root.");
 if (process.getgid() === 0 || process.getegid() === 0) return console.log("Process shall not be started in root group.");

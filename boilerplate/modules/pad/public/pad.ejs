@@ -31,6 +31,7 @@
 <script src="/codemirror/addon/hint/css-hint.js"></script>
 <script src="/codemirror/addon/hint/xml-hint.js"></script>
 <script src="/codemirror/addon/hint/anyword-hint.js"></script>
+<script src="/codemirror/mode/markdown/markdown.js"></script>
 
 <link rel="stylesheet" href="/codemirror/addon/lint/lint.css">
 <script src="/codemirror/addon/lint/lint.js"></script>
@@ -103,19 +104,6 @@
 
     });
 
-    var HttpClient = function() {
-        this.get = function(aUrl, aCallback) {
-            var anHttpRequest = new XMLHttpRequest();
-            anHttpRequest.onreadystatechange = function() {
-                if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-                    aCallback(anHttpRequest.responseText);
-            }
-
-            anHttpRequest.open("GET", aUrl, true);
-            anHttpRequest.send(null);
-        }
-    }
-
 
     editor.setOption("extraKeys", {
         F2: function(cm) {
@@ -126,6 +114,7 @@
 
 
     socket.on('doc', function(data) {
+    	console.log('doc');
         pad = data.pad;
         editor.setValue(data.str);
         const serverAdapter = new ot.SocketIOAdapter(socket);

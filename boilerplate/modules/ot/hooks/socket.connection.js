@@ -3,7 +3,7 @@
 const EditorSocketIOServer = require(ß.BPD + '/modules/ot/editor-socketio-server.js');
 
 module.exports = function(socket) {
-    if (!socket.projectfile) return;
+  if (!socket.projectfile) return;
     ß.lib.projectfiles.create(socket.projectfile, function() {
         ß.fs.readFile(ß.projectdir + socket.projectfile, 'utf-8', function(err, data) {
             if (err) return đ(err);

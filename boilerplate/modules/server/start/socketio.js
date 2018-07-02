@@ -31,6 +31,9 @@ io.on('connection', function(socket) {
     var ip = socket.handshake.headers['x-forwarded-for'];
     var uri = new URL(socket.handshake.headers.referer).pathname;
 
+    if (ß.USE_BASICAUTH)
+    if (!socket.handshake.session.username) return console.log("Rejected " + ip);
+
     console.log('+ socket-connection ' + socket.handshake.session.username + ' ip:' + ip + ' ', uri);
 
     if (uri.substring(0, 3) === '/p/') socket.projectfile = uri.substring(2);

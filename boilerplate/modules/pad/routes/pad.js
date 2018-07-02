@@ -16,7 +16,9 @@ function send_files() {
 
 ß.app.get('/p/*', function(req, res, next) {
 
+  	if (ß.USE_BASICAUTH)
     if (!req.session.username) {
+        if (!req.headers.authorization) return res.end("Authorisation failure.");
         var userpass = new Buffer(req.headers.authorization.split(' ')[1], 'base64').toString().split(":");
         req.session.username = userpass.shift();
     }

@@ -6,7 +6,7 @@
 
         var url = $location.absUrl();
 
-        $rootScope.pad = '/p/server.js';
+        $rootScope.pad = '/logs';
 
         // ng-click="$root.set_pad(path, p)" 
         $rootScope.set_pad = function(path, pad) {
@@ -55,7 +55,7 @@
         };
 
         $rootScope.push = function() {
-            socket.emit("exec", 'push.sh');
+            socket.emit("exec", 'push');
         };
 
         $rootScope.beautify = function() {

@@ -2,6 +2,8 @@
 
 var a = [];
 
+ß.lib.projectfiles.update();
+
 setInterval(function() {
 
     // check if there is anyone connected 
