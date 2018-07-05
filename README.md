@@ -1,4 +1,4 @@
-# Codepad is a collaborative online code editor for the browser
+# Codepad is a collaborative online code editor and project manager running online in the browser
 
 - manage the projectfiles on a server, collaborate with your co-developers in realtime
 - codemirror with the most important features enabled, like syntax highlighting and linting
