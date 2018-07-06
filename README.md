@@ -79,7 +79,7 @@ The last button is the push button that can run the project's push.sh script. Th
 
 # FAQ
 
-Can I edit PHP/Java6go/whatever code with this codepad?
+Can I edit PHP/Java/go/whatever code with this codepad?
 - Yes of course. Set the project root, and grant permissions. Additionally you may add your own beautifyer, or linter.
 
 Do I need websockets?
