@@ -34,8 +34,9 @@ function traverse(path) {
 
 
 module.exports = function() {
-    purge();
+    //console.log(" - projectfiles update");
+  	purge();
     traverse('');
-    // ß.fs.writeJson(ß.CWD + '/projectfiles.json', ß.projectfiles);
+    //ß.fs.writeJson(ß.CWD + '/projectfiles.json', ß.projectfiles);
 };
 

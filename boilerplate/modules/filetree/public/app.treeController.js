@@ -75,7 +75,6 @@
                 var e = pa[0];
                 if (!out.includes(e)) out.push(e);
             });
-
             return out;
         };
     });
@@ -84,15 +83,15 @@
             if (!dir) dir = '';
             var out = [];
             angular.forEach(input, function(path) {
-                if (path.substring(0, dir.length) !== dir) return;
+                if (path.substring(0, dir.length + 1) !== dir + '/') return;
                 var px = path.substring(dir.length);
                 var pa = px.substring(1).split('/');
                 //console.log("Consider-dir", dir, path, px, pa);
                 if (pa.length < 2) return;
                 var e = '/' + pa[0];
                 if (!out.includes(e)) out.push(e);
-
             });
+
             return out;
         };
     });
@@ -138,6 +137,7 @@
 
         socket.on('files', function(data) {
             $scope.files = data;
+            console.log(data);
         });
 
     }]);

@@ -1,2 +1,2 @@
 /*jshint esnext: true */
-ß.lib.projectfiles.update();
+ß.lib.projectfiles.updateSync();
