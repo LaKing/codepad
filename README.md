@@ -98,8 +98,8 @@ Why are there node_modules for each module? Why not in one folder?
 - We want to keep a really modular structure, as clean as possible. ßoilerplate modules use node_modules, so it does not make sense to mix them into a big pool. node will load them and cash them so there is no performance penalty.
 
 Is the collaborative workflow different from the traditional workflow?
-- It can be. You can use the traditional workflow, and manage the project with git, and offline editors. However, codepad should be restarted if files change server-side.
-- The advantage of a collaborative editor is that you use continious integration by default. You should talk or chat with your co-editors while editing, to discuss what to do, and push once the code is in a stable state. Don't leave the code in an unstartable state.
+- It can be. You can use the traditional workflow, and manage the project with git, and offline editors. Codepad is aware of server side changes, so you can push your stuff online anytime.
+- The advantage of a collaborative editor is that you use continious integration by default. You should talk or chat with your co-editors while editing, to discuss what to do, and push once the code is in a stable state. Don't leave the code in an unstartable state if possible.
 
 I need a certain thing implemented, may I contact you with any buisness proposals?
-- Sure! 
+- Sure!
