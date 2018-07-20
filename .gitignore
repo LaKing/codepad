@@ -36,7 +36,6 @@ config
 promo
 invoice
 user
-static
 
 test
 test.js
