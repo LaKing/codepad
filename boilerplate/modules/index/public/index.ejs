@@ -19,8 +19,9 @@
 <script src="/app.treeController.js" type="text/javascript"></script>
 <script src="/socket.io/socket.io.js" type="text/javascript"></script>
 
+<script src="/split.js"></script>
 
-<body ng-app="app" class="cm-s-<%- theme %> CodeMirror">
+<body ng-app="app" class="cm-s-<%- theme %> CodeMirror outerbody">
 
     <div id="topbar">
         <button class="btn" ng-click="files()"><i class="fa fa-folder"></i></button>
@@ -44,6 +45,14 @@
     <div id="paddiv">
         <iframe ng-src="{{pad}}" id="padframe"></iframe>
     </div>
+
+<script>
+    Split(['#filetree', '#paddiv'], {
+    sizes: [20, 80],
+    gutterSize: 4,
+      cursor: 'col-resize'
+	})
+</script>
 
     <div id="logbar">
         <text ng-if="notice" class="" id="notice" ng-click="$root.pad='/p'+$root.ntc.filepath">{{notice}}</text>

@@ -1,6 +1,6 @@
 /*jshint esnext: true */
 
-console.log("Starting codepad");
+console.log("Starting codepad on node", process.versions.node, process.platform);
 
 require('./global');
 

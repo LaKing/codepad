@@ -26,41 +26,7 @@
             }
         };
     }]);
-    /*
-        app.filter('filesbypath', function() {
-            return function(input, dir) {
 
-                if (!dir) dir = '';
-                var out = {};
-                angular.forEach(input, function(content, path) {
-                    if (path.substring(0, dir.length + 1) !== dir + '/') return;
-                    var px = path.substring(dir.length);
-                    var pa = px.substring(1).split('/');
-                    //console.log("Consider-file", dir, path, px, pa);
-                    if (pa.length !== 1) return;
-                    out[pa[0]] = content;
-                });
-
-                return out;
-            };
-        });
-        app.filter('foldersbypath', function() {
-            return function(input, dir) {
-                if (!dir) dir = '';
-                var out = {};
-                angular.forEach(input, function(content, path) {
-                    if (path.substring(0, dir.length) !== dir) return;
-                    var px = path.substring(dir.length);
-                    var pa = px.substring(1).split('/');
-                    //console.log("Consider-dir", dir, path, px, pa);
-                    if (pa.length < 2) return;
-                    out['/' + pa[0]] = '';
-
-                });
-                return out;
-            };
-        });
-    */
     app.filter('filesByPath', function() {
         return function(input, dir) {
 
@@ -137,7 +103,6 @@
 
         socket.on('files', function(data) {
             $scope.files = data;
-            console.log(data);
         });
 
     }]);

@@ -90,6 +90,7 @@
 
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
+        lineWrapping: true,
         theme: "<%- theme %>",
         fullScreen: true,
         mode: "<%- mode %>",

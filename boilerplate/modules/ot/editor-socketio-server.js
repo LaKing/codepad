@@ -211,41 +211,6 @@
 
     };
 
-    /*
-        EditorSocketIOServer.prototype.clearDoc = function(socket) {
-
-            var self = this;
-            var revision = this.operations.length;
-            var operation = [-this.document.length];
-            var selection = {
-                ranges: [{
-                    anchor: 0,
-                    head: 0
-                }]
-            };
-
-            self.onOperation(socket, revision, operation, selection);
-        };
-
-        EditorSocketIOServer.prototype.updateDoc = function(socket, content) {
-            console.log('updateDoc');
-            // first of all, clear the document, then apply the content as edit.
-            var self = this;
-            self.clearDoc(socket);
-
-            var revision = this.operations.length;
-            var operation = [content];
-            var selection = {
-                ranges: [{
-                    anchor: content.length,
-                    head: content.length
-                }]
-            };
-
-            self.onOperation(socket, revision, operation, selection);
-        };
-    */
-
     EditorSocketIOServer.prototype.setName = function(socket, name) {
         var clientId = socket.id;
         this.getClient(clientId).name = name;
