@@ -127,7 +127,7 @@ function express_search(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
     res.write(send_ahead());
-	res.write(ß.now() + '<p>Search <b>' + search_term + '</b> ' + replace_term + '</p> <br><br>');
+	res.write(ß.now() + '<p>Search <b>' + search_term + '</b> ' + ( replace_term || '') + '</p> <br><br>');
   
     for (var f in ß.projectfiles) {
         if (f.indexOf(search_term) >= 0 || ß.projectfiles[f].realpath.indexOf(search_term) >= 0 || (ß.projectfiles[f].at && ß.projectfiles[f].at[search_term]))
