@@ -88,7 +88,7 @@ global.Ł = function() {
     var stack = new Error().stack;
     var from = link_html(stack.split('\n')[2]);
 
-    logger.log('┏━━━ ŁOG @', from);
+    logger.log('┏━━━ ŁOG ', ß.now(), '@', from);
 
     for (let arg in arguments) {
         if (ß.codepadlog) logger.log('┠─  <span style="background: rgba(100,100,100,0.4);">', arguments[arg], '</span>');

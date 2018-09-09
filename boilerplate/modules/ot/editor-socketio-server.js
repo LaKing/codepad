@@ -47,7 +47,7 @@
             pad: this.docId
         });
 
-        ß.lib.projectfiles.operation(socket, this.operations.length);
+        ß.lib.projectfiles.operation(socket, this.operations.length, 'opened');
 
         socket.on('operation', function(revision, operation, selection) {
             self.mayWrite(socket, function(mayWrite) {
@@ -72,7 +72,7 @@
         socket.on('disconnect', function() {
             socket.leave(self.docId);
             self.onDisconnect(socket);
-            ß.lib.projectfiles.operation(socket, undefined);
+            ß.lib.projectfiles.operation(socket, undefined, 'closed');
 
             // @LAB add condition otherwise crashes server if undefined
             if (socket.manager)
@@ -114,7 +114,7 @@
             if (socket.projectfile) {
                 // autosave character-by-character
                 ß.lib.projectfiles.save(socket.projectfile, this.document);
-                ß.lib.projectfiles.operation(socket, revision);
+                ß.lib.projectfiles.operation(socket, revision, 'edited');
             }
 
         } catch (exc) {

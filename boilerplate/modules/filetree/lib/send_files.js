@@ -7,7 +7,9 @@ module.exports = function() {
 
     for (let i in ß.projectfiles) {
         projectfiles[i] = {};
-
+		
+        if (ß.projectfiles[i].realpath !== ß.projectdir + i) projectfiles[i].sl = true;
+      
         if (ß.projectfiles[i].at)
             for (let u in ß.projectfiles[i].at) {
                 for (let s in ß.projectfiles[i].at[u]) {

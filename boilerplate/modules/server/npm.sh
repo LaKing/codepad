@@ -1,3 +1,4 @@
+npm install express
 npm install connect-flash
 npm install cookie-parser
 npm install body-parser

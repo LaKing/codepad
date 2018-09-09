@@ -4,6 +4,8 @@ var a = [];
 
 ß.lib.projectfiles.update();
 
+// this is wathcin for changes on folders
+
 setInterval(function() {
 
     // check if there is anyone connected 

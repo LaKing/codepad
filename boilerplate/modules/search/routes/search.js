@@ -94,9 +94,6 @@ function send_ahead() {
     res_send += '<meta charset="utf-8" />';
     res_send += '<link rel="stylesheet" href="/codemirror/theme/' + ß.theme + '.css">';
     res_send += '<link rel="stylesheet" type="text/css" href="/index.css" />';
-    //<script src="/app.logsController.js" type="text/javascript"></script>
-    //<script src="/app.rootScope.js" type="text/javascript"></script>
-    //<script src="/socket.io/socket.io.js" type="text/javascript"></script>
     res_send += '<script type="text/javascript">';
     res_send += '    window.onload = toBottom;';
     res_send += '    function toBottom() {';
@@ -105,7 +102,6 @@ function send_ahead() {
     res_send += '</script>';
     res_send += '<body class="cm-s-' + ß.theme + ' CodeMirror" style="font-family: Monaco, \'Lucida Console\', monospace; margin: 20px;">';
 
-    res_send += '</body>';
     return res_send;
 }
 
@@ -131,6 +127,14 @@ function express_search(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
     res.write(send_ahead());
+	res.write(ß.now() + '<p>Search <b>' + search_term + '</b> ' + replace_term + '</p> <br><br>');
+  
+    for (var f in ß.projectfiles) {
+        if (f.indexOf(search_term) >= 0 || ß.projectfiles[f].realpath.indexOf(search_term) >= 0 || (ß.projectfiles[f].at && ß.projectfiles[f].at[search_term]))
+            res.write('<b><a class="CodeMirror-guttermarker" href="/p' + f + '" style="text-decoration: underline">' + f + '</a> </b><br>');
+
+    }
+    res.write('<br>');
 
     var stdout = '';
     var stderr = '';

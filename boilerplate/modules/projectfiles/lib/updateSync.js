@@ -9,20 +9,35 @@ function purgeSync(path) {
     }
 }
 
+function statSync(base, path, entry) {
+  	var realpath = '';
+  	if (!ß.fs.existsSync(base + '/' + path + '/' + entry)) realpath = base + '/' + path + '/' + entry;
+  	else realpath = ß.fs.realpathSync(base + '/' + path + '/' + entry);
+  
+    // allow only projectfiles
+    //if (realpath.substring(0, base.length) !== base) return;
+
+    var stats = ß.fs.lstatSync(realpath);
+    if (entry.charAt(0) === '.') return;
+    if (stats.isDirectory())
+        traverseSync(path + '/' + entry);
+
+    if (stats.isFile()) {
+        if (!ß.projectfiles[path + '/' + entry]) {
+          ß.projectfiles[path + '/' + entry] = {};
+          ß.projectfiles[path + '/' + entry].realpath = realpath;
+        }
+    }
+}
+
 function traverseSync(path) {
     const results = ß.fs.readdirSync(ß.projectdir + '/' + path);
     if (results) {
         results.forEach(entry => {
 
             if (entry === 'node_modules') return;
-
-            let stats = ß.fs.lstatSync(ß.projectdir + '/' + path + '/' + entry);
-            if (entry.charAt(0) === '.') return;
-            if (stats.isDirectory())
-                traverseSync(path + '/' + entry);
-            if (stats.isFile()) {
-                if (!ß.projectfiles[path + '/' + entry]) ß.projectfiles[path + '/' + entry] = {};
-            }
+            statSync(ß.projectdir, path, entry);
+          
         });
 
     }
@@ -32,5 +47,5 @@ function traverseSync(path) {
 module.exports = function() {
     purgeSync();
     traverseSync('');
-   console.log("- projectfiles updateSync");
+    console.log("- projectfiles updateSync");
 };

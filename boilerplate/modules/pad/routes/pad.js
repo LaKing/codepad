@@ -26,7 +26,7 @@ function send_files() {
     var entry = req.params[0];
     var filename = req.params[0].split('/').pop();
 
-    var fullpath = "/srv/codepad-project/" + entry;
+    var fullpath = ß.projectdir + "/" + entry;
 
     var dot = filename.lastIndexOf(".");
     var ext = 'txt';

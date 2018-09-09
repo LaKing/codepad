@@ -130,7 +130,7 @@ body {
 /* split.js */
 
 .gutter {
-    background-color: rgba(128, 128, 128, 0.5);
+    background-color: rgba(222, 222, 222, 0.5);
     background-repeat: no-repeat;
     background-position: 50%;
 }
@@ -159,7 +159,7 @@ body {
     z-index: 50000;
     left: 00px;
     position: relative;
-    background: rgb(89, 91, 93);
+    background: rgba(222, 222, 222, 0.5);
     cursor: col-resize;
     background-repeat: no-repeat;
     background-position: 50%;
