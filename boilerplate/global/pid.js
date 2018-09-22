@@ -22,8 +22,7 @@ fs.writeFileSync(ß.pidfile, process.pid);
 
 console.log("- wrote pid:", process.pid);
 
-
-if (process.ppid) console.log("- ppid: ", process.ppid);
+//if (process.ppid) console.log("- ppid: ", process.ppid);
 
 process.on('SIGTERM', function() {
     try {

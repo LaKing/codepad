@@ -42,6 +42,7 @@ function traverse(path) {
     ß.fs.readdir(ß.projectdir + '/' + path, (err, results) => {
         if (err) return đ(err);
         if (results) {
+          	if (results.length > ß.projectfiles_file_limit) return;
             results.forEach(entry => {
 
                 if (entry === 'node_modules') return;

@@ -7,7 +7,7 @@ module.exports = function(projectfile, content) {
   const realpath = ß.projectfiles[projectfile].realpath;
   
   // timestamp write operations
-  ß.file_write_operation_inprogress[realpath] = process.hrtime()[0];
+  ß.lib.projectfiles.stamp(realpath);
     
   if (content.length > 0) {
       ß.fs.writeFile(realpath, content, function(err) {

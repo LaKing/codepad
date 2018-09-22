@@ -8,14 +8,16 @@ module.exports = function(socket) {
 
         if (!f) f = socket.projectfile;
 
-        if (!ß.projectfiles[f]) console.error("Cannot beautify. No such projectfile: " + f);
+        if (!ß.projectfiles[f]) return console.error("Cannot beautify. No such projectfile: " + f);
+      	if (!ß.projectfiles[f].realpath) return console.error("Cannot beautify. No realpath for projectfile: " + f);
+      
         var realpath = ß.projectfiles[f].realpath;
 
         var ext = f.split('.').pop().toLowerCase();
 
         if (ext === 'js' || ext === 'css' || ext === 'html') {
 
-            var data = ß.beautify[ext](ß.projectfiles[f].editor.document);
+            var data = ß.beautify[ext](ß.editor[realpath].document);
             ß.lib.projectfiles.save(f, data);
             ß.editor[realpath].updateDocServerOperation(data);
             ß.lib.projectfiles.oplog(socket.username, 'beautify-' + ext, socket.projectfile);

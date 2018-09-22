@@ -17,6 +17,10 @@ module.exports = function(realpath, callback) {
         //  var path = entry.substr(0, entry.lastIndexOf("/"));
         var path = realpath.substr(0, realpath.lastIndexOf("/"));
         //Ł(path);
+
+        // timestamp write operations
+        ß.lib.projectfiles.stamp(realpath);
+
         ß.fs.mkdirp(path, function(err) {
             if (err) {
                 ß.err(path + ' ' + err.code);

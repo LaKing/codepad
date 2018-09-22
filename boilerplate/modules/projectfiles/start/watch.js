@@ -34,4 +34,4 @@ setInterval(function() {
 
     ß.lib.projectfiles.opntc('Filesystem-update');
 
-}, 1000);
+}, 3000);

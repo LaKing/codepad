@@ -21,10 +21,13 @@ module.exports = function(socket) {
         });
 
         x.on('close', (code) => {
-            if (code === 0) ß.msg('OK');
-            else ß.err('FAILED with exit code ' + code);
+          
+          	ß.lib.projectfiles.opntc(arg + ' complete ' + code);
 
-            ß.lib.projectfiles.opntc(arg + ' complete ' + code);
+            if (code === 0) ß.msg('OK');
+            else return ß.err('FAILED with exit code ' + code);
+
+           	socket.emit(arg+'-complete', code);
 
         });
 

@@ -7,6 +7,7 @@
         var url = $location.absUrl();
 
         $rootScope.pad = '/logs';
+        $rootScope.refresh = false;
 
         // ng-click="$root.set_pad(path, p)" 
         $rootScope.set_pad = function(path, pad) {
@@ -38,6 +39,18 @@
             }
         };
 
+        $rootScope.beautifyable = function() {
+            var pad = $rootScope.pad.split('?')[0];
+            var par = pad.split('.');
+            var ext = par[par.length - 1].toLowerCase();
+            if (ext === 'js') return 'JavaScript';
+            if (ext === 'css') return 'CSS';
+            if (ext === 'html') return 'HTML';
+            //if (ext === 'ejs') return true;
+
+            return false;
+        };
+
         $rootScope.files = function() {
             $window.open(url + 'files', '_blank');
         };
@@ -62,6 +75,23 @@
             socket.emit("beautify", $rootScope.pad.substring(2));
         };
 
+        $rootScope.plug_and_play = function() {
+            $rootScope.refresh = true;
+          
+            $rootScope.beautify();
+          
+            setTimeout(function() {
+                $rootScope.pad = '/logs';
+                $rootScope.push();
+            }, 500);
+
+        };
+      
+        socket.on('push-complete', function(code) {
+            if ($rootScope.refresh === false) return;
+            $rootScope.refresh = false;
+        	if (code === 0) $rootScope.play();            
+        });
 
         $rootScope.search = function() {
             if ($rootScope.replace_input) $window.open(url + 'search?find=' + $rootScope.search_input + '&replace=' + $rootScope.replace_input, '_blank');

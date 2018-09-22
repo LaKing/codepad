@@ -50,7 +50,7 @@ function send_files() {
     //if (ext === 'pdf') return res.sendFile(fullpath);
     var ent = entry.toLowerCase();
 
-    if (ext === 'log' || ext === 'csr' || ext === 'crt' || ext === 'key' || ext === 'pem' || ext === 'pid' || ent === 'version' || ent === 'license') {
+    if (ext === 'txt' || ext === 'log' || ext === 'csr' || ext === 'crt' || ext === 'key' || ext === 'pem' || ext === 'pid' || ent === 'version' || ent === 'license') {
         ß.fs.readFile(fullpath, function(err, data) {
             đ(err);
             if (err) return res.render(errejs, {
