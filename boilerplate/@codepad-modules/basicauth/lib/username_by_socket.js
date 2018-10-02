@@ -1,4 +1,5 @@
 module.exports = function(socket) {
+    if (!ß.basic_auth) return 'Guest';
     if (!socket) return undefined;
     if (!socket.handshake) return undefined;
     if (!socket.handshake.headers) return undefined;
