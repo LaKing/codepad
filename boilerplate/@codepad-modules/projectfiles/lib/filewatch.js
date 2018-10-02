@@ -26,7 +26,6 @@ module.exports = function(projectfile, realpath) {
                 }
                 // only process first in sequence
                 var current = "~ server-side edit " + projectfile + ' @' + process.hrtime()[0];
-                Ł(current);
 
                 ß.lib.projectfiles.opntc(current.split('@')[0]);
 

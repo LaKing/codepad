@@ -34,6 +34,7 @@ if (!ß.HOSTNAME) ß.HOSTNAME = require('os').hostname();
 
 // Modules directory is boilerplate for codepad modules
 if (!ß.MRD) ß.MRD = ß.BPD;
+if (!ß.pidfile) ß.pidfile = "/var/codepad/codepad.pid";
 
 require("./node_modules.js");
 require("./now.js");
