@@ -34,6 +34,10 @@ function _getCallerFile() {
 if (ß.codepadlog !== false && process.env.USER === 'codepad') ß.codepadlog = true;
 if (ß.codepadlog) console.log("- Using codepad HTML-format logging");
 
+// @DOC ## ßoilerplate/global/codepad.js
+// @DOC Global logginf functions defined - ł and Ł
+// @DOC đ and Đ - determinates errors, for example in a catch block
+
 function link_html(str) {
     if (!str) return '';
     if (!ß.codepadlog) return '';
@@ -101,6 +105,7 @@ global.Ł = function() {
 if (ß.codepadlog) logger.log("- Logging functions ł and Ł are available, with codepad html-extended log");
 else logger.log("- Logging functions ł and Ł are available.");
 
+// The determinator or better said detonator function
 global.Đ = function() {
 
     if (arguments.length === 1) {
@@ -118,7 +123,7 @@ global.Đ = function() {
         if (ß.codepadlog) logger.log('┠─  <span style="background: rgba(200,000,000,0.4);">', err.message, '</span>');
         else logger.log('┠─  ', err.message);
         logger.log('┗━━━━');
-
+        throw err;
     } else {
         logger.log('┏━━━ ĐETERMINATE @', from);
         for (let arg in arguments) {
@@ -126,13 +131,11 @@ global.Đ = function() {
             else logger.log('┠─  ', arguments[arg]);
         }
         logger.log('┗━━━━');
+      	throw new Error('The determinator function got a non-null error, therefore throws an exception.');
     }
-
-    throw 'The determinator function got a non-null error, therefore throws an exception.';
-
-    //return arguments;
 };
 
+// The determinator displays the error in the logs, but execution will continue, ...
 global.đ = function() {
     if (arguments.length === 1) {
         if (arguments[0] === null) return;

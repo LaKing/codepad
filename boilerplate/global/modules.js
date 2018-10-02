@@ -1,65 +1,109 @@
 /*jshint esnext: true */
 
-const fs = require('fs-extra');
+const fs = ß.fs;
 
-function get_modules() {
+// @DOC ## ßoilerplate/global/modules.js
+// @DOC ß.modules contains all the modules that we use
+// @DOC In DEBUG mode, we can define active-modules that run only in this mode
 
-    var bpmodules = [];
-    if (fs.existsSync(ß.BPD + '/modules')) bpmodules = fs.readdirSync(ß.BPD + '/modules');
+if (!ß.modules) ß.modules = {};
 
-    var cpmodules = [];
-    if (fs.existsSync(ß.CWD + '/modules')) cpmodules = fs.readdirSync(ß.CWD + '/modules');
 
-    return [...new Set([...bpmodules, ...cpmodules])];
+function process(dir, p) {
+    if (!fs.lstatSync(dir).isDirectory()) return;
+    let modules = ß.modules;
+    let that = fs.readdirSync(dir);
+    for (let m in that) {
+        let module = that[m];
+        let path = fs.realpathSync(dir + '/' + module);
+        if (fs.lstatSync(path).isDirectory()) {
+
+            let condition_file = path + '/module-condition.js';
+            if (fs.existsSync(condition_file))
+                if (require(condition_file)() !== true) continue;
+
+            if (!modules[module]) modules[module] = {};
+            modules[module][path] = p;
+
+            ß["USE_" + module.toUpperCase()] = true;
+        }
+    }
+
 }
 
-var config_file = ß.CWD + '/config/active-modules.json';
-var debug_file = ß.CWD + '/config/active-modules.debug.json';
+    // the CWD is a module with priority
+    var curr = ß.CWD.split('/').pop();
+    if (!ß.modules[curr]) ß.modules[curr] = {};
+    ß.modules[curr][ß.CWD] = true;
 
-if (ß.DEBUG) config_file = debug_file;
+
+// construct the modules object
+function get_modules(modules_root) {
+    if (!fs.lstatSync(modules_root).isDirectory()) return ß.debug(modules_root + ' is not a directory!');
+
+    var modules = ß.modules;
+    // process modules in CWD
+    var cwd = fs.readdirSync(modules_root);
+
+    // module folders either have priority or not.
+    // if there is no @ character prefixing the directory, it has priority
+    // standard libs should be prefixed with @ and can be symlinks
 
 
-var blacklist_file = ß.CWD + '/config/blacklist-modules.json';
-var blacklist_debug_file = ß.CWD + '/config/blacklist-modules.debug.json';
+    // first of all search for non-@ modules
+    for (let f in cwd) {
+        let dir = fs.realpathSync(modules_root + '/' + cwd[f]);
+        let d = cwd[f];
+        if (d.indexOf('-modules') >= 0 || d === 'modules') {
+            if (d[0] !== '@') process(dir, true);
+        }
+    }
 
-if (ß.DEBUG && fs.existsSync(blacklist_debug_file)) blacklist_file = blacklist_debug_file;
-
-var blacklist = [];
-
-fs.mkdirp(ß.CWD + '/config');
-
-ß.modules = get_modules();
-
-if (fs.existsSync(blacklist_file)) {
-    blacklist = fs.readJsonSync(blacklist_file);
-} else {
-    fs.writeJsonSync(blacklist_file, blacklist);
+    // then search for boilerplate @-modules.
+    for (let f in cwd) {
+        let dir = fs.realpathSync(modules_root + '/' + cwd[f]);
+        let d = cwd[f];
+        if (d.indexOf('-modules') >= 0 || d === 'modules') {
+            if (d[0] === '@') process(dir, false);
+        }
+    }
 }
 
-// remove files listed in the blacklist array
-const modules_set = new Set(ß.modules);
-const blacklist_set = new Set(blacklist);
-const difference = new Set([...modules_set].filter((x) => !blacklist_set.has(x)));
-ß.modules = Array.from(difference);
+get_modules(ß.MRD);
 
-for (let i = 0; i < ß.modules.length; i++) {
-    let condition_file = ß.BPD + '/modules/' + ß.modules[i] + '/module-condition.js';
-    if (fs.existsSync(condition_file))
-        if (require(condition_file)() !== true) ß.modules.splice(i, 1);
-}
 
-for (let i = 0; i < ß.modules.length; i++) ß["USE_" + ß.modules[i].toUpperCase()] = true;
-//for (let i = 0; i < ß.modules.length; i++) console.log("- USE_" + ß.modules[i].toUpperCase());
+fs.mkdirpSync(ß.VAR + '/debug');
+var config_file = ß.VAR + '/debug/modules.json';
+fs.writeFileSync(config_file, JSON.stringify(ß.modules, null, 4));
+console.log("- wrote modules to", config_file);
 
-console.log("- wrote active modules to", config_file);
-fs.writeJsonSync(config_file, ß.modules);
+// get_path from any file. Honor priority
+if (!ß.get_module_path)
+    ß.get_module_path = function(module, path) {
+        // get file or folder
+      	if (!path) path = '';
 
+        for (let me in ß.modules[module]) {
+            if (ß.modules[module][me])
+                if (fs.existsSync(me + '/' + path)) return me + '/' + path;
+        }
+        for (let me in ß.modules[module]) {
+            if (!ß.modules[module][me])
+                if (fs.existsSync(me + '/' + path)) return me + '/' + path;
+        }
+        return undefined;
+    };
+
+
+/*
+
+// these are now obsolete. use symlinks and collections-of-modules
 
 ////////////////////////////////////////CLI/////////////////////////////////////////////////
 
 ß.cli_commands.push('blacklist MODULE');
 if (ß.CMD === 'blacklist') {
-    if (ß.fs.existsSync(ß.BPD + "/modules/" + ß.ARG) || ß.fs.existsSync(ß.CWD + "/modules/" + ß.ARG)) {
+    if (ß.fs.existsSync(ß.BPM + '/' + ß.ARG) || ß.fs.existsSync(ß.CPM + '/' + ß.ARG)) {
         blacklist.push(ß.ARG.toLowerCase());
         fs.writeJsonSync(blacklist_file, blacklist);
         ß.msg('OK');
@@ -69,7 +113,7 @@ if (ß.CMD === 'blacklist') {
 
 ß.cli_commands.push('whitelist MODULE');
 if (ß.CMD === 'whitelist') {
-    if (ß.fs.existsSync(ß.BPD + "/modules/" + ß.ARG) || ß.fs.existsSync(ß.CWD + "/modules/" + ß.ARG)) {
+    if (ß.fs.existsSync(ß.BPM + '/' + ß.ARG) || ß.fs.existsSync(ß.CPM + '/' + ß.ARG)) {
         blacklist.splice(blacklist.indexOf(ß.ARG.toLowerCase()), 1);
         fs.writeJsonSync(blacklist_file, blacklist);
         ß.msg('OK');
@@ -77,5 +121,5 @@ if (ß.CMD === 'whitelist') {
     }
 }
 
-
+*/
 //console.log("ß.modules:", ß.modules);

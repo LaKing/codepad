@@ -1,5 +1,11 @@
 /*jshint esnext: true */
 
+// @DOC ## ßoilerplate/global/now.js
+// @DOC Simple date functions 
+// @DOC ß.now() returns yyyy-mm-dd hh:mm:ss format
+// @DOC ß.date() returns yyyy-mm-dd format
+// @DOC ß.time() returns dd hh:mm:ss format
+
 ß.now = function() {
     var now = new Date();
 
@@ -36,7 +42,7 @@
 
 ß.time = function() {
     var now = new Date();
-    
+
     var hour = now.getHours();
     if (hour < 10) hour = '0' + hour;
 
@@ -46,11 +52,11 @@
     var sec = now.getSeconds();
     if (sec < 10) sec = '0' + sec;
 
-    return day + ' ' + hour + ':' + min + ':' + sec;
+    return hour + ':' + min + ':' + sec;
 };
 
 
 ß.DATE = ß.now().split(' ')[0];
 ß.TIME = ß.now().split(' ')[1];
 
-console.log(" - Date functions ß.date ß.time and ß.now available.");
+console.log("- Date functions ß.date ß.time and ß.now available. " + ß.now());

@@ -1,41 +1,86 @@
 /*jshint esnext: true */
 
-const fs = require('fs-extra');
+const fs = ß.fs;
 
-function acquire_module_dir(m, dir) {
+// @DOC ## ßoilerplate/global/load.js
+// @DOC Simply requiring files
+// @DOC Passing a 'dir' as an argument to ß.load()
+// @DOC It will load all the files in 'dir', first in our modules folder - if that not exists, it will use ßoilerplate/modules
 
-    var p = '/modules/' + m + '/' + dir;
 
-    var cpfiles = [];
-    if (fs.existsSync(ß.CWD + p)) cpfiles = fs.readdirSync(ß.CWD + p);
+function list_files(module, dir, bmf) {
 
-    var bpfiles = [];
-    if (fs.existsSync(ß.BPD + p)) bpfiles = fs.readdirSync(ß.BPD + p);
-
-    var files = [...new Set([...cpfiles, ...bpfiles])];
-
-    for (var i = 0; i < files.length; i++) {
-        if (cpfiles.indexOf(files[i]) >= 0) require(ß.CWD + p + '/' + files[i]);
-        else
-        if (bpfiles.indexOf(files[i]) >= 0) require(ß.BPD + p + '/' + files[i]);
+    let folder = dir + '/' + bmf;
+    if (fs.existsSync(folder)) {
+        let path = fs.realpathSync(folder);
+        if (fs.lstatSync(path).isDirectory()) {
+            let files = fs.readdirSync(path);
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].split('.').reverse()[0] === 'js') {
+                    require(path + '/' + files[i]);
+                    reg(path + '/' + files[i]);
+                }
+            }
+        }
     }
 }
 
-// load is basicallay an acquire for all files
 
-ß.load = function(dir) {
+var log = '';
+const logfile = ß.VAR + '/debug/load.log';
 
-    for (var i = 0; i < ß.modules.length; i++) {
-        acquire_module_dir(ß.modules[i], dir);
-    }
+function reg(msg) {
+    //ß.debug(msg);
+    log += msg + '\n';
+}
 
-    if (fs.existsSync(ß.CWD + '/' + dir)) {
-        var files = fs.readdirSync(ß.CWD + '/' + dir);
-        for (var j = 0; j < files.length; j++) {
-            if (files[j].split('.').reverse()[0] === 'js')
-                require(ß.CWD + '/' + dir + '/' + files[j]);
+// bmf is the boilerplate-modules folder we are processing now
+function load_module_dir(module, dir, bmf, that) {
+    // that is the object that has keys representing the file, and value representing the path
+    let folder = dir + '/' + bmf;
+    if (fs.existsSync(folder)) {
+        let path = fs.realpathSync(folder);
+        if (fs.lstatSync(path).isDirectory()) {
+            let files = fs.readdirSync(path);
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].split('.').reverse()[0] === 'js') {
+                    let file = files[i];
+                    if (!that[file]) that[file] = path + '/' + files[i];
+                }
+            }
         }
     }
+}
 
-    console.log('- Load', dir, 'complete');
-};
+
+if (!ß.load)
+    ß.load = function(bmf) {
+        reg('// ------------------- ' + bmf + ' ----------------------');
+
+      	// load per modules
+      
+        for (let module in ß.modules) {
+            let that = {};
+
+            // priority
+            for (let dir in ß.modules[module]) {
+                if (ß.modules[module][dir] === true)
+                    load_module_dir(module, dir, bmf, that);
+            }
+
+            // standard
+            for (let dir in ß.modules[module]) {
+                if (ß.modules[module][dir] === false)
+                    load_module_dir(module, dir, bmf, that);
+            }
+
+            // that object has values populated, selection complete so do the job now
+            for (let me in that) {
+                require(that[me]);
+                reg(module + ' ' + bmf + ' ' + me + ' is ' + that[me]);
+            }
+        }
+        fs.writeFileSync(logfile, log);
+        console.log('- Load ' + bmf + ' complete');
+
+    };

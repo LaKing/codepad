@@ -32,8 +32,6 @@ const $TAG = $BLUE + '[ ' + HOSTNAME.split('.')[0] + ' ]';
 
 ß.msg = function msg() {
     ß.log('MSG', ...arguments);
-    ß.io.emit("msg", ...arguments);
-
     if (ß.cli) return console.log($TAG + $GREEN, ...arguments, $CLEAR);
     if (ß.codepadlog) return console.log('<span style="color: rgba(0,250,0,0.8);">', ...arguments, '</span>');
     return console.log(...arguments);
@@ -41,7 +39,6 @@ const $TAG = $BLUE + '[ ' + HOSTNAME.split('.')[0] + ' ]';
 
 ß.ntc = function ntc() {
     ß.log('NTC', ...arguments);
-    ß.io.emit("msg", ...arguments);
     if (ß.cli) return console.log($YELLOW, ...arguments, $CLEAR);
     if (ß.codepadlog) return console.log('<span style="color: rgba(250,250,0,0.8);">', ...arguments, '</span>');
     return console.log(...arguments);
@@ -49,8 +46,6 @@ const $TAG = $BLUE + '[ ' + HOSTNAME.split('.')[0] + ' ]';
 
 ß.err = function err() {
     ß.log('ERR', ...arguments);
-    ß.io.emit("err", ...arguments);
-
     if (ß.cli) return console.log($RED + 'ß-ERROR', ...arguments, $CLEAR);
     if (ß.codepadlog) return console.log('<span style="color: rgba(250,0,0,0.8);"> ß-ERROR', ...arguments, '</span>');
     return console.log(...arguments);
