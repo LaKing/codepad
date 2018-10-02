@@ -70,12 +70,17 @@ function get_modules(modules_root) {
 }
 
 get_modules(ß.MRD);
+if (Object.keys(ß.modules).length <= 1) {
+ 	console.log('! No Module collections found in ' + ß.MRD + ' switching to ' + ß.BPD);
+    ß.MRD = ß.BPD;
+  	get_modules(ß.MRD);
+} 
 
 
 fs.mkdirpSync(ß.VAR + '/debug');
 var config_file = ß.VAR + '/debug/modules.json';
 fs.writeFileSync(config_file, JSON.stringify(ß.modules, null, 4));
-console.log("- wrote modules to", config_file);
+console.log("- " + Object.keys(ß.modules).length + " modules, debug:", config_file);
 
 // get_path from any file. Honor priority
 if (!ß.get_module_path)

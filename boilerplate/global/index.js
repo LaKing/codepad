@@ -32,8 +32,8 @@ if (!ß.GND) ß.GND = process.config.variables.node_prefix + "/lib/node/node_mod
 if (!ß.HOSTNAME) ß.HOSTNAME = require('os').hostname();
 // Modules Root Directory
 
-// Modules directory is boilerplate for codepad modules
-if (!ß.MRD) ß.MRD = ß.BPD;
+// Modules root directory is boilerplate for codepad modules
+if (!ß.MRD) ß.MRD = ß.CWD;
 if (!ß.pidfile) ß.pidfile = "/var/codepad/codepad.pid";
 
 require("./node_modules.js");

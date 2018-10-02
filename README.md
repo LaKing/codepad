@@ -54,7 +54,7 @@ require("./boilerplate");
 
 By default, codepad is running on port 9001. Use setcap to enable node to bind to port 443. 
 
-ßoilerplate modules can be blacklisted, and additional functionality can be added by creating a modules folder containing custom code.
+ßoilerplate modules can be enabled-disabled by symlinking *-modules directories containing boilerplate modules, and additional, primary level functionality can be added by creating a modules folder containing custom code.
 The config folder is created after the first start, and is subject to customization. Please do not modify the boilerplate folder. It is recommended to have the boilerplate folder mounted readonly.
 
 # Usage
