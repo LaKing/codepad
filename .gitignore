@@ -9,21 +9,13 @@ lib-cov
 
 .gitignore
 
-debug.sh
-install.sh
 localhost-cert-config.txt
 localhost.crt
 localhost.csr
 localhost.key
 localhost.org.pem  
-make-cert.sh
-make-docs.sh
-projectfiles.json  
 publish.sh  
 push.sh
-server.js
-start.sh
-update.sh
 
 npm-debug.log
 node_modules
@@ -31,11 +23,3 @@ package-lock.json
 
 log
 logs
-local
-config
-promo
-invoice
-user
-
-test
-test.js

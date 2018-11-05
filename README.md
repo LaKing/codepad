@@ -1,6 +1,6 @@
 # Codepad is a collaborative online code editor and project manager running online in the browser
 
-- manage the projectfiles on a server, collaborate with your co-developers in realtime
+- manage the projectfiles on a webserver, collaborate with your co-developers in realtime
 - codemirror with the most important features enabled, like syntax highlighting and linting
 - realtime logging 
 - search and replace within the current pad, and within the project
@@ -20,11 +20,10 @@
 Codepad shall not be run as root. I recommend a dedicated codepad user.
 It is required to have node.js and npm installed. Midnight commander is optional - but highliy recommended. .)
 
-You may run the scripts within the boilerplate folder, if you are using fedora or a similar distro. (systemd, dnf)
-The install.sh script should:
+You may run the scripts especially if you are on redhat based distro with systemd and dnf
+The install script should:
 
 - install mongodb mongodb-server
-- install certificates
 - create ssh keypair for codepad user
 - create a profile file for codepad user
 - create codepad.service
@@ -53,9 +52,6 @@ require("./boilerplate");
 ```
 
 By default, codepad is running on port 9001. Use setcap to enable node to bind to port 443. 
-
-ßoilerplate modules can be enabled-disabled by symlinking *-modules directories containing boilerplate modules, and additional, primary level functionality can be added by creating a modules folder containing custom code.
-The config folder is created after the first start, and is subject to customization. Please do not modify the boilerplate folder. It is recommended to have the boilerplate folder mounted readonly.
 
 # Usage
 
@@ -100,6 +96,3 @@ Why are there node_modules for each module? Why not in one folder?
 Is the collaborative workflow different from the traditional workflow?
 - It can be. You can use the traditional workflow, and manage the project with git, and offline editors. Codepad is aware of server side changes, so you can push your stuff online anytime.
 - The advantage of a collaborative editor is that you use continious integration by default. You should talk or chat with your co-editors while editing, to discuss what to do, and push once the code is in a stable state. Don't leave the code in an unstartable state if possible.
-
-I need a certain thing implemented, may I contact you with any buisness proposals?
-- Sure!
