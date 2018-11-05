@@ -17,6 +17,8 @@
 
 # Installation
 
+Codepad consist of a set of boilerplate-modules. 
+
 Codepad shall not be run as root. I recommend a dedicated codepad user.
 It is required to have node.js and npm installed. Midnight commander is optional - but highliy recommended. .)
 
