@@ -8,16 +8,16 @@
 - basic auth with hashed passwords
 - command execution with logging to restart/push a project
 - wetty for web based shell access to the project
-- built with the [ßoilerplate](https://github.com/LaKing/boilerplate) framework
 
 # Demo
 
 [codepad-demo](https://codepad-demo.d250.hu:9001)
 
-
 # Installation
 
-Codepad consist of a set of boilerplate-modules. 
+Codepad consist of a set of modules for our boilerplate module loader.
+First of all, the working directory will need the boilerplate files, either in a folder, or symlinked.
+Clone the boilerplate folder from [ßoilerplate](https://github.com/LaKing/boilerplate) replacing the boilerplate symlink.
 
 Codepad shall not be run as root. I recommend a dedicated codepad user.
 It is required to have node.js and npm installed. Midnight commander is optional - but highliy recommended. .)
