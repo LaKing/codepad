@@ -16,8 +16,12 @@
 # Installation
 
 Codepad consist of a set of modules for our boilerplate module loader.
-First of all, the working directory will need the boilerplate files, either in a folder, or symlinked.
-Clone the boilerplate folder from [ßoilerplate](https://github.com/LaKing/boilerplate) replacing the boilerplate symlink.
+First of all, the working directory will need the boilerplate files, either in the folder, or symlinked,
+[ßoilerplate](https://github.com/LaKing/boilerplate) replacing the boilerplate symlink.
+
+```
+git clone git@github.com:LaKing/boilerplate.git
+```
 
 Codepad shall not be run as root. I recommend a dedicated codepad user.
 It is required to have node.js and npm installed. Midnight commander is optional - but highliy recommended. .)

@@ -40,6 +40,8 @@
 <script src="/codemirror/addon/lint/javascript-lint.js"></script>
 <script src="/codemirror/addon/lint/json-lint.js"></script>
 <script src="/codemirror/addon/lint/css-lint.js"></script>
+<script src="/htmlhint.js"></script>
+<script src="/codemirror/addon/lint/htmlmixed-lint.js"></script>
 
 <link rel="stylesheet" href="/codemirror/addon/dialog/dialog.css">
 <link rel="stylesheet" href="/codemirror/addon/search/matchesonscrollbar.css">
@@ -117,7 +119,6 @@
 
 
     socket.on('doc', function(data) {
-    	console.log('doc');
         pad = data.pad;
         editor.setValue(data.str);
         const serverAdapter = new ot.SocketIOAdapter(socket);

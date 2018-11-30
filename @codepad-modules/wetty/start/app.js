@@ -3,7 +3,7 @@
 
 //var express = require('express');
 const express = ß.express;
-const http = require('http');
+//const http = require('http');
 const https = require('https');
 const path = require('path');
 const server = require('socket.io');
@@ -33,11 +33,8 @@ app.get('/shell', function(req, res) {
     res.sendFile(shell_path);
 });
 
-var wio = server(ß.httpsServer, {
-    path: '/wetty/socket.io'
-});
 
-wio.on('connection', function(socket) {
+ß.wio.on('connection', function(socket) {
 
     var request = socket.request;
 

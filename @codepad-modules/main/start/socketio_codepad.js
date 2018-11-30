@@ -1,30 +1,13 @@
 /*jshint esnext: true */
+
 const fs = require('fs');
-//const User = require('./user-model');
-//const admin = require('./admin.js');
-
 const URL = require('url').URL;
-
-function get_socket_user(socket) {
-
-    if (!socket) return console.log('Missing socket?');
-    if (!socket.handshake) return console.log('Mising handshake?');
-    if (!socket.handshake.session) return console.log('Missing session?');
-    if (!socket.handshake.session.passport) return console.log('Missing session.passport.');
-    if (!socket.handshake.session.passport.user) return console.log('Missing session.passport.user?');
-
-    return true;
-}
 
 const app = ß.app;
 const io = ß.io;
 const User = ß.User;
-const session = ß.session;
 const lib = ß.lib;
 
-//const ss = require('socket.io-stream');
-
-//const promo = require('./promo.js')(app, io);
 
 io.on('connection', function(socket) {
 

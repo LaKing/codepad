@@ -13,19 +13,19 @@ module.exports = function(socket) {
         const x = spawn('/bin/bash', [arg]);
 
         x.stdout.on('data', (data) => {
-            ß.msg(`${data}`);
+            console.log(`${data}`);
         });
 
         x.stderr.on('data', (data) => {
-            ß.err(`${data}`);
+            console.log(`${data}`);
         });
 
-        x.on('close', (code) => {
+        x.on('exit', (code) => {
           
           	ß.lib.projectfiles.opntc(arg + ' complete ' + code);
 
-            if (code === 0) ß.msg('OK');
-            else return ß.err('FAILED with exit code ' + code);
+            if (code === 0) ß.msg(arg + ' OK');
+            else return ß.err(arg + ' FAILED with exit code ' + code);
 
            	socket.emit(arg+'-complete', code);
 
