@@ -10,24 +10,16 @@ body {
     overflow: auto;
 }
 
-/* unvisited link */
-a:link {
-  color: red;
+a:link, a:visited {
+  background-color: #555555;
+  color: white;
+  text-align: center;
+  text-decoration: underline;
+  display: inline-block;
 }
 
-/* visited link */
-a:visited {
-  color: green;
-}
-
-/* mouse over link */
-a:hover {
-  color: hotpink;
-}
-
-/* selected link */
-a:active {
-  color: blue;
+a:hover, a:active {
+  background-color: darkblue;
 }
 
 .outerbody {

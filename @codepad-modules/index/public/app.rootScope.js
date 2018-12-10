@@ -38,7 +38,7 @@
                     break;
             }
         };
-
+/*
         $rootScope.beautifyable = function() {
             var pad = $rootScope.pad.split('?')[0];
             var par = pad.split('.');
@@ -50,7 +50,7 @@
 
             return false;
         };
-
+*/
         $rootScope.files = function() {
             $window.open(url + 'files', '_blank');
         };
