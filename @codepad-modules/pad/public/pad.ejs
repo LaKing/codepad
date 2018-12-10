@@ -91,7 +91,7 @@
 
     var socket = io();
     var pad = '?';
-
+    
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
         lineWrapping: true,
@@ -105,7 +105,7 @@
             "Ctrl-Space": "autocomplete"
         },
         gutters: ["CodeMirror-lint-markers"],
-        lint: true
+        lint: <%- lint_options %>
 
     });
 

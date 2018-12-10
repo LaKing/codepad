@@ -21,27 +21,12 @@ console.log(test);
 */
 
 
-function convert_line(line) {
-  if (line.length<40) return line; 
-  let link = line.substring(line.indexOf(']8;;') + 4,line.length -20);
-  return '····· <a style="background-color:rgba(0, 0, 255, 0.4); color:rgba(200, 200, 255, 1);" href="' + link + '">[link]</a>';
-}
-
-function filter_codepad_links(input) {
-	let lines = input.split('\n');
-	for (let l in lines) {
-     	if (lines[l].substring(0,5) === '·····') lines[l] = convert_line(lines[l]);
-    }
-  	return lines.join('\n');
-}	
-
-
 //---------
 
 var AU = require('ansi_up');
 var ansi_up = new AU.default();
 
 module.exports = function(input) {
-    //return ansi_up.ansi_to_html(input);
-  	return filter_codepad_links(ansi_up.ansi_to_html(input));
+    return ansi_up.ansi_to_html(input);
+  	//return filter_codepad_links(ansi_up.ansi_to_html(input));
 };

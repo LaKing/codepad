@@ -26,13 +26,16 @@ function send_files() {
     var ext = 'txt';
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
 
+  	var lint_options = ß.LINT_OPTIONS || '{esversion: 6}';
+  
     var mode = CodeMirror.findModeByFileName(filename);
     if (mode) {
         if (mode.mode !== 'null')
             res.render(padejs, {
                 theme: ß.theme,
                 file: entry,
-                mode: mode.mode
+                mode: mode.mode,
+              	lint_options: lint_options
             });
         else res.render(txtejs, {
             theme: ß.theme,
