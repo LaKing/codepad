@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 module.exports = function(file, search, replace, callback) {
 

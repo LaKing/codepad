@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 module.exports = function(projectfile, content) {
   if (!projectfile) return console.log("ERROR undefined filename");
   

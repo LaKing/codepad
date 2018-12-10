@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 function purgeSync(path) {
     for (let i in ß.projectfiles) {

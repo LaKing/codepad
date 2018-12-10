@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 const ejsfile = ß.get_module_path('search','public/results.ejs');
 const errfile = ß.get_module_path('search','public/err.ejs');

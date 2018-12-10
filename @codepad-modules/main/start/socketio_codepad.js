@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 const fs = require('fs');
 const URL = require('url').URL;

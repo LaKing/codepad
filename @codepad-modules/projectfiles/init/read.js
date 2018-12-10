@@ -1,2 +1,2 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 ß.lib.projectfiles.updateSync();

@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 ß.app.use(ß.express.static(ß.get_module_path('lint','node_modules/jshint/dist')));
 ß.app.use(ß.express.static(ß.get_module_path('lint','node_modules/jsonlint/web')));

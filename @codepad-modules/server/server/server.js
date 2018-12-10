@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 const lib = ß.lib;
 const fs = ß.fs;

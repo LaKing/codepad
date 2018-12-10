@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 var crypto = require('crypto');
 var basicAuth = require('express-basic-auth');

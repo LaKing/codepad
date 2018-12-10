@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 const ejsfile = ß.get_module_path('index','public/index.ejs');
 

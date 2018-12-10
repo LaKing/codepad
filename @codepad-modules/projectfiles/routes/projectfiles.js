@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 ß.app.get('/projectfiles', function(req,res) {
 

@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 var config_file = 'codepad-passwords.json';
 var debug_file = 'codepad-passwords.debug.json';

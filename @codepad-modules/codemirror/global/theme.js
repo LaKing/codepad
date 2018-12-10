@@ -1,3 +1,3 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 if (!ß.theme) ß.theme = 'cobalt';

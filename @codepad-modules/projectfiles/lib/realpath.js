@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 // realpath shall not return double slashes if possible, however, if realpath does not exists, we still need a realpath for file creation.. ...
 

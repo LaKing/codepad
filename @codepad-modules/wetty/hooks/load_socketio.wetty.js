@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 const server = require('socket.io');
 
 module.exports = function(httpsServer) {

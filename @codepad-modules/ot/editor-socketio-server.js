@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 /*jshint loopfunc: false */
 
 // @LAB add function wrapper for strict mode

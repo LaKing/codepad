@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 ß.app.use(ß.express.static(ß.get_module_path('pad', 'static')));
 
 const CodeMirror = require(ß.get_module_path('codemirror', 'mode/meta.js'));

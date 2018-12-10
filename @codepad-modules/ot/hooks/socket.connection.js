@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 const EditorSocketIOServer = require(ß.get_module_path('ot') + '/editor-socketio-server.js');
 

@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 const ejsfile = ß.get_module_path('filetree','public/filetree.ejs');
 
 ß.app.get('/files', function(req, res) {

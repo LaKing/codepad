@@ -1,4 +1,4 @@
-/*jshint esnext: true */
+/*ßoilerplate */
 
 function p(i) {
     ß.fs.lstat(ß.projectdir + '/' + i, (err, stats) => {
