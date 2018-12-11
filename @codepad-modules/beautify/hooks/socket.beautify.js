@@ -17,7 +17,7 @@ module.exports = function(socket) {
         //if (ext === 'js' || ext === 'ts' || ext === 'css' || ext === 'html' || ext === 'vue') {
       
       	try {
-            let options = { tabWidth: 4, semi: true, filepath: realpath};
+            let options = { tabWidth: 4, semi: true, filepath: realpath, jsxBracketSameLine: true};
             var data = ß.prettier.format(ß.editor[realpath].document, options);
             ß.lib.projectfiles.save(f, data);
             ß.editor[realpath].updateDocServerOperation(data);

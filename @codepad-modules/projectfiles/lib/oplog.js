@@ -1,7 +1,6 @@
 /*ßoilerplate */
 
 module.exports = function(username, opname, filepath) {
-
     var data = {};
     data.now = ß.now();
     data.username = username;
@@ -10,6 +9,6 @@ module.exports = function(username, opname, filepath) {
 
     for (let i in ß.io.sockets.sockets) {
         let socket = ß.io.sockets.sockets[i];
-        if (socket.main_socket) socket.emit('ntc', data);
+        if (socket.main_socket) socket.emit("ntc", data);
     }
 };
