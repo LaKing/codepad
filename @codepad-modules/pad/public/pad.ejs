@@ -73,8 +73,11 @@
 <script src="/ot/socketio-adapter.js"></script>
 <script src="/ot/editor-client.js"></script>
 
+<!-- ------ -->
+
 <textarea id="code" name="code" rows="5"></textarea>
 <script>
+                
     // get url query parameters
     function getParameterByName(name, url) {
         if (!url) url = window.location.href;
@@ -150,6 +153,10 @@
     });
 
     socket.on('disconnect', function() {
-        location.reload();
+        console.log('disconnect', '<%- file %>');
+        editor.setOption('readOnly', true);
+      	// this will bug firefox !!!! 
+        // location.reload();
     });
+    
 </script>

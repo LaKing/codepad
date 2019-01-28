@@ -10,7 +10,7 @@ const lib = ß.lib;
 
 
 io.on('connection', function(socket) {
-
+  
     var ip = socket.handshake.headers['x-forwarded-for'];
     var uri = new URL(socket.handshake.headers.referer).pathname;
     socket.username = ß.lib.username_by_socket(socket);

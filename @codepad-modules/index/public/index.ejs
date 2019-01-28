@@ -33,9 +33,9 @@
         <button title="refresh" class="btn" ng-click="plug_and_play()"><i class="fa fa-refresh"></i></button>
         <text ng-if="status || pad !== '/logs'" class="status_red_{{status_red}}" id="status">{{status || pad.substring(2) }}</text>
         <form id="search">
-            <input id="right_search" ng-model="$root.search_input" ng-submit="search()" placeholder="Search regexp .." autocomplete="off"></input>
+            <input id="right_search" ng-model="$root.search_input" ng-submit="search()" placeholder="Search regexp .." autocomplete="off">
             <button title="search and replace" id="right_button" class="btn" ng-disabled="!$root.search_input" ng-click="search()"><i class="fa fa-search"></i></button>
-            <input id="right_replace" ng-disabled="!$root.search_input" ng-model="$root.replace_input" ng-submit="search()" placeholder="Replace .." autocomplete="off"></input>
+            <input id="right_replace" ng-disabled="!$root.search_input" ng-model="$root.replace_input" ng-submit="search()" placeholder="Replace .." autocomplete="off">
         </form>
     </div>
 
@@ -52,7 +52,7 @@
     sizes: [20, 80],
     gutterSize: 4,
       cursor: 'col-resize'
-	})
+	});
 </script>
 
     <div id="logbar">

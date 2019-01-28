@@ -43,7 +43,13 @@ if (ß.fs.existsSync(ß.CWD + "/cli.js")) require(ß.CWD + "/cli.js");
 ß.cli_commands.push("stop");
 ß.cli_commands.push("debug");
 
-if (ß.CMD === "start" || ß.CMD === "debug") return require("./index.js");
+if (ß.CMD === "start" || ß.CMD === "debug") {
+  if (ß.fs.existsSync(ß.CWD + "/server.js")) return require(ß.CWD + "/server.js");
+  if (ß.fs.existsSync("./index.js")) return require("./index.js");
+  console.log('Culd not find an entry point for starting the boilerplate.');
+  process.exit();
+  return;
+}
 
 if (ß.CMD === "install") {
     ß.exec("dnf.sh");

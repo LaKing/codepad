@@ -13,6 +13,7 @@
         $rootScope.set_pad = function(path, pad) {
             if (!path) path = '';
             $rootScope.pad = '/p' + path + '/' + pad;
+            console.log('$rootScope.pad', $rootScope.pad);
             if (url.split('/')[url.split('/').length - 1] === 'files') $window.open($rootScope.pad, '_blank');
             //$location.hash($rootScope.pad);
         };

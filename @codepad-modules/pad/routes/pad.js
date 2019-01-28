@@ -15,10 +15,10 @@ function send_files() {
 }
 
 ß.app.get('/p/*', function(req, res, next) {
-
+  
     var entry = req.params[0];
     var filename = req.params[0].split('/').pop();
-
+  
     var fullpath = ß.projectdir + "/" + entry;
 
     var dot = filename.lastIndexOf(".");
