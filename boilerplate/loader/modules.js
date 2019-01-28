@@ -30,7 +30,7 @@ function use_name(str) {
 }
 
 function process(dir, p) {
-    if (!fs.isDir(dir)) return;
+    if (!fs.isDirSync(dir)) return;
 
     let USE_MODULES = use_name(dir);
     if (ß[USE_MODULES] === false) return;
@@ -44,7 +44,7 @@ function process(dir, p) {
         if (ß[USE_MODULE] === false) console.log(USE_MODULE + " === false");
         else {
             let path = dir + "/" + module;
-            if (fs.isDir(path)) {
+            if (fs.isDirSync(path)) {
                 let condition_file = path + "/module-condition.js";
                 if (fs.existsSync(condition_file)) if (require(condition_file)() !== true) continue;
 
@@ -65,7 +65,7 @@ function is_modulefolder(name) {
 // construct the modules object
 if (!ß.load_modules)
     ß.load_modules = function(modules_root) {
-        if (!fs.isDir(modules_root)) return ß.error('ß.load_modules(' + modules_root + ") is not a directory!");
+        if (!fs.isDirSync(modules_root)) return ß.error('ß.load_modules(' + modules_root + ") is not a directory!");
         // var modules = ß.modules;
         // process modules in CWD
         var cwd = fs.readdirSync(modules_root);

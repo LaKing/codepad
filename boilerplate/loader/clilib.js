@@ -9,7 +9,7 @@ if (!ß.get_directory_list_by_filter)
                 return true;
             };
 
-        fs.inDirs(dir, function(entry) {
+        fs.inDirsSync(dir, function(entry) {
             if (filterfn(entry)) list.push(entry);
         });
 
@@ -24,10 +24,10 @@ if (!ß.get_file_list_by_filter)
             filterfn = function(a) {
                 return true;
             };
-        if (fs.isDir(dir)) {
+        if (fs.isDirSync(dir)) {
             let f = fs.readdirSync(dir);
             for (let i = 0; i < f.length; i++) {
-                if (fs.isFile(dir + "/" + f[i])) {
+                if (fs.isFileSync(dir + "/" + f[i])) {
                     if (filterfn(f[i])) list.push(f[i]);
                 }
             }
@@ -40,7 +40,7 @@ if (!ß.uplink_with_filter)
     ß.uplink_with_filter = function(path, destination, list) {
         // the list is not an optional argument
         if (!list) return;
-        if (fs.isDir(path)) {
+        if (fs.isDirSync(path)) {
             fs.mkdirpSync(destination);
             let a = fs.readdirSync(path);
             for (let i = 0; i < a.length; i++) {
@@ -81,11 +81,11 @@ if (!ß.cli_uplink)
                 if (ß.fs.existsSync(path)) {
                     ß.ntc("ß uplink " + ß.ARG);
 
-                    if (fs.isDir(path) && is_factory_module_lib(ß.ARG)) {
+                    if (fs.isDirSync(path) && is_factory_module_lib(ß.ARG)) {
                         ß.uplink(ß.MLD + "/" + ß.ARG, ß.CWD + "/" + ß.ARG);
                         found = true;
                     }
-                    if (fs.isFile(path) && is_module_list_json(ß.ARG)) {
+                    if (fs.isFileSync(path) && is_module_list_json(ß.ARG)) {
                         found = true;
                         let data = fs.readJsonSync(path, "utf-8");
                         for (let i in data) {

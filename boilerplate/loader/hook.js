@@ -25,7 +25,7 @@ function reg(msg) {
 function load_module_hooks(module, dir, that) {
     // that is the object that has keys representing the file, and value representing the path
     let path = dir + "/hooks";
-    if (fs.isDir(path)) {
+    if (fs.isDirSync(path)) {
         let files = fs.readdirSync(path);
         for (let i = 0; i < files.length; i++) {
             if (files[i].split(".").pop() === "js") {
@@ -82,7 +82,7 @@ if (!ß.run_hook)
                 }
             }
     };
-/*
+
 if (!ß.run_hooks)
     ß.run_hooks = function(hook, arg) {
         const a = [...arguments].splice(1);
@@ -90,4 +90,4 @@ if (!ß.run_hooks)
         ß.run_hook(hook, ...a);
         ß.run_hook('post_' + hook, ...a);
     };
-*/
+

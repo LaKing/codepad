@@ -26,9 +26,9 @@ Underlying directories will be created.
 // non-recursive
 if (!ß.uplink)
     ß.uplink = function(path, destination) {
-        if (!fs.isDir(path)) return ß.error(path + " is not a valid directory, can not uplink");
+        if (!fs.isDirSync(path)) return ß.error(path + " is not a valid directory, can not uplink");
         fs.mkdirpSync(destination);
-        fs.inPaths(path, function(r) {
+        fs.inPathsSync(path, function(r) {
           	let source = path + "/" + r;
             let target = destination + "/" + r;
             if (fs.existsSync(target)) return;

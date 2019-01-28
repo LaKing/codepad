@@ -109,7 +109,7 @@ if (!ß.bash_file)
 
 function list_files(module, dir, bmf) {
     let path = dir + "/" + bmf;
-    if (fs.isDir(path)) {
+    if (fs.isDirSync(path)) {
         let files = fs.readdirSync(path);
         for (let i = 0; i < files.length; i++) {
             if (files[i].split(".").pop() === "js") {
@@ -132,7 +132,7 @@ function reg(msg) {
 function load_module_dir(module, dir, bmf, that) {
     // that is the object that has keys representing the file, and value representing the path
     let file = dir + "/" + bmf;
-    if (fs.isFile(file)) {
+    if (fs.isFileSync(file)) {
         if (file.split(".").pop() === "sh") {
             if (!that[file]) that[file] = file;
         }

@@ -4,6 +4,7 @@ const EditorSocketIOServer = require(ß.get_module_path("ot") + "/editor-socketi
 
 module.exports = function(socket) {
     socket.on("beautify", function(f) {
+      	if (f.charAt(0) !== '/') return;
         if (!f) f = socket.projectfile;
         if (!ß.projectfiles[f]) return console.error("Cannot beautify. No such projectfile: " + f);
         if (!ß.projectfiles[f].realpath) return console.error("Cannot beautify. No realpath for projectfile: " + f);

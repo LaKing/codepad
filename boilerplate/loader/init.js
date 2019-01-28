@@ -57,8 +57,8 @@ console.log(" - ß.VAR", ß.VAR);
 // Global node modules directory
 if (!ß.GND) ß.GND = process.config.variables.node_prefix + "/lib/node_modules/";
 if (!ß.HOSTNAME) ß.HOSTNAME = require("os").hostname();
-  
-// ß.fs.writeFileSync(ß.VAR + "/push.sh", "HOST=" + ß.HOSTNAME);
+// hostname should be FQDN, if not, well, pre-set this value, or I assume its one of my containers .)
+if (ß.HOSTNAME.indexOf('.') < 1) ß.HOSTNAME += '.d250.hu'; 
 
 // Modules Root Directory
 if (!ß.MRD) ß.MRD = ß.CWD;

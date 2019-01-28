@@ -8,7 +8,6 @@ const https = require('https');
 const path = require('path');
 const server = require('socket.io');
 const pty = require('pty.js');
-//var fs = require('fs');
 const fs = ß.fs;
 const os = require('os');
 
@@ -28,10 +27,7 @@ var sshuser = 'codepad';
 var id_file = os.homedir() + '/.ssh/id_rsa';
 
 var app = ß.app;
-const shell_path = ß.get_module_path('wetty','public/wetty/index.html');
-app.get('/shell', function(req, res) {
-    res.sendFile(shell_path);
-});
+
 
 
 ß.wio.on('connection', function(socket) {

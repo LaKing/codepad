@@ -26,7 +26,7 @@ function reg(msg) {
 function get_module_lib(module, dir) {
     if (!ß.lib[module]) ß.lib[module] = {};
     let path = dir + "/lib";
-    if (fs.isDir(path)) {
+    if (fs.isDirSync(path)) {
         let files = fs.readdirSync(path);
         for (let i = 0; i < files.length; i++) {
             let name = files[i].split(".")[0];

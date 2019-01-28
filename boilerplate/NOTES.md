@@ -9,3 +9,6 @@ http://npm.broofa.com/?q=@angular/cli
 The ßoilerplate is functional. If you need anything similar, but rather object-oriented take a look at
 https://github.com/base/base
 https://nestjs.com/
+
+The list is expanding ...
+https://da-14.com/blog/10-best-nodejs-frameworks
