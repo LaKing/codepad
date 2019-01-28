@@ -3,8 +3,7 @@ module.exports = function(projectfile, content) {
     if (!projectfile) return console.log("ERROR undefined filename");
 
     if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
-    if (!ß.projectfiles[projectfile].realpath)
-        ß.projectfiles[projectfile].realpath = ß.projectdir + projectfile;
+    if (!ß.projectfiles[projectfile].realpath) ß.projectfiles[projectfile].realpath = ß.projectdir + projectfile;
     const realpath = ß.projectfiles[projectfile].realpath;
 
     // timestamp write operations
@@ -15,9 +14,7 @@ module.exports = function(projectfile, content) {
             if (err) {
                 đ(err);
                 ß.err(projectfile + " " + err.code);
-                ß.lib.projectfiles.opntc(
-                    "ERROR in writeFile " + projectfile + " " + err.code
-                );
+                ß.lib.projectfiles.operr("ERROR in writeFile " + projectfile + " " + err.code, realpath);
             }
         });
     } else {
@@ -25,9 +22,7 @@ module.exports = function(projectfile, content) {
             if (err) {
                 đ(err);
                 ß.err(projectfile + " " + err.code);
-                ß.lib.projectfiles.opntc(
-                    "ERROR in unlinkFile " + projectfile + " " + err.code
-                );
+                ß.lib.projectfiles.operr("ERROR in unlinkFile " + projectfile + " " + err.code, realpath);
             }
             ß.lib.projectfiles.opntc("Deleted empty " + projectfile);
         });

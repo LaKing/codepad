@@ -1,4 +1,4 @@
 /*ßoilerplate */
 
-ß.app.use(ß.express.static(ß.get_module_path('angularjs','node_modules/angular')));
-ß.app.use(ß.express.static(ß.get_module_path('angularjs','node_modules/angular-sanitize')));
+ß.app.use(ß.express.static(ß.resolve_node_module_path('angular')));
+ß.app.use(ß.express.static(ß.resolve_node_module_path('angular-sanitize')));

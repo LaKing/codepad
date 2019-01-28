@@ -100,7 +100,7 @@
         mode: "<%- mode %>",
         // optional addons
         matchBrackets: true,
-        styleActiveLine: true,
+        //styleActiveLine: true,
         extraKeys: {
             "Ctrl-Space": "autocomplete"
         },
@@ -129,10 +129,16 @@
         editor.setCursor({
             line: line - 1,
             ch: char
-        })
+        });
 
     });
 
+    socket.on('err', function(data) {
+      console.log('err', data);
+      alert(data);
+        editor.setOption('readOnly', true);
+    });
+  
     socket.on('getCursor', function(callback) {
         editor.focus();
         callback(editor.getCursor());

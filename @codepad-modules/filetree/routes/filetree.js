@@ -5,6 +5,6 @@ const ejsfile = ß.get_module_path('filetree','public/filetree.ejs');
     //res.render(ejsfile, {});
     ß.lib.projectfiles.update();
     res.render(ejsfile, {
-        theme: ß.theme
+        theme: ß.THEME
     });
 });

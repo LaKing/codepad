@@ -1,7 +1,7 @@
 ## The @socketio module
-#### /@vue-modules/socketio
+#### /@server-modules/socketio
 <pre>
-lib
- - load_socketio.js
+hooks
+ - load_socketio.main.js
 </pre>
 

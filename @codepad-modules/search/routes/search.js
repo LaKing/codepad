@@ -11,6 +11,8 @@ function zeroPad(num, places) {
     var zero = places - num.toString().length + 1;
     return Array(+(zero > 0 && zero)).join("&nbsp;") + '#' + num;
 }
+        
+function ref(m) {return '<b><span class="cm-atom">' + m + '</span></b>';}
 
 function form_response(data, search_term, replace_term) {
     data = data.replace(/^\s*$[\n\r]{1,}/gm, '');
@@ -61,7 +63,8 @@ function form_response(data, search_term, replace_term) {
         //current text
         var re = new RegExp(search_term, 'g');
         var sw = '<b><span class="cm-atom">' + search_term + '</span></b>';
-        var text = line.substring(v + w + 2, 250).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(re, sw);
+      
+        var text = line.substring(v + w + 2, 250).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(re, ref);
 
         if (current !== fullpath) {
             link = abspart + '/p/' + fullpath;
@@ -92,7 +95,7 @@ function send_ahead() {
     res_send += '<!doctype html>';
     res_send += '<title>Search results</title>';
     res_send += '<meta charset="utf-8" />';
-    res_send += '<link rel="stylesheet" href="/codemirror/theme/' + ß.theme + '.css">';
+    res_send += '<link rel="stylesheet" href="/codemirror/theme/' + ß.THEME + '.css">';
     res_send += '<link rel="stylesheet" type="text/css" href="/index.css" />';
     res_send += '<script type="text/javascript">';
     res_send += '    window.onload = toBottom;';
@@ -100,7 +103,7 @@ function send_ahead() {
     res_send += '        window.scrollTo(0, document.body.scrollHeight);';
     res_send += '    }';
     res_send += '</script>';
-    res_send += '<body class="cm-s-' + ß.theme + ' CodeMirror" style="font-family: Monaco, \'Lucida Console\', monospace; margin: 20px;">';
+    res_send += '<body class="cm-s-' + ß.THEME + ' CodeMirror" style="font-family: Monaco, \'Lucida Console\', monospace; margin: 20px;">';
 
     return res_send;
 }
@@ -120,9 +123,25 @@ function express_search(req, res) {
         env: process.env
     };
     //grep --exclude-dir={node_modules,.git,log} -inrow -E ".{0,100}$arg.{0,100}"
-    console.log('search: /bin/grep --exclude-dir=.git --exclude-dir=log --exclude-dir=node_modules -nrowE ".{0,100}' + search_term + '.{0,100}"');
+    console.log('search: /bin/grep --exclude-dir=.git --exclude-dir=log --exclude-dir=node_modules --exclude-dir=var -InRowE ".{0,100}' + search_term + '.{0,100}"');
     //const x = spawn('/bin/grep', ['--exclude-dir={.git,log}', '-nrowE', '".{0,100}' + search_term + '.{0,100}"'], options);
-    const x = spawn('/bin/grep', ['--exclude-dir=.git', '--exclude-dir=log', '--exclude-dir=node_modules', '-nrowE', '.{0,100}' + search_term + '.{0,100}'], options);
+    
+  // grep switches
+  /*
+  	-I Ignore binary files
+    -n line numbers
+    -R dereference-recursive (recursive, following symlinks)
+    -o only-matching
+    -w whole word-regexp
+    -E extended-regexp
+    -F no regexp, fixed string
+    .{0,100} limit displayed characters length
+    
+    LC_ALL='C'
+    
+  */
+
+    const x = spawn('/bin/grep', ['--exclude-dir=.git', '--exclude-dir=log', '--exclude-dir=node_modules', '--exclude-dir=var', '-InRowE', '.{0,100}' + search_term + '.{0,100}'], options);
 
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
@@ -154,12 +173,12 @@ function express_search(req, res) {
         res.write('[end]<br><br>');
 
         //res.render(errfile, {
-        //    theme: ß.theme,
+        //    theme: ß.THEME,
         //    code: stderr
         //});
 
         //res.render(ejsfile, {
-        //    theme: ß.theme,
+        //    theme: ß.THEME,
         //    results: form_response(stdout, search_term)
         //});
         res.end(form_response(stdout, search_term, replace_term) + '</body>');

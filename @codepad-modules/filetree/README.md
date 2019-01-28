@@ -11,7 +11,6 @@ public
  - treetemplate.html
 routes
  - filetree.js
- - public.js
 static
  - filetree.css
 </pre>

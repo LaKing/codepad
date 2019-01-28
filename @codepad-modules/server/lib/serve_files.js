@@ -56,5 +56,5 @@ module.exports = function(folder) {
         }
     }
     fs.writeFileSync(logfile, log);
-    console.log('- serve files: ' + folder);
+    ß.debug('- serve files: ' + folder);
 };

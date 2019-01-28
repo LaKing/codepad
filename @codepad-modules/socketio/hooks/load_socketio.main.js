@@ -1,7 +1,5 @@
 /*ßoilerplate */
 
-
-
 module.exports = function(httpsServer) {
 
     // https://github.com/socketio/socket.io/issues/2945
@@ -25,5 +23,7 @@ module.exports = function(httpsServer) {
             });
 
     });
+  
+    ß.run_hook('load_socketio_complete');
 
 };

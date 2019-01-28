@@ -1,11 +1,10 @@
 ## The @wetty module
 #### /@codepad-modules/wetty
 <pre>
+hooks
+ - load_socketio.wetty.js
 public
- - index.html
  - wetty
-routes
- - public.js
 start
  - app.js
 </pre>

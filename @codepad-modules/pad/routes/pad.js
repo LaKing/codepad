@@ -1,5 +1,4 @@
 /*ßoilerplate */
-ß.app.use(ß.express.static(ß.get_module_path('pad', 'static')));
 
 const CodeMirror = require(ß.get_module_path('codemirror', 'mode/meta.js'));
 const padejs = ß.get_module_path('pad', 'public/pad.ejs');
@@ -32,13 +31,13 @@ function send_files() {
     if (mode) {
         if (mode.mode !== 'null')
             res.render(padejs, {
-                theme: ß.theme,
+                theme: ß.THEME,
                 file: entry,
                 mode: mode.mode,
               	lint_options: lint_options
             });
         else res.render(txtejs, {
-            theme: ß.theme,
+            theme: ß.THEME,
             file: entry
         });
         return;
@@ -52,7 +51,7 @@ function send_files() {
         ß.fs.readFile(fullpath, 'utf8', function(err, data) {
             đ(err);
             if (err) return res.render(errejs, {
-                theme: ß.theme,
+                theme: ß.THEME,
                 file: entry,
                 code: err.code
             });
@@ -67,7 +66,7 @@ function send_files() {
         ß.fs.readFile(fullpath, function(err, data) {
             đ(err);
             if (err) return res.render(errejs, {
-                theme: ß.theme,
+                theme: ß.THEME,
                 file: entry,
                 code: err.code
             });
@@ -82,7 +81,7 @@ function send_files() {
     res.sendFile(fullpath, {}, function(err) {
         đ(err);
         if (err) return res.render(errejs, {
-            theme: ß.theme,
+            theme: ß.THEME,
             file: entry,
             code: err.code
         });

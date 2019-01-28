@@ -31,7 +31,7 @@ io.on('connection', function(socket) {
         Ł(msg);
     });
 
-    ß.run_hooks('socket', socket);
+    ß.run_hook('socket', socket);
 
     socket.on('disconnect', function() {
         console.log('- socket-disconnect ' + socket.username + ' ip:' + ip + ' ', uri);

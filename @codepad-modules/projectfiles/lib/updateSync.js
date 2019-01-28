@@ -10,8 +10,7 @@ function purgeSync(path) {
 
 function statSync(base, path, entry) {
     var realpath = "";
-    if (!ß.fs.existsSync(base + "/" + path + "/" + entry))
-        realpath = base + "/" + path + "/" + entry;
+    if (!ß.fs.existsSync(base + "/" + path + "/" + entry)) realpath = base + "/" + path + "/" + entry;
     else realpath = ß.fs.realpathSync(base + "/" + path + "/" + entry);
 
     // allow only projectfiles

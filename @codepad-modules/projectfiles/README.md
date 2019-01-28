@@ -9,6 +9,7 @@ lib
  - create.js
  - filewatch.js
  - operation.js
+ - operr.js
  - oplog.js
  - opntc.js
  - realpath.js

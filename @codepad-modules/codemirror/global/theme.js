@@ -1,3 +1,3 @@
 /*ßoilerplate */
 
-if (!ß.theme) ß.theme = 'cobalt';
+if (!ß.THEME) ß.THEME = 'cobalt';

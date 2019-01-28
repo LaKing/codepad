@@ -14,7 +14,7 @@ localhost.crt
 localhost.csr
 localhost.key
 localhost.org.pem  
-publish.sh  
+publish.sh
 push.sh
 
 npm-debug.log

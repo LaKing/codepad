@@ -8,7 +8,7 @@ module.exports = function(file, search, replace, callback) {
         if (err) {
             đ(err);
             ß.err(projectfile + ' ' + err.code);
-            ß.lib.projectfiles.opntc("ERROR in readFile " + file + ' ' + err.code);
+            ß.lib.projectfiles.operr("ERROR in readFile " + file + ' ' + err.code, fullpath);
             return callback(err, 'Error while reading the file.');
         }
 
@@ -18,7 +18,7 @@ module.exports = function(file, search, replace, callback) {
             if (err) {
                 đ(err);
                 ß.err(projectfile + ' ' + err.code);
-                ß.lib.projectfiles.opntc("ERROR in writeFile " + file + ' ' + err.code);
+                ß.lib.projectfiles.operr("ERROR in writeFile " + file + ' ' + err.code, fullpath);
                 return callback(err, 'Error while writing the file.');
             }
 

@@ -12,7 +12,7 @@ function reg(msg) {
 
 function use_static_folder(dir) {
     if (!fs.existsSync(dir)) return;
-    ß.app.use(ß.express.static(dir, ß.static_options));
+    ß.app.use(ß.express.static(dir, ß.STATIC_OPTIONS));
     reg(dir);
 }
 
@@ -32,6 +32,6 @@ module.exports = function(folder) {
     }
 
     fs.writeFileSync(logfile, log);
-    console.log('- serve static: ' + folder);
+    ß.debug('- serve static: ' + folder);
 
 };

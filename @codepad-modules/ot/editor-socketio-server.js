@@ -109,7 +109,7 @@
             );
 
             // we define a hook, just in case .. although we don't use it yet.
-            ß.run_hooks('edit', socket, this.docId);
+            ß.run_hook('edit', socket, this.docId);
 
             if (socket.projectfile) {
                 // autosave character-by-character

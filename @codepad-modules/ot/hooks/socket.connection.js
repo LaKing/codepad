@@ -1,9 +1,8 @@
 /*ßoilerplate */
 
-const EditorSocketIOServer = require(ß.get_module_path('ot') + '/editor-socketio-server.js');
+const EditorSocketIOServer = require(ß.get_module_path("ot") + "/editor-socketio-server.js");
 
 function proceed(socket) {
-
     const projectfile = socket.projectfile;
     const realpath = socket.realpath;
 
@@ -12,7 +11,7 @@ function proceed(socket) {
 
     // otherwise create the folders, the file, the editor, the watch
     ß.lib.projectfiles.create(realpath, function() {
-        ß.fs.readFile(realpath, 'utf-8', function(err, data) {
+        ß.fs.readFile(realpath, "utf-8", function(err, data) {
             if (err) return đ(err);
             if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
             var mayWrite = function(_, cb) {
@@ -24,14 +23,12 @@ function proceed(socket) {
             ß.editor[realpath].addClient(socket);
 
             // add a whatch
-          	ß.lib.projectfiles.filewatch(projectfile, realpath);
-          
+            ß.lib.projectfiles.filewatch(projectfile, realpath);
         });
     });
 }
 
 module.exports = function(socket) {
-  
     if (!socket) return;
     if (!socket.projectfile) return;
     const projectfile = socket.projectfile;
@@ -50,5 +47,4 @@ module.exports = function(socket) {
         socket.realpath = realpath;
         return proceed(socket);
     });
-
 };

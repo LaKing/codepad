@@ -3,5 +3,7 @@
 <pre>
 routes
  - modules.js
+static
+ - codemirror
 </pre>
 

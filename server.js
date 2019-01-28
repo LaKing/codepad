@@ -3,14 +3,9 @@
 // to configure our server, we create the ß object now.
 if (!global.ß) global.ß = {};
 
-
-// @DOC To enter debug mode, pass debug as argument to server.js, then ß.DEBUG will be true.
-// or uncomment this line 
-ß.DEBUG = true;
-//ß.pidfile = "/var/codepad/project.pid";
-
-ß.port = 443;
-ß.theme = "material";
+//ß.DEBUG = true;
+//ß.PORT = 443;
+//ß.THEME = "material";
 
 require("./boilerplate");
 
@@ -24,5 +19,3 @@ ambiance    bespin           darcula     eclipse        hopscotch     lesser-dar
 
 
 */
-
-Ł('ok');

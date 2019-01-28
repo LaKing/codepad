@@ -9,7 +9,7 @@ const passwords = ß.lib.basicauth.passwords();
 function codepad_authorizer(username, password, cb) {
 
     var hash = crypto.createHash(ß.hash_typ).update(password).digest(ß.hash_dig);
-    var path = ß.hash_dir + "/" + username.toLowerCase() + '/' + ß.hash_ext;
+    var path = ß.HASH_DIR + "/" + username.toLowerCase() + '/' + ß.hash_ext;
 
     if (hashcash[username] === hash) return cb(null, true);
     if (passwords[username] === password) return cb(null, true);
@@ -35,5 +35,5 @@ if (ß.basic_auth) {
         realm: ß.HOSTNAME
     }));
 
-    console.log("- using basic-auth " + ß.hash_dir);
+    console.log("- using basic-auth " + ß.HASH_DIR);
 } else console.log("- NOT using basic-auth");
