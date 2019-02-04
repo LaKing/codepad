@@ -153,10 +153,13 @@
     });
 
     socket.on('disconnect', function() {
-        console.log('disconnect', '<%- file %>');
+        console.log('socket disconnect', '<%- file %>');
         editor.setOption('readOnly', true);
-      	// this will bug firefox !!!! 
-        // location.reload();
+      	// this will bug firefox !!!! but is necessery for chrome
+        //location.reload();
+
+      setTimeout(function(){ location.reload(); }, 1000);
+
     });
     
 </script>
