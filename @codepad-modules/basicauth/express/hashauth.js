@@ -25,15 +25,19 @@ function codepad_authorizer(username, password, cb) {
     });
 }
 
-
-/// ---- auth ----------
-if (ß.basic_auth) {
-    ß.app.use(basicAuth({
+ß.codepad_authorizer = codepad_authorizer;
+ß.basicAuth = basicAuth;
+ß.basic_auth = {
         authorizer: codepad_authorizer,
         authorizeAsync: true,
         challenge: true,
         realm: ß.HOSTNAME
-    }));
+    };
+
+
+/// ---- auth ----------
+if (ß.basic_auth) {
+    ß.app.use(ß.basicAuth(ß.basic_auth));
 
     console.log("- using basic-auth " + ß.HASH_DIR);
 } else console.log("- NOT using basic-auth");

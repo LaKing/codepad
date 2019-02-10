@@ -19,6 +19,7 @@ try {
     require("./bp.js");
     require("./load.js");
     require("./spawn.js");
+    require("./exec.js");
     require("./fork.js");
     require("./symlink.js");
     require("./modulelib.js");
