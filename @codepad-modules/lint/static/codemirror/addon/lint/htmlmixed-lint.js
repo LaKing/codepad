@@ -5,12 +5,14 @@
 // Depends on htmlhint jshint and csshint
 
 (function(mod) {
-    if (typeof exports == "object" && typeof module == "object") // CommonJS
+    if (typeof exports == "object" && typeof module == "object")
+        // CommonJS
         mod(require("../../lib/codemirror"), require("htmlhint"));
-    else if (typeof define == "function" && define.amd) // AMD
+    else if (typeof define == "function" && define.amd)
+        // AMD
         define(["../../lib/codemirror", "htmlhint"], mod);
-    else // Plain browser env
-        mod(CodeMirror, window.HTMLHint);
+    // Plain browser env
+    else mod(CodeMirror, window.HTMLHint);
 })(function(CodeMirror, HTMLHint) {
     "use strict";
 
@@ -27,11 +29,18 @@
     };
 
     CodeMirror.registerHelper("lint", "html", function(text, options) {
-
         // dependency verification
         // htmllint
         var found = [];
-        if (HTMLHint && !HTMLHint.verify) HTMLHint = HTMLHint.HTMLHint;
+        if (HTMLHint && !HTMLHint.verify) {
+            if (typeof HTMLHint.default !== "undefined") {
+                HTMLHint = HTMLHint.default;
+                console.log('HTMLHint default');
+            } else {
+                HTMLHint = HTMLHint.HTMLHint;
+                console.log('HTMLHint else');
+            }
+        }
         if (!HTMLHint) HTMLHint = window.HTMLHint;
         if (!HTMLHint) {
             if (window.console) {
@@ -53,7 +62,8 @@
             }
             return [];
         }
-        if (!options.indent) // JSHint error.character actually is a column index, this fixes underlining on lines using tabs for indentation
+        if (!options.indent)
+            // JSHint error.character actually is a column index, this fixes underlining on lines using tabs for indentation
             options.indent = 1; // JSHint default value is 4
 
         // external linters may modify the options object, so for example CSSLinter adds options.errors, but then JSLint complains that it is not a valid option
@@ -62,7 +72,6 @@
         var JSoptions = options.js || JSON.parse(JSON.stringify(options));
         var HTMLoptions = options.html || JSON.parse(JSON.stringify(options));
 
- 
         // our JS error parser is extended with the offset argument
         function parseErrors(errors, output, offset) {
             for (var i = 0; i < errors.length; i++) {
@@ -88,7 +97,7 @@
                     // Convert to format expected by validation service
                     var hint = {
                         message: error.reason,
-                        severity: error.code ? (error.code.startsWith('W') ? "warning" : "error") : "error",
+                        severity: error.code ? (error.code.startsWith("W") ? "warning" : "error") : "error",
                         from: CodeMirror.Pos(line, start),
                         to: CodeMirror.Pos(line, end)
                     };
@@ -99,11 +108,11 @@
         }
 
         function newlines(str) {
-            return str.split('\n').length;
+            return str.split("\n").length;
         }
 
         function processHTML(text, options, found) {
-            var messages = HTMLHint.verify(text, options && options.rules || defaultRules);
+            var messages = HTMLHint.verify(text, (options && options.rules) || defaultRules);
             for (var i = 0; i < messages.length; i++) {
                 var message = messages[i];
                 var startLine = message.line - 1,
@@ -149,7 +158,7 @@
         function processJS(text, options, found) {
             var blocks = text.split(/<script[\s\S]*?>|<\/script>/gi);
             for (var j = 1; j < blocks.length; j += 2) {
-                if (blocks[j].length>1) {
+                if (blocks[j].length > 1) {
                     JSHINT(blocks[j], options, options.globals);
                     var errors = JSHINT.data().errors;
                     if (errors) parseErrors(errors, found, newlines(blocks.slice(0, j).join()));
