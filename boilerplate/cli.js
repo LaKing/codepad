@@ -63,7 +63,7 @@ if (ß.CMD === "install") {
 ß.cli_uplink();
 
 ß.notice("- CLI-command:", ß.CMD || '?', ß.ARG || '');
-ß.error("no command / invalid command");
+if (ß.CMD !== 'help') ß.error("no command / invalid command");
 
 ß.notice("=== CLI commands ===");
 for (let i = 0; i < ß.cli_commands.length; i++) ß.notice(ß.cli_commands[i]);

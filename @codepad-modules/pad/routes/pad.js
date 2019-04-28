@@ -25,7 +25,7 @@ function send_files() {
     var ext = 'txt';
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
 
-  	var lint_options = ß.LINT_OPTIONS || '{esversion: 6}';
+  	var lint_options = ß.LINT_OPTIONS || '{esversion: 8}';
   
     var mode = CodeMirror.findModeByFileName(filename);
     if (mode) {

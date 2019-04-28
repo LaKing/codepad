@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [[ $INSTALL_DIR ]]
+then
+	echo "PUBLISH from $INSTALL_DIR"
+else
+	echo "publishlib.sh is not meant to be executed directly."
+fi
+
+## project in the container
+## publishdir="/srv/codepad-project"
+
+if [[ $publishdir ]]
+then
+	echo "Using publishdir: $publishdir"
+else
+	## project in the container
+	publishdir="$INSTALL_DIR"
+fi
+
+
+### This is a kind of sudoing for the publish process.
+if [[ $UID != 0 ]]
+then
+    echo "ssh root@localhost publish"
+    if ssh root@localhost "/bin/bash /bin/publish < /dev/null"
+    then
+        code=$?
+        echo "ssh publish command complete, exit $code"
+        exit "$code"
+    else
+    	echo "ssh command failed. Check $USER publickey in root's authorized_keys."
+        exit 250
+    fi
+fi
+
+## this function accepts only a single parameter, the folder in the project directory
+function publish() {
+    echo "PUBLISH $1"
+    if rsync --delete -avz -L -r -e "ssh -A $scuser@$schost ssh" "$publishdir/$1/" "root@$container:$publishdir/$1"
+    then
+    	echo SUCCESS
+        echo ''
+    else
+    	echo FAILED
+    fi
+}

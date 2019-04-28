@@ -60,7 +60,7 @@ if (!ß.debug_namespace)
     };
 
 
-// @DOC To use the `ß` namespace in files outside of the framework, we export it in es5 and es6 formats. 
+// @DOC To use the `ß` namespace in files outside of the framework, we export it in es5 and es6 formats. Arrays dont work, but objects do.
 if (!ß.write_namespace_files)
     ß.write_namespace_files = function() {
       
@@ -76,8 +76,8 @@ if (!ß.write_namespace_files)
 
         for (let i in ß) {
             if (i === i.toUpperCase()) {
-                let it = util.inspect(ß[i], { showHidden: true, depth: Infinity });
-                              	
+                let it = util.inspect(ß[i], { showHidden: true, depth: Infinity, customInspect: false });
+                                            	
                 if (typeof ß[i] === 'string' || typeof ß[i] === 'number' || typeof ß[i] === 'boolean') bashdata += "BOILERPLATE_" + i + "='" + ß[i] + "';\n";
               
                 es5_data += "_ß." + i + " = " + it + ";\n";

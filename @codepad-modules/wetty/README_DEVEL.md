@@ -26,4 +26,7 @@ Example:
 }
 ```
 
-After updating nan in pty.js use "npm install --unsafe-perm" if building as root.
+After updating nan in pty.js use "npm install --unsafe-perm" if building as root. ...
+
+The final fix is to make a pty module, that can use pty.js or node-pty.
+The pty module has support for runtime node-gyp built nan, so it works across node updates.

@@ -58,14 +58,14 @@ function process(dir, p) {
 }
 
 function is_modulefolder(name) {
-  return name.indexOf("-modules") >= 0 || name === "modules";
+    return name.indexOf("-modules") >= 0 || name === "modules";
 }
 
 // @DOC `ß.load_modules(modules_root)` will load all modules located in that directory. loaded modules will be added to 'ß.modules' and processed at all further steps of the boilerplate-loader
 // construct the modules object
 if (!ß.load_modules)
     ß.load_modules = function(modules_root) {
-        if (!fs.isDirSync(modules_root)) return ß.error('ß.load_modules(' + modules_root + ") is not a directory!");
+        if (!fs.isDirSync(modules_root)) return ß.error("ß.load_modules(" + modules_root + ") is not a directory!");
         // var modules = ß.modules;
         // process modules in CWD
         var cwd = fs.readdirSync(modules_root);
@@ -146,10 +146,32 @@ if (!ß.get_module_path)
         return undefined;
     };
 
+// `ß.get_path()` Get a path from modules subset eg. `ß.modules`.
+if (!ß.get_path)
+    ß.get_path = function(path, modules) {
+        // get file or folder from the modules subset
+        if (!modules) modules = ß.modules;
+        if (!path) path = "";
+
+        for (let module in modules) {
+            for (let me in ß.modules[module]) {
+                if (ß.modules[module][me]) if (fs.existsSync(me + "/" + path)) return me + "/" + path;
+            }
+        }
+      
+        for (let module in modules) {
+            for (let me in ß.modules[module]) {
+                if (!ß.modules[module][me]) if (fs.existsSync(me + "/" + path)) return me + "/" + path;
+            }
+        }
+
+        return undefined;
+    };
+
 if (!ß.get_modulefolder_name)
     ß.get_modulefolder_name = function(path) {
-		let name = ß.path.basename(ß.path.dirname(path));
-      	if (is_modulefolder(name)) return name;
+        let name = ß.path.basename(ß.path.dirname(path));
+        if (is_modulefolder(name)) return name;
         return undefined;
     };
 

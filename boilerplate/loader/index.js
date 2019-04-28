@@ -4,6 +4,8 @@ if (!ß.cli_commands) ß.cli_commands = [];
 
 // load the loader libs
 try {
+    require("./es2017.js");
+  
     require("./fs.js");
     require("./node_modules.js");
     require("./init.js");
