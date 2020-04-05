@@ -68,7 +68,7 @@ function link_code(str) {
     let sub = str.substring(ix);
     let suba = sub.split(":");
     let file = suba[0];
-  	if (!file) return str;
+    if (!file) return str;
     let line = suba[1];
     if (!line) return str;
     //var char = a[2].split(')')[0] || 0;
@@ -104,17 +104,87 @@ process.on("uncaughtException", err => {
     process.exit(100);
 });
 
-/* @DOC
-### Global logging  `ł` and `Ł` functions to be used during development
-Place temporary `console.log()` functions with short special characters, they can be tracked down within the project.  
-`ł()` is an alias for a simple `console.log`, but is based on the pre-defined logger, thus can be redirected to a different file.  
-`Ł()` is an enhanced `console.log` that prints it's arguments in seperate lines, and indicates when and where it has been called from. 
-Especially `Ł()` is very useful while development, to analize objects and variables at breakpoints. However, production-ready code should not contain these logging helpers.
-*/
+// based on https://stackoverflow.com/questions/23808928/javascript-elegant-way-to-check-nested-object-properties-for-null-undefined
+// @DOC leadnull is a superglobal function. Usage: `ł(obj, 'foo.bar')`
 
-global.ł = function() {
-    ß.logger.log(...arguments);
-};
+/* @DOC 
+```
+
+// Demonstration of the leadnull ł function
+
+var a = {};
+a.b = {};
+a.b.c = {};
+a.b.c.d = {};
+
+a.b.c.d.value = "Hello ł";
+
+let test1 = ł(a, "b.c.d.value");
+let test2 = ł(a, "b.x.d.value");
+
+let a3 = "String";
+let bx = false;
+let test3 = ł(a3, "b.x.d.value");
+let test4 = ł(a, bx);
+
+Ł(a.b.c.d.value, test1, test2, test3, test4);
+
+/* returns
+
+┠─ Hello ł   // correct access of nested objects
+┠─ Hello ł   // access the correct object via ł
+┠─ undefined // access an undefined object at ł
+┠─ null      // wrong first argument
+┠─ null      // wrong second argument
+
+Wrong use of ł, first argument is not an object in at Object.<anonymous> (/srv/codepad-project/demo.js:33:13)
+Wrong use of ł, second argument is not a string in at Object.<anonymous> (/srv/codepad-project/demo.js:34:13)
+
+```
+*/
+if (ß.DEBUG) {
+    global.ł = function(obj, key) {
+        if (typeof obj !== "object") {
+            var stack1 = new Error().stack;
+            var from1 = link_code(stack1.split("\n")[2]);
+            ß.logger.log("Wrong use of ł, first argument is not an object", from1);
+            return null;
+        }
+        if (typeof key !== "string") {
+            var stack2 = new Error().stack;
+            var from2 = link_code(stack2.split("\n")[2]);
+            ß.logger.log("Wrong use of ł, second argument is not a string in", from2);
+            return null;
+        }
+        if (typeof key !== "string") return null;
+        return key.split(".").reduce(function(o, x) {
+            return typeof o == "undefined" || o === null ? o : o[x];
+        }, obj);
+    };
+} else {
+    global.ł = function(obj, key) {
+        if (typeof obj !== "object") {
+            ß.logger.log("Wrong use of ł, first argument is not an object");
+            return null;
+        }
+        if (typeof key !== "string") {
+            ß.logger.log("Wrong use of ł, second argument is not a string");
+            return null;
+        }
+        if (typeof key !== "string") return null;
+        return key.split(".").reduce(function(o, x) {
+            Ł(o, x);
+            return typeof o == "undefined" || o === null ? o : o[x];
+        }, obj);
+    };
+}
+
+/* @DOC
+### Superglobal Logging `Ł` function to be used during development
+Place temporary `console.log()`-like function with short special character, they can be tracked down easyly within the project.  
+`Ł()` is an enhanced `console.log` that prints it's arguments in seperate lines, and indicates when and where it has been called from. 
+It is very useful while development, to analize objects and variables in the code. Production-ready code should not contain this logging helper.
+*/
 
 global.Ł = function() {
     var stack = new Error().stack;
@@ -131,8 +201,8 @@ global.Ł = function() {
 /* @DOC 
 ### Global  determinator `đ` and the detonator `Đ` error-handlers.
 Should the determinator function `đ(err);` recieve an error as argument, it will log the error, then execution will continiue.
-On the other hand the detonator `Đ(err);` will log the error and `thow`, thus exit the current process.
-Both functions can be part of production-ready code.
+On the other hand the detonator `Đ(err);` will log the error and exit the current process.
+Both functions can be part of production-ready code, but encountering them indicates an error.
 */
 
 // The determinator displays the error in the logs, but execution will continue, ...
@@ -150,7 +220,7 @@ global.đ = function() {
         var err = arguments[0];
         logger.error("┏━━━ đeterminate ", ß.now());
         if (err.stack) logger.error(with_links(err.stack));
-        logger.error("┠─  ", err.message);
+        logger.error("┠─  ", err);
         logger.error("┗━━━━", from);
     } else {
         // this part is not so well defined yet, we assume that the detonator function only recieves one argument
@@ -178,11 +248,13 @@ global.Đ = function() {
         var err = arguments[0];
         logger.error("┏━━━ ĐETONATE", ß.now());
         if (err.stack) logger.error(with_links(err.stack));
-        logger.error("┠─  ", err.message);
+        logger.error("┠─  ", err);
         logger.error("┠─────── ", stack);
         logger.error("┗━━━━", from);
-        let detonator_error = err;
-        throw detonator_error;
+        //let detonator_error = err;
+        //throw detonator_error;
+        console.log("Đ EXIT ERROR 101");
+        process.exit(101);
     } else {
         // this part is not so well defined yet, we assume that the detonator function only recieves one argument
         logger.error("┏━━━ ĐETONATE(arguments) ", ß.now());
@@ -190,8 +262,8 @@ global.Đ = function() {
             logger.error("┠─  ", arguments[arg]);
         }
         logger.error("┗━━━━", from);
-        let detonator_error = new Error("Đetonator function.");
-        throw detonator_error;
+        console.log("Đ EXIT ERROR 102");
+        process.exit(102);
     }
 };
 

@@ -10,7 +10,7 @@ Underlying directories will be created.
 
 // an alternative to fs.ensureSymlinkSync(srcpath, dstpath, [type])
 ß.link = function(source, target) {
-    // skip if source or destination exist
+    // skip if no source or destination exist
     if (!ß.fs.existsSync(source)) return; 
     if (ß.fs.existsSync(target)) return;
   

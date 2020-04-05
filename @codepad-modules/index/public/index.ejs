@@ -24,13 +24,21 @@
 <body ng-app="app" class="cm-s-<%- theme %> CodeMirror outerbody">
 
     <div id="topbar">
-        <button title="files" class="btn" ng-click="files()"><i class="fa fa-folder"></i></button>
+        <!--button title="files" class="btn" ng-click="files()"><i class="fa fa-folder"></i></button-->
+        <button title="logs" class="btn" ng-click="$root.pad='/logs'"><i class="fa fa-home"></i></button>
         <button title="shell" class="btn" ng-click="shell()"><i class="fa fa-terminal"></i></button>
         <button title="beautify F2" class="btn" ng-click="beautify()"><i class="fa fa-code"></i></button>
         <button title="push" class="btn" ng-click="push()"><i class="fa fa-download"></i></button>
         <button title="logs" class="btn" ng-click="logs()"><i class="fa fa-list"></i></button>
         <button title="play" class="btn" ng-click="play()"><i class="fa fa-play"></i></button>
-        <button title="refresh" class="btn" ng-click="plug_and_play()"><i class="fa fa-refresh"></i></button>
+      	|
+        <button title="beautify > push > logs > play" class="btn" ng-click="plug_and_play()"><i class="fa fa-refresh"></i></button>
+      	<!-- custom buttons can be added here -->
+        |
+        <!-- hot reload is on port 9000 on our systems, you may change it add additional buttons, etc. -->
+        <button title="hot-reload:9000" class="btn" ng-click="live()"><i class="fa fa-fire"></i></button>
+        <button title="restart server process" class="btn" ng-click="restart_server()"><i class="fa fa-server"></i></button>
+        <!-- -->
         <text ng-if="status || pad !== '/logs'" class="status_red_{{status_red}}" id="status">{{status || pad.substring(2) }}</text>
         <form id="search">
             <input id="right_search" ng-model="$root.search_input" ng-submit="search()" placeholder="Search regexp .." autocomplete="off">
@@ -56,9 +64,9 @@
 </script>
 
     <div id="logbar">
-        <text ng-if="notice" class="" id="notice" ng-click="$root.pad='/p'+$root.ntc.filepath">{{notice}}</text>
-        <text ng-if="logline" class="" id="logline" ng-bind-html="logline" ng-click="$root.pad='/logs'">{{logline}}</text>
-
+          <button title="refresh" ng-disabled="!$root.ntc.filepath" class="btn" ng-click="$root.pad='/p'+$root.ntc.filepath"><i class="fa fa-exchange"></i></button> | 
+          <text ng-if="notice" class="" id="notice" ng-click="$root.pad='/p'+$root.ntc.filepath">{{notice}}</text>
+          <text ng-if="logline" class="" id="logline" ng-bind-html="logline" ng-click="$root.pad='/logs'">{{logline}}</text>
     </div>
 
 </body>

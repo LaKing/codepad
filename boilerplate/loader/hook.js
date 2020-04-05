@@ -75,7 +75,8 @@ if (!ß.run_hook)
             for (var h in ß.hooks[hook]) {
                 try {
                     const a = [...arguments].splice(1);
-                    ß.hooks[hook][h](...a);
+                    if (typeof ß.hooks[hook][h] === 'function') ß.hooks[hook][h](...a);
+                    else console.log(ß.hooks[hook][h] + " is not a function. Hook:" + hook + " h:" +h);
                 } catch (error) {
                     Đ(error);
                     throw error;

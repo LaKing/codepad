@@ -35,8 +35,16 @@ then
 fi
 
 ## this function accepts only a single parameter, the folder in the project directory
+## all other variables are global in the publish script
 function publish() {
     echo "PUBLISH $1"
+    echo 'rsync --delete -avz -L -r -e "ssh -A '"$scuser@$schost"' ssh" "'"$publishdir/$1/"'" "root@'"$container:$publishdir/$1"'"'
+    
+    if ! ssh $scuser@$schost "ssh root@$container mkdir -p $publishdir"
+    then
+    	echo "Failed to create $publishdir in $container"
+    fi
+    
     if rsync --delete -avz -L -r -e "ssh -A $scuser@$schost ssh" "$publishdir/$1/" "root@$container:$publishdir/$1"
     then
     	echo SUCCESS

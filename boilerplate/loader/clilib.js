@@ -73,6 +73,8 @@ if (!ß.cli_uplink)
         const app_list = ß.get_file_list_by_filter(ß.MLD, is_module_list_json);
 
         if (app_list.length > 0) ß.cli_commands.push("uplink [ " + app_list.join(" | ") + " ]");
+      
+      	// TODO add a list of all boilerplate modules merged from all module folders
 
         if (ß.CMD === "uplink") {
             var found = false;

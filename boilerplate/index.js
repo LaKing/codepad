@@ -1,4 +1,11 @@
-/*ßoilerplate */
+/* @DOC
+
+The ß is
+Unicode Character “ß” (U+00DF)
+ASCII 225
+
+On nix, Ctrl-Shift U00DF
+*/
 
 if (!global.ß) global.ß = {};
 
@@ -11,12 +18,17 @@ console.log("Starting ßoilerplate on node", process.versions.node, process.plat
 
 require('./loader');
 
+//ß.debug("- " + Object.keys(ß).length + " ß.keys defined");
+
+ß.boot();
+
 ß.load('init');
 ß.load('server');
 ß.load('start');
 
 // background subprocesses may be defined in fork directories
-ß.fork("fork");
+if (process.argv.indexOf('--restart-server') >= 0) ß.ntc("Skipping forks, restart-server");
+else ß.fork("fork");
 
 // application started.
 if (ß.DEBUG) {

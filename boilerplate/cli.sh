@@ -1,4 +1,5 @@
-  #!/bin/bash
+#!/bin/bash
+
 echo "Started in $PWD"
 if [[ ! -f /bin/node ]]
 then
@@ -8,7 +9,7 @@ fi
 
 if [[ $UID != 0 ]]
 then
-	echo "You should be root."
+	echo "You should be root to operate the boilerplate CLI."
 	exit
 fi
 
@@ -18,7 +19,8 @@ then
 	cd "$(dirname "$(dirname "$(readlink /bin/ß)")")"
 fi
 
-readonly NAME="$(basename "$PWD")"
+NAME="$(basename "$PWD")"
+
 echo "NAME: $NAME"
 
 VAR="/var/$NAME"
@@ -70,16 +72,55 @@ fi
 
 if [[ $1 == install ]]
 then
-	echo "# systemd-run --unit $NAME --scope /bin/node --preserve-symlinks boilerplate/cli.js $*"
-	systemd-run --unit "$NAME" --scope /bin/node --preserve-symlinks boilerplate/cli.js $*
-else
-	echo "# systemd-run --unit $NAME --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $*"
-	systemd-run --unit "$NAME" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $*
+	## install needs root privileges
+	echo "# systemd-run --unit $NAME --scope /bin/node --preserve-symlinks boilerplate/cli.js $@"
+	systemd-run --unit "$NAME" --scope /bin/node --preserve-symlinks boilerplate/cli.js $@
+    exit
 fi
+
+if [[ $1 == start ]] || [[ $1 == debug ]] || [[ $1 == uplink ]]
+then
+	## no privileges needed, but running in the NAME scope
+	echo "# systemd-run --unit $NAME --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"
+	systemd-run --unit "$NAME" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
+    exit
+fi
+
+if [[ $1 == lib ]] && [[ $2 ]]
+then
+	## no privileges needed, and running in the NAME-cli scope that should terminate automatically
+	echo "# systemd-run --unit $NAME-cli --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"
+	systemd-run --unit "$NAME-cli" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
+    exit
+fi
+
+
+if [[ $1 == restart-server ]]
+then
+	if [[ -f $VAR/project.pid ]]
+    then
+    	pid="$(cat $VAR/project.pid)"
+        echo "kill -SIGUSR1 $pid"
+        if kill -SIGUSR1 "$pid"
+        then
+        	echo OK
+            exit
+        fi
+    fi
+fi
+
+
+## no privileges needed, and running in the NAME-cli scope that should terminate automatically
+echo "# systemd-run --unit $NAME-cli --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"
+systemd-run --unit "$NAME-cli" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
+
+
 
 if systemctl --quiet is-active "$NAME.scope"
 then
 	sleep 1
     echo "systemctl status $NAME.scope"
 	systemctl status "$NAME.scope"
+else
+	echo "$NAME.scope inactive"
 fi

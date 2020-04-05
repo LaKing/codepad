@@ -1,9 +1,11 @@
 <div class="children">
     <div ng-repeat="p in keys(files) | foldersByPath:path | orderBy">
         <div class="folder button" ng-click="open=!open"><i class="fa fa-folder"></i> {{p}}</div>
-        <treeview files="files" path="path + p" ng-if="open"></treeview>
+        <treeview files="files" path="path + p" ng-if="open || $root.pad_at(path+p)"></treeview>
     </div>
     <div ng-repeat="p in keys(files) | filesByPath:path | orderBy:'+':false:nixCase" class="file button {{'/p' + path + '/' + p === $root.pad ? 'selected' : ''}}">
-        <a class="fileicon" href="/p{{path}}/{{p}}"><i class="fa fa-file{{ files[path + '/' + p].sl ? '-text' : ''}}"></i></a><a ng-mousedown="$root.click_pad($event, path, p);"> {{p}} </a> <i class="usernames underline-{{get_underline(s)}}" ng-repeat="(u,s) in files[path + '/' + p].at">{{u}} </i>
+        <a class="fileicon" href="/p{{path}}/{{p}}"><i class="fa fa-file{{ files[path + '/' + p].sl ? '-text' : ''}}"></i></a
+        ><a ng-mousedown="$root.click_pad($event, path, p);"> {{p}} </a>
+        <i class="usernames underline-{{get_underline(s)}}" ng-repeat="(u,s) in files[path + '/' + p].at">{{u}} </i>
     </div>
 </div>

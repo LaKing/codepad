@@ -123,7 +123,7 @@ function express_search(req, res) {
         env: process.env
     };
     //grep --exclude-dir={node_modules,.git,log} -inrow -E ".{0,100}$arg.{0,100}"
-    console.log('search: /bin/grep --exclude-dir=.git --exclude-dir=log --exclude-dir=node_modules --exclude-dir=var -InRowE ".{0,100}' + search_term + '.{0,100}"');
+    console.log('search: /bin/grep --exclude-dir=.git --exclude-dir=log --exclude-dir=node_modules --exclude-dir=var --exclude-dir=cert -InRowE ".{0,100}' + search_term + '.{0,100}"');
     //const x = spawn('/bin/grep', ['--exclude-dir={.git,log}', '-nrowE', '".{0,100}' + search_term + '.{0,100}"'], options);
     
   // grep switches
@@ -141,7 +141,7 @@ function express_search(req, res) {
     
   */
 
-    const x = spawn('/bin/grep', ['--exclude-dir=.git', '--exclude-dir=log', '--exclude-dir=node_modules', '--exclude-dir=var', '-InRowE', '.{0,100}' + search_term + '.{0,100}'], options);
+    const x = spawn('/bin/grep', ['--exclude-dir=.git', '--exclude-dir=log', '--exclude-dir=node_modules', '--exclude-dir=var', '--exclude-dir=cert', '-InRowE', '.{0,100}' + search_term + '.{0,100}'], options);
 
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);

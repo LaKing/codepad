@@ -120,8 +120,18 @@ function list_files(module, dir, bmf) {
     }
 }
 
+// we will log our actions
 var log = "";
 const logfile = ß.VAR + "/debug/exec.log";
+
+// we will also create a shell file, to have a way to exec commands by bash
+var sh = "";
+const shfile = ß.VAR + "/debug/exec.sh";
+
+function shreg(msg) {
+    //ß.debug(msg);
+    sh += msg + "\n";
+}
 
 function reg(msg) {
     //ß.debug(msg);
@@ -162,7 +172,9 @@ if (!ß.exec)
 
             // that object has values populated, selection complete so do the job now
             for (let me in that) {
-                ß.bash_file(that[me], module + "-" + bmf);
+                //ß.bash_file(that[me], module + "-" + bmf);
+                let dir = ß.path.dirname(that[me]);//.split('/').pop().join();
+                shreg("cd " + dir + " && bash " + me);
                 reg(module + " " + bmf + " " + me + " is " + that[me]);
             }
         }
@@ -170,5 +182,9 @@ if (!ß.exec)
         fs.writeFileSync(logfile, log);
         ß.fs.chownSync(logfile, ß.UID, ß.GID);
 
+      
+        fs.writeFileSync(shfile, sh);
+        ß.fs.chownSync(shfile, ß.UID, ß.GID);
+      
         //console.log('Exec ' + bmf + ' complete');
     };

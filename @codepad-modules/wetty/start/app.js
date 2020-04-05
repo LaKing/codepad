@@ -29,17 +29,18 @@ var app = ß.app;
 ß.wio.on("connection", function(socket) {
     var request = socket.request;
 
+    if (!ß.pty) return ß.err("No ß.pty");
+
+    if (process.getuid() == 0) return ß.err("wetty shell: no terminal allowed when started as root");
+
     var term;
-    if (process.getuid() == 0) {
-        console.log(" - shell: no terminal for root");
-    } else {
-        //console.log('ssh ' + sshuser + '@' + sshhost + ' -p ' + sshport + ' -o  PreferredAuthentications=' + sshauth + ' -i ' + id_file);
-        term = ß.pty.spawn("ssh", [sshuser + "@" + sshhost, "-p", sshport, "-o", "PreferredAuthentications=" + sshauth, "-i", id_file], {
-            name: "xterm-256color",
-            cols: 80,
-            rows: 30
-        });
-    }
+    //console.log('ssh ' + sshuser + '@' + sshhost + ' -p ' + sshport + ' -o  PreferredAuthentications=' + sshauth + ' -i ' + id_file);
+    term = ß.pty.spawn("ssh", [sshuser + "@" + sshhost, "-p", sshport, "-o", "PreferredAuthentications=" + sshauth, "-i", id_file], {
+        name: "xterm-256color",
+        cols: 80,
+        rows: 30
+    });
+
     //console.log((new Date()) + " PID=" + term.pid + " STARTED on behalf of user=" + sshuser);
     term.on("data", function(data) {
         socket.emit("output", data);

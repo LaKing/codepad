@@ -56,7 +56,7 @@ else
         CWD="$BOILERPLATE_CWD"
         BPD="$BOILERPLATE_BPD"
     else
-        echo "Boilerplate variables could not be loaded."
+        echo "Boilerplate variables could not be loaded, guessing defaults, should be fine."
     fi
 fi
 
@@ -105,8 +105,6 @@ if [[ ! -d $VAR ]]
 then 
     echo "Project VAR Working Directory $VAR not found. Exiting."
     exit 77
-else
-    echo var ok
 fi
 
 if [[ ! -d $CWD ]]
@@ -121,7 +119,7 @@ then
     exit 79
 fi
 
-## the push process is a singleton, at list at the first part
+## the push process is a singleton, at least at the first part
 if [[ -f $push_lock ]] 
 then
     echo "push_lock found. Please remove $push_lock"
@@ -134,7 +132,7 @@ echo "$NOW" > "$push_lock"
 echo ''  > "$project_log"
 
 function push_unlock() {
-    echo push_unlock
+    echo @push_unlock
     rm -fr "$push_lock"
 }
 
@@ -157,7 +155,7 @@ function run() {
 
 ## the procedure to make sure we terminate the process
 function terminate_process_service() {
-    echo terminate_process_service
+    echo @terminate_process_service
 
     systemctl is-active "$unit"
 
@@ -195,7 +193,7 @@ function terminate_process_service() {
 }
 
 function start_server() {
-    echo start_server
+    echo @start_server
     if [ ! -f "$CWD/server.js" ]
     then
         log "$CWD/server.js not found"
@@ -236,7 +234,7 @@ function start_server() {
 
 ## with every push process, we use this script to increment the version variable
 function increment_version() {
-    echo increment_version
+    echo @increment_version
     cd "$CWD"
     if ! [ -f "$CWD/version" ]
     then
@@ -253,7 +251,7 @@ function increment_version() {
 
 ## We can check if our main pid crashed or not. Our web app should be running ...
 function check_process() {
-  echo check_process
+  echo @check_process
   systemctl status "$unit" --no-pager
   if systemctl is-active "$unit" > /dev/null
   then
@@ -277,6 +275,7 @@ function check_process() {
 
 ## If there are files in the await folder, we shall wait before we compelete the push process. 
 function await_processes() {
+    echo -e '.\c'
     local pidfile pid
     for pidfile in "$VAR"/await/*.pid
     do
@@ -297,32 +296,34 @@ function await_processes() {
 }
 
 function await_processes_countdown() {
+	echo @await_processes_countdown
     local count
-    count=100
+    count=600
     while [ $count -ge 1 ]
     do       
         ((count--))
     	await_processes
     done
+    echo '@online'
 }
 
 ## in case we have some custom pushfiles, process them with this function
 ## eg. git-push.sh
 function process_pushfiles() {
-    echo process_pushfiles
+    echo @process_pushfiles
     for f in $CWD/*-push.sh
     do
         if [[ -e $f ]]
         then
-            log "source $(basename "$f")" 
-            source "$f"
+            log "$(basename "$f")" 
+            /bin/bash "$f" >> "$project_log"
         fi
     done
 }
 
 ## we assume that errors with capital letters are the ones we need to be notified about.
 function show_errors() {
-    echo "show_errors $HOST"
+    echo "@show_errors $HOST"
 
     local uri
     for f in "$VAR"/debug/*.stdout.log
@@ -381,5 +382,5 @@ await_processes_countdown
 show_errors
 check_process
 end="$(date +%s)"
-log "READY ($error_count errors, $((end-start)) sec)" 
-exit 0
+log "PUSH $NAME READY ($error_count errors, $((end-start)) sec)" 
+

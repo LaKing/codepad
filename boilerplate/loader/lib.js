@@ -34,11 +34,12 @@ function get_module_lib(module, dir) {
             if (!ß.lib[module][name]) {
                 reg("+ ß.lib." + module + "." + name + " definition from " + path + "/" + files[i]);
                 ß.lib[module][name] = require(path + "/" + files[i]);
+              /*
                 if (ß.lib[name]) reg("! ß.lib." + name + " already definded. Cannot add alias ß.lib." + module + "." + name);
                 if (!ß.lib[name]) {
                     ß.lib[name] = ß.lib[module][name];
                     reg("= ß.lib." + name + " added as alias to ß.lib-namespace from ß.lib." + module + "." + name);
-                }
+                }*/
             }
         }
     }

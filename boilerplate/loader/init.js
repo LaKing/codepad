@@ -6,7 +6,6 @@
 `ß.MRD` is the module root directory  
 */
 
-
 if (!ß.DEBUG) {
     ß.DEBUG = false;
     if (process.argv[2] === "debug") {
@@ -56,9 +55,11 @@ console.log(" - ß.VAR", ß.VAR);
 
 // Global node modules directory
 if (!ß.GND) ß.GND = process.config.variables.node_prefix + "/lib/node_modules/";
-if (!ß.HOSTNAME) ß.HOSTNAME = require("os").hostname();
-// hostname should be FQDN, if not, well, pre-set this value, or I assume its one of my containers .)
-if (ß.HOSTNAME.indexOf('.') < 1) ß.HOSTNAME += '.d250.hu'; 
+if (!ß.HOSTNAME) {
+    ß.HOSTNAME = require("os").hostname();
+    // hostname should be FQDN, if not, well, pre-set this value, or I assume its one of my containers .)
+    if (ß.HOSTNAME.indexOf(".") < 1) ß.HOSTNAME += ".d250.hu";
+}
 
 // Modules Root Directory
 if (!ß.MRD) ß.MRD = ß.CWD;
@@ -68,8 +69,11 @@ else {
 }
 // Configs dir
 if (!ß.CFG) ß.CFG = ß.CWD + "/config";
-ß.fs.mkdirpSync(ß.CFG);
-ß.fs.chownSync(ß.CFG, ß.UID, ß.GID);
+
+if (!ß.fs.existsSync(ß.CFG)) {
+    ß.fs.mkdirpSync(ß.CFG);
+    ß.fs.chownSync(ß.CFG, ß.UID, ß.GID);
+}
 
 // this object can have globally available values attached
 if (!ß.SETTINGS) ß.SETTINGS = {};

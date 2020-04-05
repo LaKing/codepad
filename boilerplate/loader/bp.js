@@ -59,31 +59,50 @@ if (!ß.debug_namespace)
         console.log("- ß has " + Object.keys(ß).length + " keys");
     };
 
-
 // @DOC To use the `ß` namespace in files outside of the framework, we export it in es5 and es6 formats. Arrays dont work, but objects do.
 if (!ß.write_namespace_files)
     ß.write_namespace_files = function() {
-      
+
         // make all ß attached values available in the following files:
         var bashfile = ß.VAR + "/boilerplate.sh";
-        var es5_file = ß.VAR + "/ß.js";
-        var es6_file = ß.VAR + "/boilerplate.js";
-        
+        var es5_file = ß.VAR + "/boilerplate.es5.js";
+        var es6_file = ß.VAR + "/boilerplate.es6.js";
+
         // use local versions for reconstruction
         var bashdata = "#!/bin/bash\n\n";
         var es5_data = "let _ß = {};\n\n";
         var es6_data = "let _ß = {};\n\n";
 
         for (let i in ß) {
+          	// we only exports uppercase constants
+            // @DOC By convention, uppercase variables are considered exportable-constants
             if (i === i.toUpperCase()) {
-                let it = util.inspect(ß[i], { showHidden: true, depth: Infinity, customInspect: false });
-                                            	
-                if (typeof ß[i] === 'string' || typeof ß[i] === 'number' || typeof ß[i] === 'boolean') bashdata += "BOILERPLATE_" + i + "='" + ß[i] + "';\n";
-              
-                es5_data += "_ß." + i + " = " + it + ";\n";
+                // let it be ...
+                let it = ß[i];
+                let it_is = typeof it;
 
-                es6_data += "_ß." + i + " = " + it + ";\n";
-                es6_data += "export const " + i + " =  " + it + ";\n\n";
+                // is it a primitive value?
+                if (it_is === "number" || it_is === "boolean") {
+                    bashdata += "BOILERPLATE_" + i + "='" + it + "';\n";
+                    es5_data += "_ß." + i + " = " + it + ";\n";
+                    es6_data += "_ß." + i + " = " + it + ";\n";
+                    //es6_data += "export const " + i + " =  " + it + ";\n\n";
+                }
+                if (it_is === "string") {
+                    bashdata += "BOILERPLATE_" + i + "='" + it + "';\n";
+                    es5_data += "_ß." + i + " = '" + it + "';\n";
+                    es6_data += "_ß." + i + " = '" + it + "';\n";
+                    //es6_data += "export const " + i + " = '" + it + "';\n\n";
+                }
+                if (it_is === "object") {
+                    it = JSON.stringify(ß[i]);
+
+                    es5_data += "_ß." + i + " = " + it + ";\n";
+                    es6_data += "_ß." + i + " = " + it + ";\n";
+                    //es6_data += "export const " + i + " =  " + it + ";\n\n";
+                }
+              
+                // functions are not exported (yet?)
             }
         }
 
@@ -95,7 +114,7 @@ if (!ß.write_namespace_files)
 
         ß.fs.writeFileSync(bashfile, bashdata);
         ß.fs.chownSync(bashfile, ß.UID, ß.GID);
-      
+
         ß.fs.writeFileSync(es5_file, es5_data);
         ß.fs.chownSync(es5_file, ß.UID, ß.GID);
 
