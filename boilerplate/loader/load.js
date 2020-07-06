@@ -31,7 +31,7 @@ function list_files(module, dir, bmf) {
 }
 
 var log = "";
-const logfile = ß.VAR + "/debug/load.log";
+const logfile = ß.BPLOG + "/load.log";
 
 function reg(msg) {
     //ß.debug(msg);
@@ -62,6 +62,8 @@ if (!ß.load)
 
         for (let module in ß.modules) {
             let that = {};
+        
+          	//ß.debug("- Load " + bmf + " " + module);
 
             // priority
             for (let dir in ß.modules[module]) {

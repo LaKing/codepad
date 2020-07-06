@@ -2,7 +2,7 @@
 
 module.exports = function(file, search, replace, callback) {
 
-    var fullpath = ß.projectdir + file;
+    var fullpath = ß.PROJECTDIR + file;
 
     ß.fs.readFile(fullpath, 'utf-8', function(err, data) {
         if (err) {
@@ -23,8 +23,11 @@ module.exports = function(file, search, replace, callback) {
             }
 
             if (ß.projectfiles[file])
-                if (ß.projectfiles[file].editor) ß.projectfiles[file].editor.updateDocServerOperation(that);
+                if (ß.projectfiles[file].editor) {
+                  ß.projectfiles[file].editor.updateDocServerOperation(that);
+                  ß.ntc("replace in ", file);
 
+                }
             return callback(null, 'OK');
         });
     });

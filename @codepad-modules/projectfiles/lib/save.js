@@ -3,7 +3,7 @@ module.exports = function(projectfile, content) {
     if (!projectfile) return console.log("ERROR undefined filename");
 
     if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
-    if (!ß.projectfiles[projectfile].realpath) ß.projectfiles[projectfile].realpath = ß.projectdir + projectfile;
+    if (!ß.projectfiles[projectfile].realpath) ß.projectfiles[projectfile].realpath = ß.PROJECTDIR + projectfile;
     const realpath = ß.projectfiles[projectfile].realpath;
 
     // timestamp write operations

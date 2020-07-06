@@ -26,8 +26,8 @@ if (!ß.spawn_command)
         if (!name) name = command.split(" ")[0];
         if (!args) args = [];
 
-        const out = fs.openSync(ß.VAR + "/debug/spawn-" + name + ".stdout.log", "a");
-        const err = fs.openSync(ß.VAR + "/debug/spawn-" + name + ".stderr.log", "a");
+        const out = fs.openSync(ß.BPLOG + "/spawn-" + name + ".stdout.log", "a");
+        const err = fs.openSync(ß.BPLOG + "/spawn-" + name + ".stderr.log", "a");
 
         if (!options) options = {};
 
@@ -70,8 +70,8 @@ if (!ß.bash_file)
         var dir = dira.join("/");
         var filename = file.split("/").pop();
 
-        const out = fs.openSync(ß.VAR + "/debug/bash-" + name + ".stdout.log", "a");
-        const err = fs.openSync(ß.VAR + "/debug/bash-" + name + ".stderr.log", "a");
+        const out = fs.openSync(ß.BPLOG + "/bash-" + name + ".stdout.log", "a");
+        const err = fs.openSync(ß.BPLOG + "/bash-" + name + ".stderr.log", "a");
 
         var options = {
             cwd: dir,
@@ -81,7 +81,7 @@ if (!ß.bash_file)
         var child = child_process.spawn("/bin/bash", [file], options);
         console.log("- ", name, "/bin/bash", file, " - pid", child.pid);
         reg(" - " + name + " /bin/bash" + file + " - pid " + child.pid);
-        fs.writeFileSync(ß.VAR + "/debug/bash-" + name + ".pid", child.pid);
+        fs.writeFileSync(ß.BPLOG + "/bash-" + name + ".pid", child.pid);
 
         child.on("error", err => {
             console.log("ERROR on", name, "subprocess. ", err);
@@ -90,7 +90,7 @@ if (!ß.bash_file)
         child.on("close", code => {
             //if (code === 0) console.log('[ OK ]', name);
             if (code !== 0) console.log(name, " - exit with error code", code);
-            fs.unlink(ß.VAR + "/debug/bash-" + name + ".pid");
+            fs.unlink(ß.BPLOG + "/bash-" + name + ".pid");
             delete child.pid;
         });
 

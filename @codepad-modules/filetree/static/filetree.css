@@ -71,6 +71,6 @@ body {
     vertical-align: bottom;
 }
 
-.filetree .underline-false {
+.filetree .underline {
     text-decoration: underline;
 }

@@ -4,7 +4,7 @@ const fs = ß.fs;
 const lib = ß.lib;
 
 var log = '';
-const logfile = ß.VAR + '/debug/serve_files.log';
+const logfile = ß.BPLOG + '/serve_files.log';
 
 function reg(msg) {
     //ß.debug(msg);

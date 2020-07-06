@@ -1,5 +1,5 @@
 /* @DOC 
-## Constants
+## ßoilerplate related constants and variables
 
 `ß.DEBUG` is a boolean constant
 `ß.HOSTNAME` should be the FQDN hostname  
@@ -44,11 +44,15 @@ if (!ß.BUILD_VERSION) {
     else ß.fs.writeFileSync(ß.CWD + "/version", ß.BUILD_VERSION);
 }
 
+// We reset bplog every time.
+if (!ß.BPLOG) ß.BPLOG = ß.CWD + '/boilerplate.log';
+ß.fs.removeSync(ß.BPLOG);
+ß.fs.mkdirpSync(ß.BPLOG);
+ß.fs.chownSync(ß.BPLOG, ß.UID, ß.GID);
+
 // `ß.VAR` has the path for runtime variables eg.: `/var/codepad-project`
 if (!ß.VAR) ß.VAR = ß.CWD + "/var"; //"/var/" + ß.NAME;
-ß.fs.removeSync(ß.VAR + "/debug");
-ß.fs.mkdirpSync(ß.VAR + "/debug");
-//ß.fs.chownSync(ß.VAR + "/debug", ß.UID, ß.GID);
+ß.fs.mkdirpSync(ß.VAR);
 ß.fs.chownSync(ß.VAR, ß.UID, ß.GID);
 process.env.VAR = ß.VAR;
 console.log(" - ß.VAR", ß.VAR);

@@ -211,9 +211,9 @@ function start_server() {
     setcap cap_net_bind_service=+ep /usr/bin/node
     
 
-    
-    echo "systemd-run --unit $NAME --scope --uid=$user --gid=$user /bin/node --preserve-symlinks server.js 2>> $project_log 1>> $project_log &"
-    if systemd-run --unit "$NAME" --scope --uid="$user" --gid="$user" /bin/node --preserve-symlinks server.js 2>> "$project_log" 1>> "$project_log" &
+    ## the host argument is just a comment, so we can see our hostname in the process starter
+    echo "systemd-run --unit $NAME --scope --uid=$user --gid=$user /bin/node --preserve-symlinks server.js $HOST 2>> $project_log 1>> $project_log &"
+    if systemd-run --unit "$NAME" --scope --uid="$user" --gid="$user" /bin/node --preserve-symlinks server.js "$HOST" 2>> "$project_log" 1>> "$project_log" &
     then
     	main_pid="$!"
         echo "systemd-run OK, main pid $main_pid"
@@ -244,7 +244,8 @@ function increment_version() {
     ## current version
     # shellcheck disable=SC2006
     # shellcheck disable=SC2002
-    cv=`cat $CWD/version | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{if(length($NF+1)>length($NF))$(NF-1)++; $NF=sprintf("%0*d", length($NF), ($NF+1)%(10^length($NF))); print}'`
+    ## cv=`cat $CWD/version | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{if(length($NF+1)>length($NF))$(NF-1)++; $NF=sprintf("%0*d", length($NF), ($NF+1)%(10^length($NF))); print}'`
+    cv=`cat $CWD/version | awk -F. -v OFS=. '{$NF++;print}'`
     echo "$cv" > "$CWD/version"
     log "VERSION $cv"
 }
@@ -326,13 +327,13 @@ function show_errors() {
     echo "@show_errors $HOST"
 
     local uri
-    for f in "$VAR"/debug/*.stdout.log
+    for f in "$CWD"/boilerplate.log/*.stdout.log
     do
         if [[ -f $f ]] && grep -i ERROR "$f"
         then
             ## \e = \x1B
             ## \a = \x07
-            uri="https://$HOST:9001/p/var/debug/${f##*/}"
+            uri="https://$HOST:9001/p/boilerplate.log/${f##*/}"
             echo -e '\e[31m error IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'  >> "$project_log"
             echo -e '\e[31m error IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'
             grep -i ERROR "$f" >> "$project_log"
@@ -341,13 +342,13 @@ function show_errors() {
         fi
     done
 
-    for f in "$VAR"/debug/*.stderr.log
+    for f in "$CWD"/boilerplate.log/*.stderr.log
         do
         if [[ -f $f ]] && grep ERROR "$f"
         then
             ## \e = \x1B
             ## \a = \x07
-            uri="https://$HOST:9001/p/var/debug/${f##*/}"
+            uri="https://$HOST:9001/p/boilerplate.log/${f##*/}"
             echo -e '\e[31m ERROR IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'  >> "$project_log"
             echo -e '\e[31m ERROR IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'
             #((error_count++))

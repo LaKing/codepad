@@ -9,6 +9,7 @@ const util = require("util");
 The boilerplate module framework uses a "ß namespace" to store constants and references to functions across it's modules.  
 This namespace is attached to the `ß` primary global variable, visible in the global scope. Frequently used node modules can be attached directly.
 You can pre-create the ß variable in your server.js file before loading the boilerplate, to pre-define functions variables and constants.
+Capital case variables and constants are considered superglobal, as they may exists even in frontend scripts depending on the stack.
 
 A custom `server.js` with debug-mode may look like this.  
 ```
@@ -20,33 +21,13 @@ global.ß = {};
 The entry point to boot the framework is then: `require("./boilerplate");`
 */
 
-// It would be safer to use localized versions of variables. ...
-// we do not do this, but I keep it here for reference
-/*
-// for data-only access
-if (!ß.localize)
-    ß.localize = function() {
-        return JSON.parse(JSON.stringify(ß));
-    };
-
-// for data and functions
-if (!ß.local)
-    ß.local = function() {
-        return Object.assign({}, ß);
-    };
-
-// to use a local version
-//const _ß = ß.local(); // funtions and data
-//const _ß = ß.localize(); // data only
-*/
-
-// @DOC We can debug the namespace by writing a  debug file. `ß.debug_namespace` will by default write the file to  `ß.VAR /debug/boiler-namespace.txt`
+// @DOC We can debug the namespace by writing a  debug file. `ß.debug_namespace` will by default write the file to  `ß.BPLOG/boiler-namespace.txt`
 if (!ß.debug_namespace)
     ß.debug_namespace = function() {
-        ß.fs.mkdirpSync(ß.VAR + "/debug");
-        ß.fs.chownSync(ß.VAR + "/debug", ß.UID, ß.GID);
+        ß.fs.mkdirpSync(ß.BPLOG);
+        ß.fs.chownSync(ß.BPLOG, ß.UID, ß.GID);
 
-        var config_file = ß.VAR + "/debug/boiler-namespace.txt";
+        var config_file = ß.BPLOG + "/boiler-namespace.txt";
         var data = "";
 
         for (let i in ß) {
@@ -62,7 +43,6 @@ if (!ß.debug_namespace)
 // @DOC To use the `ß` namespace in files outside of the framework, we export it in es5 and es6 formats. Arrays dont work, but objects do.
 if (!ß.write_namespace_files)
     ß.write_namespace_files = function() {
-
         // make all ß attached values available in the following files:
         var bashfile = ß.VAR + "/boilerplate.sh";
         var es5_file = ß.VAR + "/boilerplate.es5.js";
@@ -73,8 +53,11 @@ if (!ß.write_namespace_files)
         var es5_data = "let _ß = {};\n\n";
         var es6_data = "let _ß = {};\n\n";
 
+        es5_data += "_ß.logic = {};\n\n";
+        es6_data += "_ß.logic = {};\n\n";
+
         for (let i in ß) {
-          	// we only exports uppercase constants
+            // we only exports uppercase constants
             // @DOC By convention, uppercase variables are considered exportable-constants
             if (i === i.toUpperCase()) {
                 // let it be ...
@@ -101,10 +84,24 @@ if (!ß.write_namespace_files)
                     es6_data += "_ß." + i + " = " + it + ";\n";
                     //es6_data += "export const " + i + " =  " + it + ";\n\n";
                 }
-              
+
                 // functions are not exported (yet?)
             }
         }
+
+        Object.keys(ß.logic_path).forEach(function(module) {
+            if (Object.keys(ß.logic_path[module]).length < 1) return;
+            es5_data += "_ß.logic['" + module + "'] = {};\n\n";
+            es6_data += "_ß.logic['" + module + "'] = {};\n\n";
+            Object.keys(ß.logic_path[module]).forEach(function(logic) {
+              	// full path
+              	es5_data += "_ß.logic['" + module + "']['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
+                es6_data += "_ß.logic['" + module + "']['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
+              	// direct path
+                es5_data += "_ß['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
+                es6_data += "_ß['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
+            });
+        });
 
         // this will allow to access the ß object data
         // import ß from "ß";

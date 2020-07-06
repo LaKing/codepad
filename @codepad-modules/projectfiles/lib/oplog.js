@@ -7,8 +7,5 @@ module.exports = function(username, opname, filepath) {
     data.opname = opname;
     data.filepath = filepath;
 
-    for (let i in ß.io.sockets.sockets) {
-        let socket = ß.io.sockets.sockets[i];
-        if (socket.main_socket) socket.emit("ntc", data);
-    }
+    ß.io.of("/main").emit("ntc", data);
 };

@@ -87,11 +87,11 @@ if (ß.LOGPATH)
 };
 
 // these are system-related functions and do not log into the application log
-ß.message = function error() {
+ß.message = function message() {
     if (colorlog) return console.error($GREEN, ...arguments, $CLEAR);
     return console.log(...arguments);
 };
-ß.notice = function error() {
+ß.notice = function notice() {
     if (colorlog) return console.error($YELLOW, ...arguments, $CLEAR);
     return console.log(...arguments);
 };
@@ -123,7 +123,7 @@ user-services do not appear on unit logs. As a workaround use journalctl without
         .split("/")
         .pop()
         .split(".")[0];
-    ß.fs.writeFile(ß.VAR + "/debug/" + from + ".log", JSON.stringify(...arguments, null, 4), err => {
+    ß.fs.writeFile(ß.BPLOG + "/" + from + ".log", JSON.stringify(...arguments, null, 4), err => {
         đ(err);
     });
 };
@@ -135,7 +135,7 @@ user-services do not appear on unit logs. As a workaround use journalctl without
         .split("/")
         .pop()
         .split(".")[0];
-    ß.fs.writeFile(ß.VAR + "/debug/" + from + ".log", JSON.stringify(...arguments, null, 4), err => {
+    ß.fs.writeFile(ß.BPLOG + "/" + from + ".log", JSON.stringify(...arguments, null, 4), err => {
         đ(err);
     });
 };

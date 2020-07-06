@@ -1,2 +1,6 @@
 /*ßoilerplate */
-ß.lib.projectfiles.updateSync();
+
+// seems unnecessery
+//ß.lib.projectfiles.updateSync();
+
+ß.lib.projectfiles.update();

@@ -11,10 +11,10 @@ const fs = ß.fs;
 
 if (!ß.modules) ß.modules = {};
 
-// @DOC `CWD` itself is a primary module with priority.
-var curr = ß.CWD.split("/").pop();
+// @DOC `CWD` itself is a primary module named ß - it will always come first, with priority.
+var curr = "ß"; //ß.CWD.split("/").pop();
 if (!ß.modules[curr]) ß.modules[curr] = {};
-ß.modules[curr][ß.CWD] = true;
+if (ß.USE_PROJECTROOT !== false) ß.modules[curr][ß.CWD] = true;
 
 function use_name(str) {
     return (
@@ -101,7 +101,7 @@ if (!ß.load_modules)
 // @DOC the `ß.debug_modules()` function will write two files, so that the loaded modules can be debugged.
 if (!ß.debug_modules)
     ß.debug_modules = function() {
-        var debug_file = ß.VAR + "/debug/modules.json";
+        var debug_file = ß.BPLOG + "/modules.json";
         fs.writeFileSync(debug_file, JSON.stringify(ß.modules, null, 4));
         ß.fs.chownSync(debug_file, ß.UID, ß.GID);
 

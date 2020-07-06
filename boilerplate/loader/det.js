@@ -25,8 +25,11 @@ const ANSITAG = OSC + "8" + SEP + SEP;
 
 */
 
-const LINKBASE = ß.EDITOR_LINKBASE || "https://" + HOSTNAME + ":9001/p";
-const PATHBASE = ß.EDITOR_PATHBASE || ß.CWD;
+// The default code editor is codepad (compatible with ep_codepad)
+if (!ß.EDITOR_SITELINK) ß.EDITOR_SITELINK = ß.EDITOR_SITELINK || "https://" + HOSTNAME + ":9001";
+if (!ß.EDITOR_LINKBASE) ß.EDITOR_LINKBASE = ß.EDITOR_LINKBASE || "https://" + HOSTNAME + ":9001/p";
+if (!ß.EDITOR_PATHBASE) ß.EDITOR_PATHBASE = ß.EDITOR_PATHBASE || ß.CWD;
+
 
 if (!ß.ansi_filelink)
     ß.ansi_filelink = function(file, line) {
@@ -34,13 +37,13 @@ if (!ß.ansi_filelink)
 
         // if file is in the CWD filter it out from the link. This assumes that relative links in our IDE resolve
         let relative_file = file;
-        if (file.substring(0, PATHBASE.length) === PATHBASE) relative_file = file.substring(PATHBASE.length);
+        if (file.substring(0, ß.EDITOR_PATHBASE.length) === ß.EDITOR_PATHBASE) relative_file = file.substring(ß.EDITOR_PATHBASE.length);
 
         if (!line) line = 1;
         var link = relative_file + "?line=" + line;
         // skip ansi links in production
         if (ß.MODE === "production") return file + ":" + line;
-        return ß.ansi_link(LINKBASE + link, file + ":" + line);
+        return ß.ansi_link(ß.EDITOR_LINKBASE + link, file + ":" + line);
     };
 
 if (!ß.ansi_link)
@@ -58,6 +61,9 @@ function link_code(str) {
 
     // does the line contain a / for a file?
     var ix = str.indexOf("/");
+
+    // internal modules not need to be linked
+    if (str.charAt(ix - 1) !== '(' && str.charAt(ix - 1) !== ' ') return str;
     // if not, then we return the input untouched
     if (ix < 0) return str;
 
@@ -142,6 +148,7 @@ Wrong use of ł, second argument is not a string in at Object.<anonymous> (/srv/
 
 ```
 */
+
 if (ß.DEBUG) {
     global.ł = function(obj, key) {
         if (typeof obj !== "object") {
@@ -162,6 +169,7 @@ if (ß.DEBUG) {
         }, obj);
     };
 } else {
+  	
     global.ł = function(obj, key) {
         if (typeof obj !== "object") {
             ß.logger.log("Wrong use of ł, first argument is not an object");
@@ -180,23 +188,68 @@ if (ß.DEBUG) {
 }
 
 /* @DOC
-### Superglobal Logging `Ł` function to be used during development
-Place temporary `console.log()`-like function with short special character, they can be tracked down easyly within the project.  
+### Superglobal Logging `Ł` and the more verbose `ŁOG` function to be used during development
+Place temporary `console.log()`-like function with short special character, they can be tracked down with ease within the project.  
 `Ł()` is an enhanced `console.log` that prints it's arguments in seperate lines, and indicates when and where it has been called from. 
 It is very useful while development, to analize objects and variables in the code. Production-ready code should not contain this logging helper.
 */
 
-global.Ł = function() {
+if (ß.MODE !== "production" || ß.DEBUG === true) global.Ł = Ł; 
+else global.Ł = null_function;
+
+function Ł() {
     var stack = new Error().stack;
     var from = link_code(stack.split("\n")[2]);
 
-    ß.logger.log("┏━━━ ŁOG ", ß.now());
+    console.log("┏━━━ Ł", new Date().toLocaleTimeString().split(' ')[0], '#0 typeof:',typeof arguments[0]);
 
-    for (let arg in arguments) {
-        ß.logger.log("┠─  ", arguments[arg]);
-    }
-    ß.logger.log("┗━━━━", from);
-};
+        for (let arg in arguments) {
+           console.log("┠─  ", arguments[arg]);
+        }
+
+    console.log("┗━━━ Ł", from);
+
+    return arguments;
+}
+
+if (ß.MODE !== "production" || ß.DEBUG === true) global.ŁOG = ŁOG; 
+else global.Ł = null_function;
+
+function ŁOG() {
+    var stack = new Error().stack;
+    var from = link_code(stack.split("\n")[2]);
+
+    ß.logger.log("┏━━━ ŁOG ", new Date().toLocaleTimeString().split(' ')[0]);
+
+        for (let arg in arguments) {
+            let value = arguments[arg];
+            let type = typeof arguments[arg];
+            if (value === null) {
+                logger.log("┠── #" + arg, " null");
+                continue;
+            }
+            if (type === "undefined") {
+                logger.log("┠── #" + arg, " undefined");
+                continue;
+            }
+
+            if (type === "object") value = JSON.stringify(value).substring(0, 30) + " ...";
+            else if (value.hasOwnProperty("toString"))
+                value =
+                    value
+                        .toString()
+                        .split("\n")[0]
+                        .substring(0, 30) + " ...";
+            type += " ";
+            logger.log("┠── #" + arg, type.padEnd(9, "─"), value);
+        }
+
+    ß.logger.log("┗━━━ ŁOG", from);
+
+    return arguments;
+}
+
+
 
 /* @DOC 
 ### Global  determinator `đ` and the detonator `Đ` error-handlers.
@@ -206,68 +259,99 @@ Both functions can be part of production-ready code, but encountering them indic
 */
 
 // The determinator displays the error in the logs, but execution will continue, ...
-global.đ = function() {
-    if (arguments.length === 1) {
-        if (arguments[0] === null) return arguments;
-        if (arguments[0] === undefined) return arguments;
-    }
+global.đ = function(err) {
+    if (err === null) return arguments;
+    if (err === undefined) return arguments;
+    //if (!(err instanceof Error)) return arguments;
 
-    var stack = new Error().stack;
-    var from = link_code(stack.split("\n")[2]);
+    const stack = new Error().stack;
+    const from = link_code(stack.split("\n")[2]);
 
     // A special format if used to message a simple error.
-    if (arguments[0] instanceof Error && arguments.length === 1) {
-        var err = arguments[0];
-        logger.error("┏━━━ đeterminate ", ß.now());
-        if (err.stack) logger.error(with_links(err.stack));
-        logger.error("┠─  ", err);
-        logger.error("┗━━━━", from);
-    } else {
-        // this part is not so well defined yet, we assume that the detonator function only recieves one argument
-        logger.error("┏━━━ đeterminate ", ß.now());
-        for (let arg in arguments) {
-            logger.error("┠─  ", arguments[arg]);
-        }
-        logger.error("┗━━━━", from);
-    }
+    logger.error("┏━━━ đeterminate", new Date().toLocaleTimeString());
+    if (ß.DEBUG)
+        if (arguments.length > 1)
+            for (let arg in arguments) {
+                let value = arguments[arg];
+                let type = typeof arguments[arg];
+                if (value === null) {
+                    logger.error("┠── #" + arg, " null");
+                    continue;
+                }
+                if (type === "undefined") {
+                    logger.error("┠── #" + arg, " undefined");
+                    continue;
+                }
+
+                if (type === "object") value = JSON.stringify(value);
+                else if (value.hasOwnProperty("toString")) value = value.toString();
+
+                type += " ";
+
+                logger.error("┠── #" + arg, type.padEnd(9, "─"), value);
+            }
+
+    if (err.stack) logger.error(with_links(err.stack));
+    else logger.error("┠> ", stack);
+
+    logger.error("┗━━━━ đ ", from);
+
     return arguments;
 };
 
-// The detonator function will blow up current execution
-global.Đ = function() {
-    if (arguments.length === 1) {
-        if (arguments[0] === null) return arguments;
-        if (arguments[0] === undefined) return arguments;
-    }
+// The detonator function will blow up current execution in a controlled manner
+global.Đ = function(err) {
+    if (err === null) return arguments;
+    if (err === undefined) return arguments;
+    //if (!(err instanceof Error)) return arguments;
 
-    var stack = new Error().stack;
-    var from = link_code(stack.split("\n")[2]);
+    const stack = new Error().stack;
+    const from = link_code(stack.split("\n")[2]);
 
     // A special format if used to message a simple error.
-    if (arguments[0] instanceof Error && arguments.length === 1) {
-        var err = arguments[0];
-        logger.error("┏━━━ ĐETONATE", ß.now());
-        if (err.stack) logger.error(with_links(err.stack));
-        logger.error("┠─  ", err);
-        logger.error("┠─────── ", stack);
-        logger.error("┗━━━━", from);
-        //let detonator_error = err;
-        //throw detonator_error;
-        console.log("Đ EXIT ERROR 101");
-        process.exit(101);
-    } else {
-        // this part is not so well defined yet, we assume that the detonator function only recieves one argument
-        logger.error("┏━━━ ĐETONATE(arguments) ", ß.now());
-        for (let arg in arguments) {
-            logger.error("┠─  ", arguments[arg]);
-        }
-        logger.error("┗━━━━", from);
-        console.log("Đ EXIT ERROR 102");
-        process.exit(102);
+    logger.error("┏━━━ ĐETONATE",new Date().toLocaleTimeString());
+    if (ß.DEBUG)
+        if (arguments.length > 1)
+            for (let arg in arguments) {
+                let value = arguments[arg];
+                let type = typeof arguments[arg];
+                if (value === null) {
+                    logger.error("┠── #" + arg, " null");
+                    continue;
+                }
+                if (type === "undefined") {
+                    logger.error("┠── #" + arg, " undefined");
+                    continue;
+                }
+
+                if (type === "object") value = JSON.stringify(value);
+                else if (value.hasOwnProperty("toString")) value = value.toString();
+
+                type += " ";
+
+                logger.error("┠── #" + arg, type.padEnd(9, "─"), value);
+            }
+
+    if (err.stack) logger.error(with_links(err.stack));
+    else {
+      logger.error("┠─> ", err);
+      logger.error(with_links(stack));
     }
+  
+    logger.error("┗━━━━ Đ ", from);
+
+    console.log("Đ EXIT ERROR 101");
+    process.exit(101);
 };
 
-/*
+/* @DOC
 	The node process needs to be started with the command line argument `--preserve-symlinks` so that symlinks are treated like real files.
     This is necessery for functions like `Ł` and for stack traces, so that symlinked modules are treated as they were local.
 */
+
+// @DOC `ß.no_callback` is a blank function
+if (!ß.no_callback) ß.no_callback = null_function;
+  
+function null_function() {}
+
+

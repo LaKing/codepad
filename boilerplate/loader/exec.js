@@ -8,8 +8,8 @@ if (!ß.execSync_command)
         if (!name) name = command.split(" ")[0];
         if (!args) args = [];
 
-        const out = fs.openSync(ß.VAR + "/debug/spawn-" + name + ".stdout.log", "a");
-        const err = fs.openSync(ß.VAR + "/debug/spawn-" + name + ".stderr.log", "a");
+        const out = fs.openSync(ß.BPLOG + "/spawn-" + name + ".stdout.log", "a");
+        const err = fs.openSync(ß.BPLOG + "/spawn-" + name + ".stderr.log", "a");
 
         if (!options) options = {};
 

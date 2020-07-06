@@ -1,8 +1,7 @@
 /*ßoilerplate */
-const server = require('socket.io');
 
 module.exports = function(httpsServer) {
-  ß.wio = server(httpsServer, {
+  ß.wio = ß.socketio(httpsServer, {
     path: '/wetty/socket.io'
  });
 };

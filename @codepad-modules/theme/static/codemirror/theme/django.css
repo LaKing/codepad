@@ -1,0 +1,126 @@
+/*
+
+$background                   : #0a2b1d !default;
+
+$line_highlighted_background  : #233729 !default;
+$line_highlighted_number      : white !default;
+
+$gutter_text                  : #497958 !default;
+$gutter_border_color          : #41a83e !default;
+
+$toolbar_collapsed_a          : #96dd3b !default;
+$toolbar_collapsed_a_hover    : #fff !default;
+$toolbar_collapsed_background : #000 !default;
+
+$toolbar_a                    : #fff !default;
+$toolbar_a_hover              : #ffe862 !default;
+
+$code_plain                   : #f8f8f8 !default;
+$code_comments                : #336442 !default;
+$code_string                  : #9df39f !default;
+$code_keyword                 : #96dd3b !default;
+$code_preprocessor            : #91bb9e !default;
+$code_variable                : #ffaa3e !default;
+$code_value                   : #f7e741 !default;
+$code_functions               : #ffaa3e !default;
+$code_constants               : #e0e8ff !default;
+$code_color1                  : #eb939a !default;
+$code_color2                  : #91bb9e !default;
+$code_color3                  : #edef7d !default;
+
+@import "theme-base.scss";
+
+.syntaxhighlighter {
+  .comments { font-style: italic !important; }
+  .keyword { font-weight: bold !important; }
+}
+
+*/
+
+.cm-s-django.CodeMirror {
+    background: #0a2b1d;
+    color: white;
+}
+
+.cm-s-django div.CodeMirror-selected {
+    background: #41a83e;
+}
+.cm-s-django .CodeMirror-line::selection,
+.cm-s-django .CodeMirror-line > span::selection,
+.cm-s-django .CodeMirror-line > span > span::selection {
+    background: rgba(179, 101, 57, 0.99);
+}
+.cm-s-django .CodeMirror-line::-moz-selection,
+.cm-s-django .CodeMirror-line > span::-moz-selection,
+.cm-s-django .CodeMirror-line > span > span::-moz-selection {
+    background: rgba(179, 101, 57, 0.99);
+}
+.cm-s-django .CodeMirror-gutters {
+    background: #233729;
+    border-right: 1px solid #edef7d;
+}
+.cm-s-django .CodeMirror-guttermarker {
+    color: #ffaa3e;
+}
+.cm-s-django .CodeMirror-guttermarker-subtle {
+    color: #f8f8f8;
+}
+.cm-s-django .CodeMirror-linenumber {
+    color: #91bb9e;
+}
+.cm-s-django .CodeMirror-cursor {
+    border-left: 1px solid white;
+}
+
+.cm-s-django span.cm-comment {
+  	font-style: italic !important;
+    color: #336442;
+}
+.cm-s-django span.cm-atom {
+    color: #497958;
+}
+.cm-s-django span.cm-number,
+.cm-s-django span.cm-attribute {
+    color: #f7e741;
+}
+.cm-s-django span.cm-keyword {
+    font-weight: bold !important;
+    color: #96dd3b;
+}
+.cm-s-django span.cm-string {
+    color: #9df39f;
+}
+.cm-s-django span.cm-meta {
+    color: #497958;
+}
+.cm-s-django span.cm-variable-2,
+.cm-s-django span.cm-tag {
+    color: #91bb9e;
+}
+.cm-s-django span.cm-variable-3,
+.cm-s-django span.cm-def,
+.cm-s-django .cm-type {
+    color: white;
+}
+.cm-s-django span.cm-bracket {
+    color: #497958;
+}
+.cm-s-django span.cm-builtin,
+.cm-s-django span.cm-special {
+    color: #91bb9e;
+}
+.cm-s-django span.cm-link {
+    color: #96dd3b;
+}
+.cm-s-django span.cm-error {
+    color: #91bb9e;
+}
+
+.cm-s-django .CodeMirror-activeline-background {
+    background: #233729;
+}
+.cm-s-django .CodeMirror-matchingbracket {
+    outline: 1px solid grey;
+    color: white !important;
+}
+/**/

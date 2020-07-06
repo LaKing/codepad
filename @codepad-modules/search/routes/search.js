@@ -90,12 +90,17 @@ function form_response(data, search_term, replace_term) {
     return res_send;
 }
 
-function send_ahead() {
-    var res_send = '';
+function send_ahead(req) {
+
+    let theme = ß.THEME;
+  	const username = ß.lib.basicauth.username_by_req(req);
+    if (ß.settings[username]) if (ß.settings[username].theme) theme = ß.settings[username].theme;
+  
+  	var res_send = '';
     res_send += '<!doctype html>';
     res_send += '<title>Search results</title>';
     res_send += '<meta charset="utf-8" />';
-    res_send += '<link rel="stylesheet" href="/codemirror/theme/' + ß.THEME + '.css">';
+    res_send += '<link rel="stylesheet" href="/codemirror/theme/' + theme + '.css">';
     res_send += '<link rel="stylesheet" type="text/css" href="/index.css" />';
     res_send += '<script type="text/javascript">';
     res_send += '    window.onload = toBottom;';
@@ -103,12 +108,13 @@ function send_ahead() {
     res_send += '        window.scrollTo(0, document.body.scrollHeight);';
     res_send += '    }';
     res_send += '</script>';
-    res_send += '<body class="cm-s-' + ß.THEME + ' CodeMirror" style="font-family: Monaco, \'Lucida Console\', monospace; margin: 20px;">';
+    res_send += '<body class="cm-s-' + theme + ' CodeMirror" style="font-family: Monaco, \'Lucida Console\', monospace; margin: 20px;">';
 
     return res_send;
 }
 
 function express_search(req, res) {
+  
 
     //Ł(req.query);
     var search_term = req.query.find; // req.params[0];
@@ -119,7 +125,7 @@ function express_search(req, res) {
         return;
     }
     const options = {
-        cwd: ß.projectdir,
+        cwd: ß.PROJECTDIR,
         env: process.env
     };
     //grep --exclude-dir={node_modules,.git,log} -inrow -E ".{0,100}$arg.{0,100}"
@@ -145,7 +151,7 @@ function express_search(req, res) {
 
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
-    res.write(send_ahead());
+    res.write(send_ahead(req));
 	res.write(ß.now() + '<p>Search <b>' + search_term + '</b> ' + ( replace_term || '') + '</p> <br><br>');
   
     for (var f in ß.projectfiles) {
@@ -203,7 +209,7 @@ function express_search(req, res) {
     var replace_term = req.query.replace;
     var replace_file = '/' + req.params[0];
     ß.lib.search.replace(replace_file, search_term, replace_term, function(err, success) {
-        ß.lib.projectfiles.oplog(ß.lib.username_by_req(req), 'replaced ' + search_term + ' to ' + replace_term + ' in', replace_file);
+        ß.lib.projectfiles.oplog(ß.lib.basicauth.username_by_req(req), 'replaced ' + search_term + ' to ' + replace_term + ' in', replace_file);
         express_search(req, res);
     });
 

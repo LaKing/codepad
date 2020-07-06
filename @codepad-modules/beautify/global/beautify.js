@@ -1,2 +1,2 @@
-ß.beautify = require('js-beautify');
+//ß.beautify = require('js-beautify');
 ß.prettier = require('prettier');

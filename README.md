@@ -20,7 +20,7 @@ First of all, the working directory will need the boilerplate files, either as r
 [ßoilerplate](https://github.com/LaKing/boilerplate) needs to have the `node_modules` of its modules installed as well.
 
 ```
-git clone git@github.com:LaKing/boilerplate.git
+git clone git@github.com:LaKing/codepad
 ```
 
 Codepad shall not be run as root. I recommend a dedicated codepad user.

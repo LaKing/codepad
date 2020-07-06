@@ -2,7 +2,7 @@
 `ß.fs` is reference to the [fs-extra](https://github.com/jprichardson/node-fs-extra) package 
 Instead of `fs = require('fs');` you can use `ß.fs` directly, use `mkdirp`, and `readJson` and other handy functions. 
 */
-// @DOC `ß.path` is the native path
+// @DOC `ß.path` is the native path, `ß.url` is the native node url.URL. So, no need to require.
 if (!ß.path) ß.path = require("path");
 
 const fs = require("fs-extra");

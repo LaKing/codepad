@@ -15,5 +15,5 @@ module.exports = function(socket, revision, operation) {
 
     ß.projectfiles[filepath].at[username][socket.id] = revision;
 
-    ß.lib.filetree.send_files();
+    ß.lib.projectfiles.send_files();
 };

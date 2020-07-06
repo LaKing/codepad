@@ -92,8 +92,8 @@
     var line = getParameterByName('line');
     var char = getParameterByName('char');
 
-    var socket = io();
-    var pad = '?';
+    var socket = io('/p');
+    var pad = '/<%- file %>';
     
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
@@ -108,7 +108,8 @@
             "Ctrl-Space": "autocomplete"
         },
         gutters: ["CodeMirror-lint-markers"],
-        lint: <%- lint_options %>
+        lint: <%- lint_options %>,
+        readOnly: <%- readonly %>
 
     });
 
@@ -116,11 +117,16 @@
     editor.setOption("extraKeys", {
         F2: function(cm) {
             console.log("F2 handler", pad);
-            socket.emit('beautify', pad);
+            socket.emit('beautify', pad, function(err, data) {
+            	editor.setValue(data);
+            });
         }
     });
 
-
+    socket.on('reload', function() {
+        location.reload();
+    });
+  
     socket.on('doc', function(data) {
         pad = data.pad;
         editor.setValue(data.str);
@@ -158,7 +164,7 @@
       	// this will bug firefox !!!! but is necessery for chrome
         //location.reload();
 
-      setTimeout(function(){ location.reload(); }, 1000);
+        setTimeout(function(){ location.reload(); }, 1000);
 
     });
     

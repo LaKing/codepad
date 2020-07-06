@@ -1,5 +1,4 @@
 /*ßoilerplate */
-
 const fs = ß.fs;
 
 /* @DOC 
@@ -27,16 +26,19 @@ if (!ß.fork_file)
         if (!option.stdio)
             option.stdio = [
                 0, // Use parent's stdin for child
-                fs.openSync(ß.VAR + "/debug/fork-" + name + ".stdout.log", "w"), // stdout
-                fs.openSync(ß.VAR + "/debug/fork-" + name + ".stderr.log", "w"), // stderr to a file
+                fs.openSync(ß.BPLOG + "/fork-" + name + ".stdout.log", "w"), // stdout
+                fs.openSync(ß.BPLOG + "/fork-" + name + ".stderr.log", "w"), // stderr to a file
                 "ipc" //Forked processes must have an IPC channel
             ];
 
         if (!argv) argv = [];
+      
+      	if (process.argv.indexOf("--restart-server") >= 0) argv.push("--restart-server");
+
 
         var child = child_process.fork(file, argv, option);
 
-        fs.writeFileSync(ß.VAR + "/debug/fork-" + name + ".pid", child.pid);
+        fs.writeFileSync(ß.BPLOG + "/fork-" + name + ".pid", child.pid);
         console.log("- forked", name, "with pid", child.pid);
 
         child.on("error", err => {
@@ -46,7 +48,7 @@ if (!ß.fork_file)
         child.on("close", code => {
             //if (code === 0) console.log('[ OK ]', name);
             if (code !== 0) console.log(name, " - exit with error code", code);
-            fs.unlink(ß.VAR + "/debug/fork-" + name + ".pid");
+            fs.unlink(ß.BPLOG + "/fork-" + name + ".pid");
             delete child.pid;
         });
 
@@ -78,7 +80,7 @@ function list_files(module, dir, bmf) {
 }
 
 var log = "";
-const logfile = ß.VAR + "/debug/fork.log";
+const logfile = ß.BPLOG + "/fork.log";
 
 function reg(msg) {
     //ß.debug(msg);

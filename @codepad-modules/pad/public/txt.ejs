@@ -39,11 +39,12 @@
     var line = getParameterByName('line');
     var char = getParameterByName('char');
 
-    var socket = io();
+    var socket = io("/p");
 
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
         lineNumbers: true,
         theme: "<%- theme %>",
+        readOnly: <%- readonly %>,
         fullScreen: true,
     });
 
