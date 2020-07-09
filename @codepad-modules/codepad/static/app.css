@@ -83,6 +83,10 @@ iframe {
 .d-inline {
     display: inline-block;
 }
+.logs a, #logs-container a:-webkit-any-link {
+    color: #03A9F4;
+ 
+}
 #topbar {
     display: flex;
     justify-content: space-between;

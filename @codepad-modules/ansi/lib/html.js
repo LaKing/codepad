@@ -25,8 +25,12 @@ console.log(test);
 
 var AU = require('ansi_up');
 var ansi_up = new AU.default();
+var find = '<a href=';
+var replace = '<a target="_blank" class="CodeMirror-guttermarker-subtle" href=';
+var re = new RegExp(find, 'g');
 
 module.exports = function(input) {
-    return ansi_up.ansi_to_html(input);
+    return ansi_up.ansi_to_html(input).replace(re, replace);
+
   	//return filter_codepad_links(ansi_up.ansi_to_html(input));
 };
