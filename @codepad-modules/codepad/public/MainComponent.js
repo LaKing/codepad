@@ -107,7 +107,7 @@ export default {
                 <div id="logline" class="ellipse" :title="$store.state.logline" @click=""><span>{{$store.state.logline}}</span></div>
             </div>
             <div>
-                <button title="static full log in new window" class="btn newwindow" @click="window.open('/log')"><i class="fas fa-border-style"></i></button>
+                <button title="static full log in new window" class="btn newwindow" @click="$store.commit('nopad');"><i class="fas fa-border-style"></i></button>
                 <button title="static full log in new window" class="btn newwindow" @click="window.open('/log')"><i class="fas fa-grip-lines"></i></button>
                 <button title="dynamic last-logs in new window" class="btn newwindow" @click="window.open('/logs')"><i class="fas fa-bars"></i></button>
 

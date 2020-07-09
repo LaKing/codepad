@@ -92,6 +92,11 @@ const store = new Vuex.Store({
 
             if (router.currentRoute.hash !== "#" + path) router.push("/#" + path);
         },
+        nopad(state, path) {
+            state.pad = undefined;
+            router.push("/");
+          	
+        },
         clearpad(state, path) {
             state.pad = undefined;
             // TODO: remove from history
