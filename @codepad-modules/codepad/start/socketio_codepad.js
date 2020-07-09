@@ -47,9 +47,8 @@ pad_io.on("connection", function(socket) {
 const log_io = ß.io.of("/log");
 log_io.on("connection", function(socket) {
     add_socket_functions(socket, "log");
-    ß.run_hook("log_socket", socket);
   	    socket.REGISTERED = 'log';
-
+Ł();
 });
 
 ß.io.on("connection", function(socket) {
