@@ -1,5 +1,3 @@
-
-
 body,
 html {
     width: 100%;
@@ -27,16 +25,16 @@ iframe {
 }
 
 .danger {
-	background-color: rgba(255, 0, 0, 0.8);
-  	color: white;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
 }
 
 .dialog {
-	z-index: 100  
+    z-index: 100;
 }
 
 .newwindow {
- 	background-color: #999 !important;
+    background-color: #999 !important;
 }
 .leftpane .splitpanes__pane {
     overflow: auto !important;
@@ -73,7 +71,7 @@ iframe {
     overflow: hidden;
 }
 .bottom-align > div {
-   /* position: absolute;*/
+    /* position: absolute;*/
     bottom: 0;
 }
 .absolute {
@@ -83,26 +81,27 @@ iframe {
 .d-inline {
     display: inline-block;
 }
-.logs a, #logs-container a:-webkit-any-link {
-    color: #03A9F4;
- 
+.logs a,
+#logs-container a:-webkit-any-link {
+    color: #03a9f4;
 }
 #topbar {
     display: flex;
     justify-content: space-between;
 }
-#topbar input{
-     padding: 4px;
+#topbar input {
+    padding: 4px;
     border-radius: 4px;
     box-shadow: none;
-    border: 0; 
+    border: 0;
 }
-#topbar button, #logbar button{
+#topbar button,
+#logbar button {
     border-radius: 4px;
-  width:32px;
+    width: 32px;
 }
-#center-top-icons{
- /*margin-right:5px; */
+#center-top-icons {
+    /*margin-right:5px; */
 }
 #top-msg {
     align-self: center;
@@ -131,7 +130,7 @@ iframe {
 }
 
 #notice {
-  	    padding: 5px 0 0 0;
+    padding: 5px 0 0 0;
     line-height: 1;
     position: relative;
     top: 3px;
@@ -147,60 +146,64 @@ iframe {
     white-space: nowrap;
 }
 #notice.ellipse {
-  max-width: calc(50vw - 100px);
+    max-width: calc(50vw - 100px);
 }
 
 #settings {
-  overflow: auto;
+    overflow: auto;
     height: calc(100vh - 65px);
-  /* ide kellene egy olyan ami scrollozhatóvá teszi ha nem fér bele a képbe, vagy valami ilyesmi */ 
-	/* meg pár helyre kellene még minimális scrollozhatóság: filtree, logs */
+    /* ide kellene egy olyan ami scrollozhatóvá teszi ha nem fér bele a képbe, vagy valami ilyesmi */
+    /* meg pár helyre kellene még minimális scrollozhatóság: filtree, logs */
 }
-.mobile-size #center-left-icons{
-position: absolute;
+.mobile-size #center-left-icons {
+    position: absolute;
     background: #b2b2b2;
     box-shadow: 0 0 5px #4c4c4c;
     z-index: 10;
-  top: 40px;
-      width: 100px;
+    top: 40px;
+    width: 100px;
 }
-.mobile-size #center-left-icons>div{
-     display: flex;
+.mobile-size #center-left-icons > div {
+    display: flex;
     flex-flow: column;
-      width: 100% !important;
+    width: 100% !important;
 }
-.mobile-size #center-left-icons>div:nth-of-type(2){
-  margin-top:10px;
+.mobile-size #center-left-icons > div:nth-of-type(2) {
+    margin-top: 10px;
 }
-.mobile-size #center-left-icons>div button{
- margin:2px; 
-  width:96px;
+.mobile-size #center-left-icons > div button {
+    margin: 2px;
+    width: 96px;
 }
-::-webkit-scrollbar, .CodeMirror-vscrollbar::-webkit-scrollbar {
+::-webkit-scrollbar,
+.CodeMirror-vscrollbar::-webkit-scrollbar {
     width: 14px;
-  	height:14px;
+    height: 14px;
 }
-::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, .CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
     box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px inset;
     border-radius: 10px;
     background: rgb(187, 187, 187);
 }
-::-webkit-scrollbar-track, .CodeMirror-vscrollbar {
+::-webkit-scrollbar-track,
+.CodeMirror-vscrollbar {
     box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px inset;
     border-radius: 10px;
-  background:#b2b2b2;
+    background: #b2b2b2;
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-	background: rgb(187, 187, 187); 
+    background: rgb(187, 187, 187);
 }
 
-::-webkit-scrollbar-track-piece  {
-    background-color:#6b6b6b;
-   -webkit-border-radius: 16px;
+::-webkit-scrollbar-track-piece {
+    background-color: #6b6b6b;
+    -webkit-border-radius: 16px;
 }
 
 .actual {
-	font-weight: bold;  
+    font-weight: bold;
 }
 
 .outerbody {
@@ -217,8 +220,8 @@ position: absolute;
 #logbar {
     z-index: 200000;
     position: fixed;
-	justify-content: space-between;
-  	display:flex;
+    justify-content: space-between;
+    display: flex;
     padding: 5px 10px;
     width: 100%;
     background-color: rgb(0, 0, 0, 0.3);
@@ -227,8 +230,8 @@ position: absolute;
     font-family: Monaco, "Lucida Console", monospace;
 }
 
- #logbar>div:nth-of-type(3) {
-        padding: 0px 20px 0px 0;
+#logbar > div:nth-of-type(3) {
+    padding: 0px 20px 0px 0;
 }
 .btn {
     border: none;
@@ -252,22 +255,19 @@ position: absolute;
     padding: 5px 10px;
     font-family: Monaco, "Lucida Console", monospace;
     line-height: 16px;
-    color: #FFF;
+    color: #fff;
 }
 
-
-#logline.ellipse{
-  max-width: calc(50vw - 150px);
+#logline.ellipse {
+    max-width: calc(50vw - 150px);
 }
 #logline {
-      padding-bottom: 5px;
-  		padding-top:5px;
-      position: relative;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    position: relative;
     top: 3px;
 }
 
 #right-top-icons {
-       margin-right: 20px;
+    margin-right: 20px;
 }
-
-

@@ -10,7 +10,7 @@ export default {
         <div class="file button fileicon" :class="[p === $store.state.pad?'actual':'']" @click="pad(p)" @contextmenu="file_handler($event, p)">
 		<i :class="[ro_file(p)?'far':'fas']" class="fa-file"></i>
 		{{get_name(p)}} 
-		<i v-for="(v,u,i) in $store.state.files[p].at" :key="i" :class="[ul(v)?'underline':'']" class="usernames">{{u}}</i></div>
+		<i v-for="(v,u,i) in $store.state.files[p].at" :key="i" :class="[ul(v)?'underline':'']" class="usernames">{{u}} </i></div>
     </div>
 
 </div>
