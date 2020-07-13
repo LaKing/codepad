@@ -2,7 +2,7 @@
 
 body {
     font-size: 14px;
-    color: #546E7A;
+    color: #546e7a;
 }
 
 .filetree {
@@ -12,20 +12,20 @@ body {
 }
 
 .filetree .file {
-  white-space:nowrap;
+    white-space: nowrap;
     display: block;
     font-family: Monaco, "Lucida Console", monospace;
     line-height: 16px;
-    color: #BBB;
+    color: #bbb;
 }
 
 .filetree .folder {
-  white-space:nowrap;
+    white-space: nowrap;
     display: block;
     font-family: Monaco, "Lucida Console", monospace;
     font-style: bold;
     line-height: 16px;
-    color: #BBB;
+    color: #bbb;
 }
 
 .filetree .children {
@@ -39,7 +39,7 @@ body {
 }
 
 .filetree .children .file:before {
-    content: '';
+    content: "";
     left: -18px;
     bottom: 8px;
     width: 8px;
@@ -47,7 +47,7 @@ body {
     position: absolute;
     border-width: 0 0 1px 1px;
     border-style: solid;
-    border-color: #CFD8DC;
+    border-color: #cfd8dc;
     border-radius: 0 0 0 3px;
 }
 
@@ -58,7 +58,7 @@ body {
 .filetree .selected {
     font-weight: bold;
     background-color: rgba(111, 111, 111, 0.1);
-    color: #DDD;
+    color: #ddd;
 }
 
 .filetree .fileicon {
@@ -69,6 +69,7 @@ body {
 .filetree .usernames {
     font-size: 7px;
     vertical-align: bottom;
+    margin-right: 2px;
 }
 
 .filetree .underline {
