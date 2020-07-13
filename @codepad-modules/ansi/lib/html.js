@@ -26,7 +26,7 @@ console.log(test);
 var AU = require('ansi_up');
 var ansi_up = new AU.default();
 var find = '<a href=';
-var replace = '<a target="_blank" class="CodeMirror-guttermarker-subtle" href=';
+var replace = '<a target="_blank" href=';
 var re = new RegExp(find, 'g');
 
 module.exports = function(input) {
