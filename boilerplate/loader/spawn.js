@@ -22,7 +22,7 @@ const child_process = require("child_process");
 
 // @DOC `ß.spawn_command` will execute a single bash command via `child_process.spawn`
 if (!ß.spawn_command)
-    ß.spawn_command = function(command, name, args, options) {
+    ß.spawn_command = function (command, name, args, options) {
         if (!name) name = command.split(" ")[0];
         if (!args) args = [];
 
@@ -37,20 +37,20 @@ if (!ß.spawn_command)
         var child = child_process.spawn(command, args, options);
         console.log("- spawned", name, "- pid", child.pid);
 
-        child.on("error", err => {
+        child.on("error", (err) => {
             console.log("ERROR on", name, "subprocess. ", err);
         });
 
-        child.on("close", code => {
+        child.on("close", (code) => {
             console.log("child process", name, "exit with code", code);
         });
 
-        process.on("SIGTERM", function() {
+        process.on("SIGTERM", function () {
             console.log("child process kill", name, child.pid);
             child.kill();
         });
 
-        process.on("SIGUSR1", function() {
+        process.on("SIGUSR1", function () {
             console.log("child process kill", name, child.pid);
             child.kill();
         });
@@ -58,7 +58,7 @@ if (!ß.spawn_command)
 
 // @DOC `ß.bash_file` will execute a single bash file via `child_process.spawn`
 if (!ß.bash_file)
-    ß.bash_file = function(file, name) {
+    ß.bash_file = function (file, name) {
         if (!fs.existsSync(file)) return;
 
         //if (file.split('/')[1] === 'usr') return console.log('should not bash_file from /usr/*', file);
@@ -75,7 +75,7 @@ if (!ß.bash_file)
 
         var options = {
             cwd: dir,
-            stdio: ["ignore", out, err]
+            stdio: ["ignore", out, err],
         };
 
         var child = child_process.spawn("/bin/bash", [file], options);
@@ -83,24 +83,68 @@ if (!ß.bash_file)
         reg(" - " + name + " /bin/bash" + file + " - pid " + child.pid);
         fs.writeFileSync(ß.BPLOG + "/bash-" + name + ".pid", child.pid);
 
-        child.on("error", err => {
+        child.on("error", (err) => {
             console.log("ERROR on", name, "subprocess. ", err);
         });
 
-        child.on("close", code => {
-            //if (code === 0) console.log('[ OK ]', name);
+        child.on("close", (code) => {
+            if (code === 0) console.log("[ OK ]", name);
             if (code !== 0) console.log(name, " - exit with error code", code);
             fs.unlink(ß.BPLOG + "/bash-" + name + ".pid");
             delete child.pid;
         });
 
-        process.on("SIGTERM", function() {
+        process.on("SIGTERM", function () {
             if (!child.pid) return;
             console.log("child process kill", name, child.pid);
             child.kill();
         });
 
-        process.on("SIGUSR1", function() {
+        process.on("SIGUSR1", function () {
+            if (!child.pid) return;
+            console.log("child process kill", name, child.pid);
+            child.kill();
+        });
+    };
+
+// @DOC `ß.bash_file` will execute a single bash file via `child_process.spawn`
+if (!ß.bash_file_sync)
+    ß.bash_file_sync = function (file, name) {
+        if (!fs.existsSync(file)) return;
+
+        //if (file.split('/')[1] === 'usr') return console.log('should not bash_file from /usr/*', file);
+
+        if (!name) name = ß.path.basename(file).split(".")[0];
+
+        var dira = file.split("/");
+        dira.pop();
+        var dir = dira.join("/");
+        var filename = file.split("/").pop();
+
+        const out = fs.openSync(ß.BPLOG + "/bash-" + name + ".stdout.log", "a");
+        const err = fs.openSync(ß.BPLOG + "/bash-" + name + ".stderr.log", "a");
+
+        var options = {
+            cwd: dir,
+            stdio: ["ignore", out, err],
+        };
+      
+        console.log("- ", name, "/bin/bash", file);
+        reg(" - " + name + " /bin/bash" + file);
+
+        var ret = child_process.spawnSync("/bin/bash", [file], options);
+
+      	if (ret.stdout) console.log(ret.stdout);
+        if (ret.stderr) console.error(ret.stderr);
+        if (ret.status > 0) ß.err("Status:" + ret.status);
+
+        process.on("SIGTERM", function () {
+            if (!child.pid) return;
+            console.log("child process kill", name, child.pid);
+            child.kill();
+        });
+
+        process.on("SIGUSR1", function () {
             if (!child.pid) return;
             console.log("child process kill", name, child.pid);
             child.kill();
@@ -122,16 +166,7 @@ function list_files(module, dir, bmf) {
 
 // we will log our actions
 var log = "";
-const logfile = ß.VAR + "/debug/exec.log";
-
-// we will also create a shell file, to have a way to exec commands by bash
-var sh = "";
-const shfile = ß.VAR + "/debug/exec.sh";
-
-function shreg(msg) {
-    //ß.debug(msg);
-    sh += msg + "\n";
-}
+const logfile = ß.BPLOG + "/exec.log";
 
 function reg(msg) {
     //ß.debug(msg);
@@ -149,11 +184,20 @@ function load_module_dir(module, dir, bmf, that) {
     }
 }
 
+// @DOC `ß.create_all_modules_script` will exec shell scripts in each of the active modules.
 // bmf in this context is the boilerplate module file
-if (!ß.exec)
-    ß.exec = function(bmf) {
+if (!ß.create_all_modules_script)
+    ß.create_all_modules_script = function (bmf) {
         reg("// ------------------- " + bmf + " ----------------------");
-        console.log("Exec " + bmf + " ...");
+
+        var sh = "";
+        const shfile = ß.CWD + "/all-modules-" + bmf;
+
+        // we will also create a shell file, to have a way to exec commands by bash
+        function shreg(msg) {
+            //ß.debug(msg);
+            sh += msg + "\n";
+        }
 
         // load per modules
 
@@ -172,8 +216,7 @@ if (!ß.exec)
 
             // that object has values populated, selection complete so do the job now
             for (let me in that) {
-                //ß.bash_file(that[me], module + "-" + bmf);
-                let dir = ß.path.dirname(that[me]);//.split('/').pop().join();
+                let dir = ß.path.dirname(that[me]); //.split('/').pop().join();
                 shreg("cd " + dir + " && bash " + me);
                 reg(module + " " + bmf + " " + me + " is " + that[me]);
             }
@@ -182,9 +225,7 @@ if (!ß.exec)
         fs.writeFileSync(logfile, log);
         ß.fs.chownSync(logfile, ß.UID, ß.GID);
 
-      
         fs.writeFileSync(shfile, sh);
         ß.fs.chownSync(shfile, ß.UID, ß.GID);
-      
-        //console.log('Exec ' + bmf + ' complete');
+
     };

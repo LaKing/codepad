@@ -70,15 +70,31 @@ then
     exit
 fi
 
-if [[ $1 == install ]]
+## deprecated
+#if [[ $1 == install ]]
+#then
+#	## install needs root privileges
+#	echo "# systemd-run --unit $NAME --scope /bin/node --preserve-symlinks boilerplate/cli.js $@"
+#	systemd-run --unit "$NAME" --scope /bin/node --preserve-symlinks boilerplate/cli.js $@
+#    exit
+#fi
+
+if [[ $1 == uplink ]]
 then
-	## install needs root privileges
-	echo "# systemd-run --unit $NAME --scope /bin/node --preserve-symlinks boilerplate/cli.js $@"
-	systemd-run --unit "$NAME" --scope /bin/node --preserve-symlinks boilerplate/cli.js $@
+	## no privileges needed, but running in the NAME scope
+	echo "# systemd-run --unit $NAME --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"
+	systemd-run --unit "$NAME" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
+    
+    ## we need to update our configurations according to the current modules
+    echo "/bin/bash $CWD/all-modules-dnf.sh"
+    /bin/bash "$CWD/all-modules-dnf.sh"
+    echo "/bin/bash $CWD/all-modules-install.sh"
+    /bin/bash "$CWD/all-modules-install.sh"
+    echo "OK, DONE. All GOOD. Press play on tape."
     exit
 fi
 
-if [[ $1 == start ]] || [[ $1 == debug ]] || [[ $1 == uplink ]]
+if [[ $1 == start ]] || [[ $1 == debug ]]
 then
 	## no privileges needed, but running in the NAME scope
 	echo "# systemd-run --unit $NAME --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"

@@ -2,14 +2,20 @@ const git = ß.git;
 const fs = ß.fs;
 const dir = ß.PROJECTDIR;
 
-module.exports = async function(path, callback) {
+module.exports = async function (path, callback) {
     if (!ß.projectfiles[path]) return;
     if (!ß.projectfiles[path].file) return;
     //if (ß.projectfiles[file].readonly) return;
 
     const filepath = path.substring(1);
+    try {
+        const commits = await git.log({ fs, dir });
+    } catch (error) {
+        ß.err(error);
+      	if (callback) callback();
+		return;
+    }
 
-    const commits = await git.log({ fs, dir });
     let lastSHA = null;
     let lastCommit = null;
     const commitsThatMatter = [];

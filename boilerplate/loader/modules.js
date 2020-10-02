@@ -17,16 +17,7 @@ if (!ß.modules[curr]) ß.modules[curr] = {};
 if (ß.USE_PROJECTROOT !== false) ß.modules[curr][ß.CWD] = true;
 
 function use_name(str) {
-    return (
-        "USE_" +
-        str
-            .split("/")
-            .pop()
-            .toUpperCase()
-            .replace(/@/g, "")
-            .replace(/-/g, "_")
-            .replace(/\./g, "_")
-    );
+    return "USE_" + str.split("/").pop().toUpperCase().replace(/@/g, "").replace(/-/g, "_").replace(/\./g, "_");
 }
 
 function process(dir, p) {
@@ -64,7 +55,7 @@ function is_modulefolder(name) {
 // @DOC `ß.load_modules(modules_root)` will load all modules located in that directory. loaded modules will be added to 'ß.modules' and processed at all further steps of the boilerplate-loader
 // construct the modules object
 if (!ß.load_modules)
-    ß.load_modules = function(modules_root) {
+    ß.load_modules = function (modules_root) {
         if (!fs.isDirSync(modules_root)) return ß.error("ß.load_modules(" + modules_root + ") is not a directory!");
         // var modules = ß.modules;
         // process modules in CWD
@@ -100,7 +91,7 @@ if (!ß.load_modules)
 
 // @DOC the `ß.debug_modules()` function will write two files, so that the loaded modules can be debugged.
 if (!ß.debug_modules)
-    ß.debug_modules = function() {
+    ß.debug_modules = function () {
         var debug_file = ß.BPLOG + "/modules.json";
         fs.writeFileSync(debug_file, JSON.stringify(ß.modules, null, 4));
         ß.fs.chownSync(debug_file, ß.UID, ß.GID);
@@ -133,7 +124,7 @@ if (!ß.debug_modules)
 
 // `ß.get_module_path()` path from any file of the main boilerplate module system `ß.modules`. Honors priority modules, so works with the loader mechanism.
 if (!ß.get_module_path)
-    ß.get_module_path = function(module, path) {
+    ß.get_module_path = function (module, path) {
         // get file or folder if requested in second argument
         if (!path) path = "";
 
@@ -148,7 +139,7 @@ if (!ß.get_module_path)
 
 // `ß.get_path()` Get a path from modules subset eg. `ß.modules`.
 if (!ß.get_path)
-    ß.get_path = function(path, modules) {
+    ß.get_path = function (path, modules) {
         // get file or folder from the modules subset
         if (!modules) modules = ß.modules;
         if (!path) path = "";
@@ -158,7 +149,7 @@ if (!ß.get_path)
                 if (ß.modules[module][me]) if (fs.existsSync(me + "/" + path)) return me + "/" + path;
             }
         }
-      
+
         for (let module in modules) {
             for (let me in ß.modules[module]) {
                 if (!ß.modules[module][me]) if (fs.existsSync(me + "/" + path)) return me + "/" + path;
@@ -169,7 +160,7 @@ if (!ß.get_path)
     };
 
 if (!ß.get_modulefolder_name)
-    ß.get_modulefolder_name = function(path) {
+    ß.get_modulefolder_name = function (path) {
         let name = ß.path.basename(ß.path.dirname(path));
         if (is_modulefolder(name)) return name;
         return undefined;
@@ -181,7 +172,7 @@ if (!ß.get_modulefolder_name)
 */
 
 if (!ß.resolve_node_module_path)
-    ß.resolve_node_module_path = function(node_module, path) {
+    ß.resolve_node_module_path = function (node_module, path) {
         // there shoule be at least an argument, otherwise the function is not called the right way
         // if (!node_module) return Đ();
 
@@ -230,7 +221,7 @@ function getCallerFile() {
         var err = new Error();
         var currentfile;
 
-        Error.prepareStackTrace = function(err, stack) {
+        Error.prepareStackTrace = function (err, stack) {
             return stack;
         };
 

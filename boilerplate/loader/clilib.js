@@ -2,14 +2,14 @@ const fs = ß.fs;
 
 // create a list of subdirectories from a directory - with an optional filter. Returns an array.
 if (!ß.get_directory_list_by_filter)
-    ß.get_directory_list_by_filter = function(dir, filterfn) {
+    ß.get_directory_list_by_filter = function (dir, filterfn) {
         var list = [];
         if (filterfn === undefined)
-            filterfn = function(a) {
+            filterfn = function (a) {
                 return true;
             };
 
-        fs.inDirsSync(dir, function(entry) {
+        fs.inDirsSync(dir, function (entry) {
             if (filterfn(entry)) list.push(entry);
         });
 
@@ -18,10 +18,10 @@ if (!ß.get_directory_list_by_filter)
 
 // create a list of files from a directory - with an optional filter. Returns an array.
 if (!ß.get_file_list_by_filter)
-    ß.get_file_list_by_filter = function(dir, filterfn) {
+    ß.get_file_list_by_filter = function (dir, filterfn) {
         var list = [];
         if (filterfn === undefined)
-            filterfn = function(a) {
+            filterfn = function (a) {
                 return true;
             };
         if (fs.isDirSync(dir)) {
@@ -37,7 +37,7 @@ if (!ß.get_file_list_by_filter)
     };
 
 if (!ß.uplink_with_filter)
-    ß.uplink_with_filter = function(path, destination, list) {
+    ß.uplink_with_filter = function (path, destination, list) {
         // the list is not an optional argument
         if (!list) return;
         if (fs.isDirSync(path)) {
@@ -62,7 +62,7 @@ function is_module_list_json(a) {
 
 // procedure to process the uplink commands
 if (!ß.cli_uplink)
-    ß.cli_uplink = function() {
+    ß.cli_uplink = function () {
         // module liberary directory
         if (!ß.MLD) ß.MLD = "/usr/local/share/boilerplate";
 
@@ -73,8 +73,8 @@ if (!ß.cli_uplink)
         const app_list = ß.get_file_list_by_filter(ß.MLD, is_module_list_json);
 
         if (app_list.length > 0) ß.cli_commands.push("uplink [ " + app_list.join(" | ") + " ]");
-      
-      	// TODO add a list of all boilerplate modules merged from all module folders
+
+        // TODO add a list of all boilerplate modules merged from all module folders
 
         if (ß.CMD === "uplink") {
             var found = false;
@@ -95,6 +95,8 @@ if (!ß.cli_uplink)
                             ß.uplink_with_filter(ß.MLD + "/" + i, ß.CWD + "/" + i, data[i]);
                         }
                     }
+
+                    ß.ntc("Next, executing all-modules-dnf.sh and all-modules-install.sh");
                 }
             } else {
                 for (let i in stack_list) {
@@ -106,6 +108,10 @@ if (!ß.cli_uplink)
                 }
             }
             if (found) {
+                ß.create_all_modules_script("dnf.sh");
+                ß.create_all_modules_script("install.sh");
+                ß.create_all_modules_script("npm.sh");
+				// go back to bash
                 process.exit();
                 return;
             }
