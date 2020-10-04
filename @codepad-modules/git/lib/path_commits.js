@@ -38,3 +38,24 @@ module.exports = async function (path, callback) {
 
     if (callback) callback();
 };
+
+
+
+/*
+
+TODO fix
+
+okt 02 07:03:50 bp-devel node[253981]: NotFoundError: Could not find HEAD.
+okt 02 07:03:50 bp-devel node[253981]:     at Function.resolve (/usr/local/share/boilerplate/@codepad-modules/git/node_modules/isomorphic-git/index.cjs:1792:11)
+okt 02 07:03:50 bp-devel node[253981]:     at async _log (/usr/local/share/boilerplate/@codepad-modules/git/node_modules/isomorphic-git/index.cjs:9716:15)
+okt 02 07:03:50 bp-devel node[253981]:     at async Object.log (/usr/local/share/boilerplate/@codepad-modules/git/node_modules/isomorphic-git/index.cjs:9796:12)
+okt 02 07:03:50 bp-devel node[253981]:     at async Object.module.exports [as path_commits] (/usr/local/share/boilerplate/@codepad-modules/git/lib/path_commits.js:12:25) {
+okt 02 07:03:50 bp-devel node[253981]:   caller: 'git.log',
+okt 02 07:03:50 bp-devel node[253981]:   code: 'NotFoundError',
+okt 02 07:03:50 bp-devel node[253981]:   data: { what: 'HEAD' }
+okt 02 07:03:50 bp-devel node[253981]: }
+
+
+TODO fix file updates
+
+*/
