@@ -1,6 +1,6 @@
 /*ßoilerplate */
 
-const ejsfile = ß.get_module_path('search','public/results.ejs');
+//const ejsfile = ß.get_module_path('search','public/results.ejs');
 const errfile = ß.get_module_path('search','public/err.ejs');
 
 const {
@@ -69,7 +69,7 @@ function form_response(data, search_term, replace_term) {
         if (current !== fullpath) {
             link = abspart + '/p/' + fullpath;
             //onclick="JavaScript:top.document.getElementById(\'fileView\').src=\'' + link + '\'"
-            res_send += '<br /><a href="' + link + '" class="CodeMirror-guttermarker">' + fullpath.substring(0, g) + '<b>' + fullpath.substring(g) + '</b></a> - ' + sw;
+            res_send += '<br /><a href="' + link + '" class="CodeMirror-guttermarker">/' + fullpath.substring(0, g) + '<b>' + fullpath.substring(g) + '</b></a> - ' + sw;
 
             // offer_term the replace action
             if (replace_term) res_send += ' - <a class="CodeMirror-guttermarker" href="' + abspart + '/replace/' + fullpath + '?&find=' + search_term + '&replace=' + replace_term + '">REPLACE ALL TO:</a> <span class="term">' + replace_term + '</span>';

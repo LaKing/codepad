@@ -1,23 +1,20 @@
 /* js-beautify */
 
+
+module.exports = function(socket) {
+    socket.on("typohint", function(projectfile, callback) {
+        if (!projectfile) projectfile = socket.projectfile;
+        if (projectfile.charAt(0) !== "/") return console.error("Cannot typohint. Bad path.");
+        if (!projectfile) return console.error("Cannot typohint. No parameter.");
+        if (!ß.projectfiles[projectfile]) return console.error("Cannot typohint. No such projectfile: " + f);
+        if (!ß.projectfiles[projectfile].realpath) return console.error("Cannot typohint. No realpath for projectfile: " + f);
+		
+      	ß.lib.typohint.evaluate_file(projectfile);
+    });
+};
+
+/*
 const EditorSocketIOServer = require(ß.get_module_path("ot") + "/editor-socketio-server.js");
-
-/*      
-JavaScript (including experimental features)
-JSX
-Angular
-Vue
-Flow
-TypeScript
-CSS, Less, and SCSS
-HTML
-JSON
-GraphQL
-Markdown, including GFM and MDX
-YAML
-*/
-
-const extensions = "js vue ts css scss html json ms yaml yml graphql";
 
 module.exports = function(socket) {
     socket.on("beautify", function(projectfile, callback) {
@@ -37,10 +34,7 @@ module.exports = function(socket) {
             printWidth: 180,
             proseWrap: "never"
         };
-		
-      	const ext = ß.path.extname(realpath).substring(1);
 
-      	if (extensions.split(' ').indexOf(ext) < 0) return;
         try {
             var data = ß.prettier.format(ß.editor[realpath].document, options);
             //ß.lib.projectfiles.save(projectfile, data);
@@ -58,3 +52,4 @@ module.exports = function(socket) {
         }
     });
 };
+*/

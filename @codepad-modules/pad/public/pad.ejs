@@ -120,6 +120,10 @@
             socket.emit('beautify', pad, function(err, data) {
             	editor.setValue(data);
             });
+          	socket.emit('typohint', pad, function(err, data) {
+            	//editor.setValue(data);
+            });
+
         }
     });
 

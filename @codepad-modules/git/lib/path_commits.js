@@ -6,40 +6,41 @@ module.exports = async function (path, callback) {
     if (!ß.projectfiles[path]) return;
     if (!ß.projectfiles[path].file) return;
     //if (ß.projectfiles[file].readonly) return;
-
+	var commits = false;
+  
     const filepath = path.substring(1);
     try {
-        const commits = await git.log({ fs, dir });
+        commits = await git.log({ fs, dir });
     } catch (error) {
         ß.err(error);
-      	if (callback) callback();
-		return;
+        if (callback) callback();
+        return;
     }
 
-    let lastSHA = null;
-    let lastCommit = null;
-    const commitsThatMatter = [];
-    for (const commit of commits) {
-        try {
-            const o = await git.readObject({ fs, dir, oid: commit.oid, filepath });
-            if (o.oid !== lastSHA) {
-                if (lastSHA !== null) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message });
-                lastSHA = o.oid;
+    if (commits) {
+        let lastSHA = null;
+        let lastCommit = null;
+        const commitsThatMatter = [];
+        for (const commit of commits) {
+            try {
+                const o = await git.readObject({ fs, dir, oid: commit.oid, filepath });
+                if (o.oid !== lastSHA) {
+                    if (lastSHA !== null) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message });
+                    lastSHA = o.oid;
+                }
+            } catch (err) {
+                // file no longer there
+
+                if (lastCommit) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message });
+                break;
             }
-        } catch (err) {
-            // file no longer there
-
-            if (lastCommit) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message });
-            break;
+            lastCommit = commit;
         }
-        lastCommit = commit;
+        ß.projectfiles[path].git = commitsThatMatter;
     }
-    ß.projectfiles[path].git = commitsThatMatter;
 
     if (callback) callback();
 };
-
-
 
 /*
 

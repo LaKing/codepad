@@ -4,7 +4,7 @@
 
 // Depends on htmlhint jshint and csshint
 
-(function(mod) {
+(function (mod) {
     if (typeof exports == "object" && typeof module == "object")
         // CommonJS
         mod(require("../../lib/codemirror"), require("htmlhint"));
@@ -13,7 +13,7 @@
         define(["../../lib/codemirror", "htmlhint"], mod);
     // Plain browser env
     else mod(CodeMirror, window.HTMLHint);
-})(function(CodeMirror, HTMLHint) {
+})(function (CodeMirror, HTMLHint) {
     "use strict";
 
     var defaultRules = {
@@ -25,20 +25,20 @@
         "spec-char-escape": true,
         "id-unique": true,
         "src-not-empty": true,
-        "attr-no-duplication": true
+        "attr-no-duplication": true,
     };
 
-    CodeMirror.registerHelper("lint", "html", function(text, options) {
+    CodeMirror.registerHelper("lint", "html", function (text, options) {
         // dependency verification
         // htmllint
         var found = [];
         if (HTMLHint && !HTMLHint.verify) {
             if (typeof HTMLHint.default !== "undefined") {
                 HTMLHint = HTMLHint.default;
-                console.log('HTMLHint default');
+                console.log("HTMLHint default");
             } else {
                 HTMLHint = HTMLHint.HTMLHint;
-                console.log('HTMLHint else');
+                console.log("HTMLHint else");
             }
         }
         if (!HTMLHint) HTMLHint = window.HTMLHint;
@@ -99,7 +99,7 @@
                         message: error.reason,
                         severity: error.code ? (error.code.startsWith("W") ? "warning" : "error") : "error",
                         from: CodeMirror.Pos(line, start),
-                        to: CodeMirror.Pos(line, end)
+                        to: CodeMirror.Pos(line, end),
                     };
 
                     output.push(hint);
@@ -123,7 +123,7 @@
                     from: CodeMirror.Pos(startLine, startCol),
                     to: CodeMirror.Pos(endLine, endCol),
                     message: message.message,
-                    severity: message.type
+                    severity: message.type,
                 });
             }
         }
@@ -147,7 +147,7 @@
                         from: CodeMirror.Pos(startLine, startCol),
                         to: CodeMirror.Pos(endLine, endCol),
                         message: message.message,
-                        severity: message.type
+                        severity: message.type,
                     });
                 }
             }

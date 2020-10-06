@@ -10,8 +10,7 @@ const txtejs = ß.get_module_path("pad", "public/txt.ejs");
 const preejs = ß.get_module_path("pad", "public/pre.ejs");
 const embedejs = ß.get_module_path("pad", "public/embed.ejs");
 
-ß.app.get("/p/*", function(req, res, next) {
-    
+ß.app.get("/p/*", function (req, res, next) {
     let theme = ß.THEME;
     const username = ß.lib.basicauth.username_by_req(req);
     if (ß.settings[username]) if (ß.settings[username].theme) theme = ß.settings[username].theme;
@@ -21,9 +20,9 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
 
     var fullpath = ß.PROJECTDIR + "/" + file;
     var path = "/" + file;
- 
-  	ß.run_hook("pad", path);
-  
+
+    ß.run_hook("pad", path);
+
     var dot = filename.lastIndexOf(".");
     var ext = "txt";
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
@@ -33,8 +32,8 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
 
     if (ß.projectfiles[path]) if (ß.projectfiles[path].readonly) readonly = true;
 
-  	//Ł(ß.projectfiles[path].size);
-  
+    //Ł(ß.projectfiles[path].size);
+
     var mode = CodeMirror.findModeByFileName(filename);
 
     //Ł(mode);
@@ -45,20 +44,20 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
             theme: theme,
             file: file,
             mode: mode.mode || "null",
-            lint_options: lint_options
+            lint_options: lint_options,
         });
     }
 
     //Ł(mime.getType(filename));
 
     // pdf, jpg, and similar ...
-    res.sendFile(fullpath, {}, function(err) {
+    res.sendFile(fullpath, {}, function (err) {
         đ(err);
         if (err)
             return res.render(errejs, {
                 theme: theme,
                 file: file,
-                code: err.code
+                code: err.code,
             });
     });
 });
