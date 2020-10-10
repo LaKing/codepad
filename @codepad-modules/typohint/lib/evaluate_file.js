@@ -25,7 +25,7 @@ function evaluate_file_contents(file, data) {
     // evaluate code bloacks
     if (!ß.typohint_db[db]) ß.typohint_db[db] = {};
     if (ext === "js") return evaluate_js_block(file, data);
-    evaluate_contents_block(file, 0, strip(data, { preserveNewlines: true }), ß.typohint_db[db]);
+    evaluate_contents_block(file, 0, strip(data, { preserveNewlines: true }), db);
 }
 
 function evaluate_js_block(file, data) {
@@ -36,21 +36,21 @@ function evaluate_js_block(file, data) {
         // if type is Numeric Keyword or Punctuator, then we are good.
         let pos = tokens[i].loc.start.line;
 
-        if (type === "Identifier") evaluate_word(file, pos, tokens[i].value, ß.typohint_db["js-Identifier"]);
-        if (type === "String") evaluate_contents(file, pos, tokens[i].value, ß.typohint_db["js-String"]);
+        if (type === "Identifier") evaluate_word(file, pos, tokens[i].value, "js-Identifier");
+        if (type === "String") evaluate_contents(file, pos, tokens[i].value, "js-String");
     }
 }
 
-function evaluate_contents_block(file, offset, data, db) {
+function evaluate_contents_block(file, offset, data, dbname) {
     const lines = data.split("\n");
 
     for (let pos in lines) {
-        evaluate_contents(file, offset + pos, lines[pos], db);
+        evaluate_contents(file, offset + pos, lines[pos], dbname);
     }
 }
 
-function evaluate_contents(file, pos, data, db) {
-    const arr = data.replace(/[\W]+/g, " ").split(" ");
+function evaluate_contents(file, pos, data, dbname) {
+    const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
 
     for (let a in arr) {
         let w = arr[a];
@@ -58,11 +58,12 @@ function evaluate_contents(file, pos, data, db) {
         if (w.length > 30) continue;
         if (!isNaN(w)) continue;
         //if (keywords.indexOf(w) >= 0) continue;
-        evaluate_word(file, pos, w, db);
+        evaluate_word(file, pos, w, dbname);
     }
 }
 
-function evaluate_word(file, pos, e, db) {
+function evaluate_word(file, pos, e, dbname) {
+  	let db = ß.typohint_db[dbname];
     if (e.length < 3) return;
     // if the word is more then once in the db, we can't consider it a typo
     if (db[e]) if (db[e] > 1) return;
@@ -72,7 +73,7 @@ function evaluate_word(file, pos, e, db) {
         if (is_similar(e, w) === true) ws[w] = db[w];
     }
     if (Object.keys(ws).length < 1) return;
-    ß.lib.typohint.notify(file, pos, e, ws);
+    ß.lib.typohint.register(file, pos, e, ws, dbname);
 }
 
 function is_similar(a, b) {

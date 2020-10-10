@@ -19,6 +19,9 @@ module.exports = function() {
         if (ß.projectfiles[i].readonly) projectfiles[i].ro = true;
         if (ß.projectfiles[i].git) projectfiles[i].git = ß.projectfiles[i].git;
 		if (ß.projectfiles[i].typohint) projectfiles[i].typohint = ß.projectfiles[i].typohint;
+      
+      	// TODO eventually implement hook here for the modular structure
+      
         // check for files at users
         if (ß.projectfiles[i].at)
             // i is projectfile index

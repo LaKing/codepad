@@ -58,7 +58,7 @@ function process_contents_block(data, db) {
 
 function process_data(data, db) {
 
-    const arr = data.replace(/[\W]+/g, " ").split(" ");
+    const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
 
     for (let a in arr) {
         let w = arr[a];

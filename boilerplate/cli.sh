@@ -53,7 +53,7 @@ fi
 
 if [[ ! -f boilerplate/cli.js ]]
 then
-	echo "Could not locate boilerplate/cli.js in the workind directory. Exiting."
+	echo "Could not locate boilerplate/cli.js in the working directory. Exiting."
     exit 32
 fi
 
