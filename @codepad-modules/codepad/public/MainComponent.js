@@ -107,7 +107,7 @@ export default {
                 <div id="logline" class="ellipse" :title="$store.state.logline" @click=""><span v-html="$store.state.logline"></span></div>
             </div>
             <div>
-                <button title="show typographic hint page" class="btn newwindow" @click="window.open('/hint')"><i class="fas fa-i-cursor"></i></button>
+                <button title="show typographic hint page" class="btn newwindow" @click="window.open('/hint'),highlight_typo()"><i class="fas fa-i-cursor"></i></button>
                 <button title="static full log here" class="btn newwindow" @click="$store.commit('nopad');"><i class="fas fa-border-style"></i></button>
                 <button title="static full log in new window" class="btn newwindow" @click="window.open('/log')"><i class="fas fa-grip-lines"></i></button>
                 <button title="dynamic last-logs in new window" class="btn newwindow" @click="window.open('/logs')"><i class="fas fa-bars"></i></button>
@@ -148,7 +148,7 @@ export default {
             btn_size: 40,
             topmenu: false,
             trash_folder_dialog: false,
-            trash_file_dialog: false
+            trash_file_dialog: false,
         };
     },
     components: {
@@ -157,17 +157,20 @@ export default {
         CommitsComponent,
         SettingsComponent,
         Splitpanes,
-        Pane
+        Pane,
     },
     computed: {
         top_msg_w() {
             return `calc(${100 - this.first_panesize}vw - 650px)`;
-        }
+        },
+        typo() {
+            return ß.projectfiles;
+        },
     },
     mounted() {
         let _this = this;
         _this.window_size = window.innerWidth;
-        window.onresize = function() {
+        window.onresize = function () {
             _this.window_size = window.innerWidth;
         };
     },
@@ -175,21 +178,24 @@ export default {
         logs(log) {
             var container = document.querySelector("#logs-container");
             if (container !== null) container.scrollTop = container.scrollHeight;
-        }
+        },
     },
     methods: {
         pad(path) {
             this.$store.commit("pad", path);
         },
+        highlight_typo() {
+            console.log("type", ß.projectfiles);
+        },
         run() {
-          	var interpreter = '/raw';
-            var extension = this.$store.state.pad.split('.').pop();
-          	
+            var interpreter = "/raw";
+            var extension = this.$store.state.pad.split(".").pop();
+
             if (extension === "sh") interpreter = "bash";
             if (extension === "js") interpreter = "node";
             if (extension === "php") interpreter = "php";
             if (extension === "rb") interpreter = "ruby";
-          
+
             window.open("/" + interpreter + this.$store.state.pad);
         },
         uri(t) {
@@ -202,8 +208,9 @@ export default {
             if (!path) path = this.$store.state.pad;
             console.log("beautify", path);
             if (!path) return;
-            this.$socket.client.emit("beautify", path);
-            this.$socket.client.emit("typohint", path);
+            this.$socket.client.emit("beautify", path, function (err, data) {
+                this.$socket.client.emit("typohint", path);
+            });
         },
         push() {
             this.$socket.client.emit("exec", "push");
@@ -212,7 +219,7 @@ export default {
             var input = document.createElement("input");
             input.multiple = true;
             input.type = "file";
-            input.onchange = e => {
+            input.onchange = (e) => {
                 console.log("file-upload");
 
                 for (var i = 0; i < e.target.files.length; i++) {
@@ -229,7 +236,7 @@ export default {
                             name: file.name,
                             type: file.type,
                             size: file.size,
-                            file: file
+                            file: file,
                         },
                         this.fileComplete
                     );
@@ -246,7 +253,7 @@ export default {
             if (!path) return;
             this.$store.commit("clearpad", path);
 
-            this.$socket.client.emit("path_trash", path, success => {
+            this.$socket.client.emit("path_trash", path, (success) => {
                 if (!success) this.$store.commit("error", path);
             });
         },
@@ -255,7 +262,7 @@ export default {
             if (!path) return;
             this.$store.commit("cleardir", path);
 
-            this.$socket.client.emit("path_trash", path, success => {
+            this.$socket.client.emit("path_trash", path, (success) => {
                 if (!success) this.$store.commit("error", path);
             });
         },
@@ -284,6 +291,6 @@ export default {
         show_button(i) {
             if (this.window_size < 768) return true;
             return ((this.window_size - 5) * this.first_panesize) / 100 > i * this.btn_size;
-        }
-    }
+        },
+    },
 };

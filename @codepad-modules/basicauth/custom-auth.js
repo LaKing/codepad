@@ -51,12 +51,11 @@ function buildMiddleware(options) {
     }
 
     return function authMiddleware(req, res, next) {
-      
-      	// We have a little codepad customizatuon here. 
+        // We have a little codepad customizatuon here.
         // If the auth is already defined - by a previous middleware - just continue.
-		if (req.auth) return next();
+        if (req.auth) return next();
         // That's it, ...
-      
+
         var authentication = auth(req);
 
         if (!authentication) return unauthorized();

@@ -52,6 +52,9 @@
 <script src="/codemirror/addon/search/matchesonscrollbar.js"></script>
 <script src="/codemirror/addon/search/jump-to-line.js"></script>
 
+<script src="/codemirror/addon/search/match-highlighter.js"></script>
+<script src="/codemirror/addon/selection/mark-selection.js"></script>
+
 
 <script src="/codemirror/mode/javascript/javascript.js"></script>
 <script src="/codemirror/mode/css/css.js"></script>
@@ -74,6 +77,8 @@
 <script src="/ot/editor-client.js"></script>
 
 <!-- ------ -->
+
+
 
 <textarea id="code" name="code" rows="5"></textarea>
 <script>
@@ -109,7 +114,8 @@
         },
         gutters: ["CodeMirror-lint-markers"],
         lint: <%- lint_options %>,
-        readOnly: <%- readonly %>
+        readOnly: <%- readonly %>,
+        highlightSelectionMatches:  {showToken: /\w/, annotateScrollbar: true} // TODO
 
     });
 
@@ -117,18 +123,32 @@
     editor.setOption("extraKeys", {
         F2: function(cm) {
             console.log("F2 handler", pad);
+
             socket.emit('beautify', pad, function(err, data) {
             	editor.setValue(data);
+              	     socket.emit('typohint', pad, function(err, data) {
+            	});
             });
-          	socket.emit('typohint', pad, function(err, data) {
-            	//editor.setValue(data);
-            });
+
 
         }
     });
 
     socket.on('reload', function() {
         location.reload();
+    });
+  
+  	socket.on('typohint', function(typohint_array) {
+      	console.log('typohint_array', typohint_array);
+      	for (let i in typohint_array) {
+          	// we have the visual numbers in the array, and we need to use 0-indexed
+      		let line = typohint_array[i].line-1;
+          	let info = typohint_array[i].word + ' -> ' + Object.keys(typohint_array[i].wsdb).join(' | ');
+          	let linestr = editor.getLine(line);
+          	//console.log(line, typohint_array[i], linestr);
+          	let startch = linestr.indexOf(typohint_array[i].word);
+			editor.markText({line: line, ch: startch}, {line: line, ch: startch + (typohint_array[i].word.length) }, {className: "typohint", attributes: {title: info}});   
+        };
     });
   
     socket.on('doc', function(data) {
@@ -143,7 +163,7 @@
             line: line - 1,
             ch: char
         });
-
+      	
     });
 
     socket.on('err', function(data) {

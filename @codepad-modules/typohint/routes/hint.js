@@ -49,7 +49,7 @@ function hint(req, res) {
                     let o = ß.projectfiles[file].typohint[n];
 
                     // line indicator
-                    let link = "/p/" + file + "?line=" + o.line;
+                    let link = "/p" + file + "?line=" + o.line;
                     var textline =
                         '<b><a class="CodeMirror-guttermarker" href="' +
                         link +

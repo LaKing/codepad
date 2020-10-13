@@ -1,15 +1,18 @@
 /* js-beautify */
 
-
-module.exports = function(socket) {
-    socket.on("typohint", function(projectfile, callback) {
+module.exports = function (socket) {
+    socket.on("typohint", function (projectfile, callback) {
         if (!projectfile) projectfile = socket.projectfile;
         if (projectfile.charAt(0) !== "/") return console.error("Cannot typohint. Bad path.");
         if (!projectfile) return console.error("Cannot typohint. No parameter.");
-        if (!ß.projectfiles[projectfile]) return console.error("Cannot typohint. No such projectfile: " + f);
-        if (!ß.projectfiles[projectfile].realpath) return console.error("Cannot typohint. No realpath for projectfile: " + f);
-		
-      	ß.lib.typohint.evaluate_file(projectfile);
+        if (!ß.projectfiles[projectfile]) return console.error("Cannot typohint. No such projectfile: " + projectfile);
+        if (!ß.projectfiles[projectfile].realpath) return console.error("Cannot typohint. No realpath for projectfile: " + projectfile);
+
+        ß.lib.typohint.evaluate_file(projectfile);
+
+        setTimeout(function () {
+            socket.emit("typohint", ß.projectfiles[projectfile].typohint);
+        }, 1000);
     });
 };
 

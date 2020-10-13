@@ -24,8 +24,8 @@ module.exports = function(socket) {
         if (!projectfile) projectfile = socket.projectfile;
         if (projectfile.charAt(0) !== "/") return console.error("Cannot beautify. Bad path.");
         if (!projectfile) return console.error("Cannot beautify. No parameter.");
-        if (!ß.projectfiles[projectfile]) return console.error("Cannot beautify. No such projectfile: " + f);
-        if (!ß.projectfiles[projectfile].realpath) return console.error("Cannot beautify. No realpath for projectfile: " + f);
+        if (!ß.projectfiles[projectfile]) return console.error("Cannot beautify. No such projectfile: " + projectfile);
+        if (!ß.projectfiles[projectfile].realpath) return console.error("Cannot beautify. No realpath for projectfile: " + projectfile);
 
         var realpath = ß.projectfiles[projectfile].realpath;
 

@@ -17,11 +17,11 @@ export default {
 `,
     data() {
         return {
-            options: {}
+            options: {},
         };
     },
     props: {
-        path: String
+        path: String,
     },
     components: {},
     methods: {
@@ -38,12 +38,12 @@ export default {
         pad(path) {
             this.$store.commit("pad", path);
         },
-        file_handler: function(e, path) {
+        file_handler: function (e, path) {
             if (!path) path = "";
             e.preventDefault();
             window.open("/p" + path);
         },
-        folder_handler: function(e, path) {
+        folder_handler: function (e, path) {
             if (!path) path = "";
             e.preventDefault();
             window.open("/mc" + path);
@@ -51,30 +51,30 @@ export default {
         op(path) {
             return this.$store.state.dir === path;
         },
-        ro_file: function(path) {
+        ro_file: function (path) {
             if (this.$store.state.files[path].ro) return true;
             return false;
         },
-        ro_folder: function(path) {
+        ro_folder: function (path) {
             if (this.$store.state.folders[path].ro) return true;
             return false;
         },
-      	ul(v) {
-          	let s = 0;
-        	for (let x in v) {
-              s += v[x];
+        ul(v) {
+            let s = 0;
+            for (let x in v) {
+                s += v[x];
             }
-          	return s % 2;
-        }
+            return s % 2;
+        },
     },
     computed: {
-        folders: function() {
+        folders: function () {
             return Object.keys(match_folders(this.$store.state.folders, this.path)).sort();
         },
-        files: function() {
+        files: function () {
             return Object.keys(get_files(this.$store.state.files, this.path)).sort();
-        }
-    }
+        },
+    },
 };
 
 // a and b are arrays, we check if b is the ordered subset of a, return true if all b elements are also in a.
@@ -150,8 +150,7 @@ function match_folders(data, dir) {
     }
     for (const v in data) {
         const a = v.split("/").slice(1);
-        if (a.length === b.length + 1) 
-          if (subab(a, b)) ret[v] = {};
+        if (a.length === b.length + 1) if (subab(a, b)) ret[v] = {};
     }
     return ret;
 }
