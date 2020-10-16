@@ -30,7 +30,15 @@ function evaluate_file_contents(file, data) {
 
 function evaluate_js_block(file, data) {
     if (data.charAt(0) === "#") data = "//" + data;
-    const tokens = esprima.tokenize(data, { loc: true });
+  
+    let tokens = [];
+  	try {
+        tokens = esprima.tokenize(data, { loc: true });
+    } catch (err) {
+        console.log("Can not tokenize", file);
+        return;
+    }
+
     for (let i in tokens) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.

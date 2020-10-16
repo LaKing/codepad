@@ -12,7 +12,6 @@ module.exports = function () {
     setTimeout(ß.lib.typohint.save_db, 5000);
 };
 
-
 function load(file) {
     process_data(file, ß.typohint_db.project);
 
@@ -37,7 +36,15 @@ function process_file_contents(file, data) {
 
 function process_js_block(file, data) {
     if (data.charAt(0) === "#") data = "//" + data;
-    const tokens = esprima.tokenize(data);
+  	console.log(file);
+    let tokens = [];
+  	try {
+        tokens = esprima.tokenize(data);
+    } catch (err) {
+      	console.log("Can not tokenize", file);
+        //console.log(err);
+        return;
+    }
     for (let i in tokens) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.
@@ -57,7 +64,6 @@ function process_contents_block(data, db) {
 */
 
 function process_data(data, db) {
-
     const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
 
     for (let a in arr) {
