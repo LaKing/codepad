@@ -1,7 +1,5 @@
 /*ßoilerplate */
 
-ß.app.get('/projectfiles', function(req,res) {
-
-	res.send('<pre>' + JSON.stringify(ß.projectfiles, null, 2) + '</pre>');	
-  
+ß.app.get("/projectfiles", function (req, res) {
+    res.send("<pre>" + JSON.stringify(ß.projectfiles, null, 2) + "</pre>");
 });

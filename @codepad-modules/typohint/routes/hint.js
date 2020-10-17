@@ -93,15 +93,14 @@ function hint(req, res) {
 
     if (ß.projectfiles[file])
         if (ß.projectfiles[file].typohint) {
-          
             for (let n in ß.projectfiles[file].typohint) {
                 let o = ß.projectfiles[file].typohint[n];
 
                 ß.lib.typohint.ignore(file, o.line, o.word, o.dbname);
-              
-              	Ł(o);
+
+                Ł(o);
             }
-          
+
             ß.projectfiles[file].typohint = [];
             res.redirect("/hint");
         }

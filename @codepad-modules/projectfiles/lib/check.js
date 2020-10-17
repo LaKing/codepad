@@ -7,14 +7,13 @@ const readdir = util.promisify(ß.fs.readdir);
 var last = "";
 
 async function check(path) {
-
     if (ß.BLACKLIST_DIRS.indexOf(path.split("/").pop()) >= 0) return "";
     let n = "";
 
     let dirs = await readdir(path, { withFileTypes: true });
     for (let d in dirs) {
         let name = dirs[d].name;
-		if (dirs[d].isDirectory()) {
+        if (dirs[d].isDirectory()) {
             n += "|" + (await check(path + "/" + name));
         }
         n += "|" + dirs[d].name;

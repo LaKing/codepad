@@ -11,17 +11,15 @@ export default {
         return {};
     },
     props: {
-        path: String
+        path: String,
     },
     methods: {
         get_title(p) {
             return p.message;
         },
-      	open_commit(p) {
-          window.open("/git/"  + p.oid + this.$store.state.pad);
-        }
+        open_commit(p) {
+            window.open("/git/" + p.oid + this.$store.state.pad);
+        },
     },
-    computed: {
-
-    }
+    computed: {},
 };

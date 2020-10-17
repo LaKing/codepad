@@ -6,8 +6,8 @@ module.exports = async function (path, callback) {
     if (!ß.projectfiles[path]) return;
     if (!ß.projectfiles[path].file) return;
     //if (ß.projectfiles[file].readonly) return;
-	var commits = false;
-  
+    var commits = false;
+
     const filepath = path.substring(1);
     try {
         commits = await git.log({ fs, dir });

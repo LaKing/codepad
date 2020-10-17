@@ -26,7 +26,7 @@ const URL = require("url").URL;
 var homedir = os.homedir();
 //var id_file = homedir + "/.ssh/id_rsa";
 
-ß.wio.on("connection", function(socket) {
+ß.wio.on("connection", function (socket) {
     const request = socket.request;
     const req_url = new URL(request.headers.referer);
     const uri = req_url.pathname;
@@ -66,7 +66,7 @@ var homedir = os.homedir();
 
     if (!file) return exec(socket, ß.PROJECTDIR, cmd, []);
 
-    return fs.access(dir + "/" + file, fs.constants.F_OK, err => {
+    return fs.access(dir + "/" + file, fs.constants.F_OK, (err) => {
         if (err) return exec(socket, ß.PROJECTDIR, "bash", []);
         exec(socket, dir, cmd, arg);
     });
@@ -93,25 +93,25 @@ function exec(socket, dir, cmd, arg) {
         name: "xterm-256color",
         cols: 80,
         rows: 30,
-        cwd: dir
+        cwd: dir,
     });
 
     //console.log((new Date()) + " PID=" + term.pid + " STARTED on behalf of user=" + sshuser);
-    term.on("data", function(data) {
+    term.on("data", function (data) {
         socket.emit("output", data);
     });
 
-    term.on("exit", function(code) {
+    term.on("exit", function (code) {
         term = undefined;
         //console.log((new Date()) + " PID=" + term.pid + " ENDED");
     });
-    socket.on("resize", function(data) {
+    socket.on("resize", function (data) {
         if (term) term.resize(data.col, data.row);
     });
-    socket.on("input", function(data) {
+    socket.on("input", function (data) {
         if (term) term.write(data);
     });
-    socket.on("disconnect", function() {
+    socket.on("disconnect", function () {
         if (term) term.end();
         ß.debug("- wetty socket disconnect" + username);
     });

@@ -19,8 +19,8 @@ YAML
 
 const extensions = "js vue ts css scss html json ms yaml yml graphql";
 
-module.exports = function(socket) {
-    socket.on("beautify", function(projectfile, callback) {
+module.exports = function (socket) {
+    socket.on("beautify", function (projectfile, callback) {
         if (!projectfile) projectfile = socket.projectfile;
         if (projectfile.charAt(0) !== "/") return console.error("Cannot beautify. Bad path.");
         if (!projectfile) return console.error("Cannot beautify. No parameter.");
@@ -35,22 +35,22 @@ module.exports = function(socket) {
             filepath: realpath,
             jsxBracketSameLine: true,
             printWidth: 180,
-            proseWrap: "never"
+            proseWrap: "never",
         };
-		
-      	const ext = ß.path.extname(realpath).substring(1);
 
-      	if (extensions.split(' ').indexOf(ext) < 0) return;
+        const ext = ß.path.extname(realpath).substring(1);
+
+        if (extensions.split(" ").indexOf(ext) < 0) return;
         try {
             var data = ß.prettier.format(ß.editor[realpath].document, options);
             //ß.lib.projectfiles.save(projectfile, data);
             //ß.editor[realpath].updateDocServerOperation(data);
-          	// okay, instead of savingf it on the server side, we will send it to the client, and update the doc there.
-          
+            // okay, instead of savingf it on the server side, we will send it to the client, and update the doc there.
+
             ß.lib.projectfiles.oplog(socket.username, "beautify prettier", socket.projectfile);
             ß.ntc(socket.username, "beautify prettier", socket.projectfile);
-          	// we send it here in a callback
-          	callback(null, data);
+            // we send it here in a callback
+            callback(null, data);
         } catch (err) {
             let msg = err.message.split("\n")[0];
             ß.lib.projectfiles.oplog(socket.username, "prettier error " + msg, socket.projectfile);

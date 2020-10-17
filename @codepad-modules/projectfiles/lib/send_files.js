@@ -3,12 +3,12 @@
 // sl - symbolik link
 // ro - readonly
 
-module.exports = function() {
+module.exports = function () {
     var projectfiles = {};
     // make a copy, but dont use the editor object for example, only that what is used in the client.
 
-  	// TODO there might be room for optimalisation here, do we really need to send that so often?
-  
+    // TODO there might be room for optimalisation here, do we really need to send that so often?
+
     // files
     for (let i in ß.projectfiles) {
         if (!ß.projectfiles[i].file) continue;
@@ -18,10 +18,10 @@ module.exports = function() {
         if (ß.projectfiles[i].realpath !== ß.PROJECTDIR + i) projectfiles[i].sl = true;
         if (ß.projectfiles[i].readonly) projectfiles[i].ro = true;
         if (ß.projectfiles[i].git) projectfiles[i].git = ß.projectfiles[i].git;
-		if (ß.projectfiles[i].typohint) projectfiles[i].typohint = ß.projectfiles[i].typohint;
-      
-      	// TODO eventually implement hook here for the modular structure
-      
+        if (ß.projectfiles[i].typohint) projectfiles[i].typohint = ß.projectfiles[i].typohint;
+
+        // TODO eventually implement hook here for the modular structure
+
         // check for files at users
         if (ß.projectfiles[i].at)
             // i is projectfile index

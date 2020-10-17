@@ -4,9 +4,9 @@ CodeMirror = {};
 // added README with capital letters
 
 CodeMirror.modeInfo = [
-  	// Adding some extra modes here
-  	{ name: "Readonly Text", mime: "text/plain", mode: "null", ext: ["crt", "csr", "key", "pem", "pid", "log"], file: /^(version|license)/i , readonly: true },
-  	// default modes from codemirror
+    // Adding some extra modes here
+    { name: "Readonly Text", mime: "text/plain", mode: "null", ext: ["crt", "csr", "key", "pem", "pid", "log"], file: /^(version|license)/i, readonly: true },
+    // default modes from codemirror
     { name: "APL", mime: "text/apl", mode: "apl", ext: ["dyalog", "apl"] },
     { name: "PGP", mimes: ["application/pgp", "application/pgp-encrypted", "application/pgp-keys", "application/pgp-signature"], mode: "asciiarmor", ext: ["asc", "pgp", "sig"] },
     { name: "ASN.1", mime: "text/x-ttcn-asn", mode: "asn.1", ext: ["asn", "asn1"] },
@@ -25,7 +25,7 @@ CodeMirror.modeInfo = [
         mimes: ["application/vnd.coffeescript", "text/coffeescript", "text/x-coffeescript"],
         mode: "coffeescript",
         ext: ["coffee"],
-        alias: ["coffee", "coffee-script"]
+        alias: ["coffee", "coffee-script"],
     },
     { name: "Common Lisp", mime: "text/x-common-lisp", mode: "commonlisp", ext: ["cl", "lisp", "el"], alias: ["lisp"] },
     { name: "Cypher", mime: "application/x-cypher-query", mode: "cypher", ext: ["cyp", "cypher"] },
@@ -76,7 +76,7 @@ CodeMirror.modeInfo = [
         mimes: ["text/javascript", "text/ecmascript", "application/javascript", "application/x-javascript", "application/ecmascript"],
         mode: "javascript",
         ext: ["js"],
-        alias: ["ecmascript", "js", "node"]
+        alias: ["ecmascript", "js", "node"],
     },
     { name: "JSON", mimes: ["application/json", "application/x-json"], mode: "javascript", ext: ["json", "map"], alias: ["json5"] },
     { name: "JSON-LD", mime: "application/ld+json", mode: "javascript", ext: ["jsonld"], alias: ["jsonld"] },
@@ -174,7 +174,7 @@ CodeMirror.modeInfo = [
     { name: "Z80", mime: "text/x-z80", mode: "z80", ext: ["z80"] },
     { name: "mscgen", mime: "text/x-mscgen", mode: "mscgen", ext: ["mscgen", "mscin", "msc"] },
     { name: "xu", mime: "text/x-xu", mode: "mscgen", ext: ["xu"] },
-    { name: "msgenny", mime: "text/x-msgenny", mode: "mscgen", ext: ["msgenny"] }
+    { name: "msgenny", mime: "text/x-msgenny", mode: "mscgen", ext: ["msgenny"] },
 ];
 // Ensure all modes have a mime property for backwards compatibility
 for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
@@ -182,7 +182,7 @@ for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
     if (info.mimes) info.mime = info.mimes[0];
 }
 
-CodeMirror.findModeByMIME = function(mime) {
+CodeMirror.findModeByMIME = function (mime) {
     mime = mime.toLowerCase();
     for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
         var info = CodeMirror.modeInfo[i];
@@ -193,7 +193,7 @@ CodeMirror.findModeByMIME = function(mime) {
     if (/\+json$/.test(mime)) return CodeMirror.findModeByMIME("application/json");
 };
 
-CodeMirror.findModeByExtension = function(ext) {
+CodeMirror.findModeByExtension = function (ext) {
     ext = ext.toLowerCase();
     for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
         var info = CodeMirror.modeInfo[i];
@@ -201,7 +201,7 @@ CodeMirror.findModeByExtension = function(ext) {
     }
 };
 
-CodeMirror.findModeByFileName = function(filename) {
+CodeMirror.findModeByFileName = function (filename) {
     for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
         var info = CodeMirror.modeInfo[i];
         if (info.file && info.file.test(filename)) return info;
@@ -211,7 +211,7 @@ CodeMirror.findModeByFileName = function(filename) {
     if (ext) return CodeMirror.findModeByExtension(ext);
 };
 
-CodeMirror.findModeByName = function(name) {
+CodeMirror.findModeByName = function (name) {
     name = name.toLowerCase();
     for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
         var info = CodeMirror.modeInfo[i];

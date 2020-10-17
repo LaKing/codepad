@@ -20,17 +20,16 @@ var test = TAG +  "https://example.com" + BEL + "example.com" + TAG + BEL;
 console.log(test);
 */
 
-
 //---------
 
-var AU = require('ansi_up');
+var AU = require("ansi_up");
 var ansi_up = new AU.default();
-var find = '<a href=';
+var find = "<a href=";
 var replace = '<a target="_blank" href=';
-var re = new RegExp(find, 'g');
+var re = new RegExp(find, "g");
 
-module.exports = function(input) {
+module.exports = function (input) {
     return ansi_up.ansi_to_html(input).replace(re, replace);
 
-  	//return filter_codepad_links(ansi_up.ansi_to_html(input));
+    //return filter_codepad_links(ansi_up.ansi_to_html(input));
 };

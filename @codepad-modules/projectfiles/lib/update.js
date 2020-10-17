@@ -1,6 +1,5 @@
 /*ßoilerplate */
 
-
 function p(i) {
     ß.fs.lstat(ß.PROJECTDIR + "/" + i, (err, stats) => {
         if (stats) return;
@@ -18,10 +17,10 @@ function purge(path) {
 function stat(path, entry) {
     const p = path + "/" + entry;
 
-    ß.lib.projectfiles.realpath(p, function(err, realpath) {
+    ß.lib.projectfiles.realpath(p, function (err, realpath) {
         if (err) return;
 
-        ß.fs.access(realpath, ß.fs.constants.W_OK, acc_err => {
+        ß.fs.access(realpath, ß.fs.constants.W_OK, (acc_err) => {
             ß.fs.lstat(realpath, (err, stats) => {
                 if (err) return đ(err);
                 if (entry.charAt(0) === ".") return;
@@ -48,7 +47,7 @@ function stat(path, entry) {
                     }
                     ß.projectfiles[p].file = true;
                     ß.projectfiles[p].realpath = realpath;
-                  	ß.projectfiles[p].size = stats.size;
+                    ß.projectfiles[p].size = stats.size;
                     if (acc_err) ß.projectfiles[p].readonly = true;
                 }
             });
@@ -61,7 +60,7 @@ function traverse(path) {
         if (err) return đ(err);
         if (results) {
             if (results.length > ß.projectfiles_file_limit) return;
-            results.forEach(entry => {
+            results.forEach((entry) => {
                 if (ß.BLACKLIST_DIRS.indexOf(entry) >= 0) return;
                 stat(path, entry);
             });
@@ -69,7 +68,7 @@ function traverse(path) {
     });
 }
 
-module.exports = function(callback) {
+module.exports = function (callback) {
     purge();
     traverse("");
     //ß.fs.writeFile(ß.CWD + '/projectfiles.json', JSON.stringify(ß.projectfiles, null, 2));

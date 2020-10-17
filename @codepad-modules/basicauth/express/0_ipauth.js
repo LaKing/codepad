@@ -10,7 +10,7 @@
 });
 
 ß.app.use(function (req, res, next) {
-    var ip = req.headers["x-forwarded-for"];// || req.connection.remoteAddress;
+    var ip = req.headers["x-forwarded-for"]; // || req.connection.remoteAddress;
     if (ß.ipcash[ip])
         req.auth = {
             user: ß.ipcash[ip],

@@ -25,34 +25,32 @@ const store = new Vuex.Store({
         logline: "Codepad opened",
         // settings
         settings: { status: "Settings not loaded" },
-      	trash: false
+        trash: false,
     },
     getters: {
         // ...
-        isOpen: state => path => {
-          
-          	// make sure the opened pad is visible expanded
-          	if (state.pad)
-          	if (state.pad.substring(0, path.length+1) === path+'/') return true;
-          
+        isOpen: (state) => (path) => {
+            // make sure the opened pad is visible expanded
+            if (state.pad) if (state.pad.substring(0, path.length + 1) === path + "/") return true;
+
             return state.opened.includes(path);
         },
-        getPad: state => {
+        getPad: (state) => {
             if (!state.pad) return undefined;
             return "/p" + state.pad;
         },
-        getPath: state => {
+        getPath: (state) => {
             if (!state.pad) return undefined;
             return state.pad;
         },
-        getHistory: state => {
+        getHistory: (state) => {
             if (state.history.length < 1) return undefined;
             return state.history;
         },
-        getLogs: state => {
+        getLogs: (state) => {
             return state.logs;
         },
-        getNtc: state => {
+        getNtc: (state) => {
             let txt = "";
             if (state.ntc.now) txt += " " + state.ntc.now;
             if (state.ntc.username) txt += " " + state.ntc.username;
@@ -60,16 +58,16 @@ const store = new Vuex.Store({
             if (state.ntc.filepath) txt += " " + state.ntc.filepath;
             return txt;
         },
-        getNtcFilepath: state => {
+        getNtcFilepath: (state) => {
             return state.ntc.filepath;
         },
-        getSettings: state => {
+        getSettings: (state) => {
             return state.setings;
         },
-        getCommits: state => {
+        getCommits: (state) => {
             if (state.pad) if (state.files[state.pad]) if (state.files[state.pad].git) return state.files[state.pad].git;
             return [];
-        }
+        },
     },
     mutations: {
         home(state) {
@@ -95,7 +93,6 @@ const store = new Vuex.Store({
         nopad(state, path) {
             state.pad = undefined;
             router.push("/");
-          	
         },
         clearpad(state, path) {
             state.pad = undefined;
@@ -141,17 +138,17 @@ const store = new Vuex.Store({
         settings(state, data) {
             state.settings = data;
         },
-      	enable_trash(state, data) {
-        	state.trash = !state.trash;
-        }
-    }
+        enable_trash(state, data) {
+            state.trash = !state.trash;
+        },
+    },
 });
 
-var socket = io('/main');
+var socket = io("/main");
 Vue.use(VueSocketIOExt, socket);
 
 const router = new VueRouter({
-    mode: "history"
+    mode: "history",
 });
 
 new Vue({
@@ -160,7 +157,7 @@ new Vue({
     store: store,
     data: {},
     components: {
-        MainComponent
+        MainComponent,
     },
     sockets: {
         connect() {
@@ -184,20 +181,20 @@ new Vue({
         },
         settings(data) {
             store.commit("settings", data);
-        }
+        },
     },
     watch: {
         $route(to, from) {
             // react to route changes...
             //console.log("watch:", from, to);
             if (from.fullPath !== to.fullPath) store.commit("pad", to.hash.substring(1));
-        }
+        },
     },
-    mounted: function() {
-        this.$nextTick(function() {
+    mounted: function () {
+        this.$nextTick(function () {
             if (router.currentRoute.hash) store.commit("pad", router.currentRoute.hash.substring(1));
         });
-    }
+    },
 });
 
 // a and b are arrays, we check if b is the ordered subset of a, return true if all b elements are also in a.

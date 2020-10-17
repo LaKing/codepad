@@ -2,20 +2,20 @@ const strip = require("strip-comments");
 const esprima = require("esprima");
 
 module.exports = function evaluate_file(file) {
-  	if (!ß.projectfiles[file]) return;
+    if (!ß.projectfiles[file]) return;
     var ext = ß.path.extname(file).substring(1);
     if (ß.typohint_extensions.split(" ").indexOf(ext) < 0) return;
-	if (ß.projectfiles[file].readonly) return;
-  	if (ß.projectfiles[file].size > 10000) return;
-  
-  	ß.projectfiles[file].typohint = [];
-  	if (ß.projectfiles[file].realpath)
-  	ß.fs.readFile(ß.projectfiles[file].realpath, "utf8", function (err, contents) {
-        if (err) return đ(err);
-        // we have a limit on file size under the files to be considered
-        if (contents.length > 10000) return;
-        evaluate_file_contents(file, contents);
-    });
+    if (ß.projectfiles[file].readonly) return;
+    if (ß.projectfiles[file].size > 10000) return;
+
+    ß.projectfiles[file].typohint = [];
+    if (ß.projectfiles[file].realpath)
+        ß.fs.readFile(ß.projectfiles[file].realpath, "utf8", function (err, contents) {
+            if (err) return đ(err);
+            // we have a limit on file size under the files to be considered
+            if (contents.length > 10000) return;
+            evaluate_file_contents(file, contents);
+        });
 };
 
 function evaluate_file_contents(file, data) {
@@ -25,21 +25,21 @@ function evaluate_file_contents(file, data) {
     // evaluate code bloacks
     if (!ß.typohint_db[db]) ß.typohint_db[db] = {};
     if (ext === "js") return evaluate_js_block(file, data);
-    evaluate_contents_block(file, 0, strip(data, { preserveNewlines: true }), db);
+    evaluate_contents_block(file, 1, strip(data, { preserveNewlines: true }), db);
 }
 
 function evaluate_js_block(file, data) {
     if (data.charAt(0) === "#") data = "//" + data;
-  
+
     let tokens = [];
-  	try {
+    try {
         tokens = esprima.tokenize(data, { loc: true });
     } catch (err) {
         console.log("Can not tokenize", file);
         return;
     }
 
-    for (let i in tokens) {
+    for (let i = 0; i < tokens.length; i++) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.
         let pos = tokens[i].loc.start.line;
@@ -52,15 +52,15 @@ function evaluate_js_block(file, data) {
 function evaluate_contents_block(file, offset, data, dbname) {
     const lines = data.split("\n");
 
-    for (let pos in lines) {
-        evaluate_contents(file, offset + pos, lines[pos], dbname);
+    for (let i = 0; i < lines.length; i++) {
+        evaluate_contents(file, Number(offset + i), lines[i], dbname);
     }
 }
 
 function evaluate_contents(file, pos, data, dbname) {
     const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
 
-    for (let a in arr) {
+    for (let a = 0; a < arr.length; a++) {
         let w = arr[a];
         if (w.length < 3) continue;
         if (w.length > 30) continue;
@@ -71,11 +71,11 @@ function evaluate_contents(file, pos, data, dbname) {
 }
 
 function evaluate_word(file, pos, e, dbname) {
-  	let db = ß.typohint_db[dbname];
+    let db = ß.typohint_db[dbname];
     if (e.length < 3) return;
     // if the word is more then once in the db, we can't consider it a typo
     if (db[e]) if (db[e] > 1) return;
-  	if (ß.typohint_db.project[e]) return;
+    if (ß.typohint_db.project[e]) return;
     var ws = {};
     for (let w in db) {
         if (is_similar(e, w) === true) ws[w] = db[w];

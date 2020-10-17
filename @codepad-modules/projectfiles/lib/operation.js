@@ -1,6 +1,6 @@
 /*ßoilerplate */
 
-module.exports = function(socket, revision, operation) {
+module.exports = function (socket, revision, operation) {
     var filepath = socket.projectfile;
     var username = socket.username || "Guest";
 
@@ -10,8 +10,7 @@ module.exports = function(socket, revision, operation) {
     ß.lib.projectfiles.oplog(username, operation, socket.projectfile);
 
     if (!ß.projectfiles[filepath].at) ß.projectfiles[filepath].at = {};
-    if (!ß.projectfiles[filepath].at[username])
-        ß.projectfiles[filepath].at[username] = {};
+    if (!ß.projectfiles[filepath].at[username]) ß.projectfiles[filepath].at[username] = {};
 
     ß.projectfiles[filepath].at[username][socket.id] = revision;
 

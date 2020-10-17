@@ -1,4 +1,3 @@
-
 if (ß.settings) return;
 
 var settings_file = ß.CWD + "/settings.json";

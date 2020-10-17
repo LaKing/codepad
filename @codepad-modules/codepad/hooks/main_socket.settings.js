@@ -1,6 +1,6 @@
 // ß.settings[ß.lib.basicauth.username_by_socket(socket)].theme
 
-module.exports = function(socket) {
+module.exports = function (socket) {
     const username = ß.lib.basicauth.username_by_socket(socket);
 
     var settings = {};
@@ -29,7 +29,7 @@ module.exports = function(socket) {
 
     if (ß.settings[username]) if (ß.settings[username].theme) theme = ß.settings[username].theme;
     settings.USER_THEME = theme;
-  
+
     socket.emit("settings", settings);
 
     socket.on("set_theme", (data, callback) => {
@@ -38,5 +38,4 @@ module.exports = function(socket) {
         ß.lib.codepad.save_settings();
         callback();
     });
-
 };

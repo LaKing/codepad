@@ -1,5 +1,5 @@
 /*ßoilerplate */
-module.exports = function(projectfile, content) {
+module.exports = function (projectfile, content) {
     if (!projectfile) return console.log("ERROR undefined filename");
 
     if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
@@ -10,7 +10,7 @@ module.exports = function(projectfile, content) {
     ß.lib.projectfiles.stamp(realpath);
 
     if (content.length > 0) {
-        ß.fs.writeFile(realpath, content, function(err) {
+        ß.fs.writeFile(realpath, content, function (err) {
             if (err) {
                 đ(err);
                 ß.err(projectfile + " " + err.code);
@@ -18,7 +18,7 @@ module.exports = function(projectfile, content) {
             }
         });
     } else {
-        ß.fs.unlink(realpath, function(err) {
+        ß.fs.unlink(realpath, function (err) {
             if (err) {
                 đ(err);
                 ß.err(projectfile + " " + err.code);

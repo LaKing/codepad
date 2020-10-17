@@ -10,11 +10,11 @@ function proceed(socket) {
     if (ß.editor[realpath]) return ß.editor[realpath].addClient(socket);
 
     // otherwise create the folders, the file, the editor, the watch
-    ß.lib.projectfiles.create(realpath, function() {
-        ß.fs.readFile(realpath, "utf-8", function(err, data) {
+    ß.lib.projectfiles.create(realpath, function () {
+        ß.fs.readFile(realpath, "utf-8", function (err, data) {
             if (err) return đ(err);
             if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
-            var mayWrite = function(_, cb) {
+            var mayWrite = function (_, cb) {
                 cb(true);
             };
             // create and add an editor
@@ -28,10 +28,10 @@ function proceed(socket) {
     });
 }
 
-module.exports = function(socket) {
+module.exports = function (socket) {
     if (!socket) return;
-    if (!socket.projectfile) return ß.err('no projectfile on socket');
-  
+    if (!socket.projectfile) return ß.err("no projectfile on socket");
+
     const projectfile = socket.projectfile;
 
     if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
@@ -44,7 +44,7 @@ module.exports = function(socket) {
     }
 
     // realpath not on socket and not on the projectfiles list, so we should read it.
-    ß.lib.projectfiles.realpath(projectfile, function(err, realpath) {
+    ß.lib.projectfiles.realpath(projectfile, function (err, realpath) {
         socket.realpath = realpath;
         return proceed(socket);
     });

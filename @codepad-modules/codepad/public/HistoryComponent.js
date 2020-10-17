@@ -11,17 +11,15 @@ export default {
         return {};
     },
     props: {
-        path: String
+        path: String,
     },
     methods: {
         get_name(path) {
             return path.split("/").pop();
         },
-      	pad(path) {
-          this.$store.commit("pad", path);
-        }
+        pad(path) {
+            this.$store.commit("pad", path);
+        },
     },
-    computed: {
-
-    }
+    computed: {},
 };

@@ -1,5 +1,4 @@
 module.exports = function ignore(file, line, word, dbname) {
-
     if (!file) return ß.err("undefined file");
     if (!line) return ß.err("undefined line " + file);
     if (!word) return ß.err("undefined word " + file);

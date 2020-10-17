@@ -1,6 +1,6 @@
 /*ßoilerplate */
 
-module.exports = function(username, opname, filepath) {
+module.exports = function (username, opname, filepath) {
     var data = {};
     data.now = ß.now();
     data.username = username;

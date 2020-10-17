@@ -2,11 +2,11 @@ const git = ß.git;
 const fs = ß.fs;
 const dir = ß.PROJECTDIR;
 
-module.exports = async function() {
-Ł();
+module.exports = async function () {
+
     for (let i in ß.projectfiles) {
-      ß.lib.git.path_commits(i);
-      /*
+        ß.lib.git.path_commits(i);
+        /*
         if (!ß.projectfiles[i].file) continue;
 		if (ß.projectfiles[i].readonly) continue;
       

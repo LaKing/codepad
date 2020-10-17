@@ -1,5 +1,3 @@
-module.exports = function() {
- 
-  ß.lib.projectfiles.update();
-  
+module.exports = function () {
+    ß.lib.projectfiles.update();
 };

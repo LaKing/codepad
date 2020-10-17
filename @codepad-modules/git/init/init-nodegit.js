@@ -27,14 +27,12 @@ async function init() {
 
 async function add() {
     const repo = { fs, dir };
-  
-// encountered a bug here :( 
-// https://github.com/isomorphic-git/isomorphic-git/issues/1139
-  
-await git.statusMatrix(repo).then((status) =>
-Ł, đ
-);
-  
+
+    // encountered a bug here :(
+    // https://github.com/isomorphic-git/isomorphic-git/issues/1139
+
+    await git.statusMatrix(repo).then((status) => Ł, đ);
+
     console.log(" - git add -A .");
 }
 
@@ -79,7 +77,7 @@ async function test(n) {
         fs,
         dir,
         oid: commits[n].oid,
-        filepath: "version"
+        filepath: "version",
     });
     Ł(Buffer.from(blob).toString("utf8"));
 }

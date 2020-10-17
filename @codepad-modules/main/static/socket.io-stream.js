@@ -1,4 +1,4 @@
-(function(f) {
+(function (f) {
     if (typeof exports === "object" && typeof module !== "undefined") {
         module.exports = f();
     } else if (typeof define === "function" && define.amd) {
@@ -16,7 +16,7 @@
         }
         g.ss = f();
     }
-})(function() {
+})(function () {
     var define, module, exports;
     return (function e(t, n, r) {
         function s(o, u) {
@@ -31,7 +31,7 @@
                 var l = (n[o] = { exports: {} });
                 t[o][0].call(
                     l.exports,
-                    function(e) {
+                    function (e) {
                         var n = t[o][1][e];
                         return s(n ? n : e);
                     },
@@ -51,14 +51,14 @@
     })(
         {
             1: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = require("./lib");
                 },
-                { "./lib": 3 }
+                { "./lib": 3 },
             ],
             2: [
-                function(require, module, exports) {
-                    (function(Buffer) {
+                function (require, module, exports) {
+                    (function (Buffer) {
                         var util = require("util");
                         var Readable = require("stream").Readable;
                         var bind = require("component-bind");
@@ -98,7 +98,7 @@
                             fileReader.onerror = bind(this, "_onerror");
                         }
 
-                        BlobReadStream.prototype._read = function(size) {
+                        BlobReadStream.prototype._read = function (size) {
                             var start = this.start;
                             var end = (this.start = this.start + size);
                             var chunk = this.slice.call(this.blob, start, end);
@@ -115,22 +115,22 @@
                             }
                         };
 
-                        BlobReadStream.prototype._onload = function(e) {
+                        BlobReadStream.prototype._onload = function (e) {
                             var chunk = new Buffer(new Uint8Array(e.target.result));
                             this.push(chunk);
                         };
 
-                        BlobReadStream.prototype._onerror = function(e) {
+                        BlobReadStream.prototype._onerror = function (e) {
                             var err = e.target.error;
                             this.emit("error", err);
                         };
                     }.call(this, require("buffer").Buffer));
                 },
-                { buffer: 11, "component-bind": 12, stream: 35, util: 40 }
+                { buffer: 11, "component-bind": 12, stream: 35, util: 40 },
             ],
             3: [
-                function(require, module, exports) {
-                    (function(Buffer) {
+                function (require, module, exports) {
+                    (function (Buffer) {
                         var Socket = require("./socket");
                         var IOStream = require("./iostream");
                         var BlobReadStream = require("./blob-read-stream");
@@ -192,7 +192,7 @@
                          * @return {IOStream} duplex stream
                          * @api public
                          */
-                        exports.createStream = function(options) {
+                        exports.createStream = function (options) {
                             return new IOStream(options);
                         };
 
@@ -204,15 +204,15 @@
                          * @return {BlobReadStream} stream
                          * @api public
                          */
-                        exports.createBlobReadStream = function(blob, options) {
+                        exports.createBlobReadStream = function (blob, options) {
                             return new BlobReadStream(blob, options);
                         };
                     }.call(this, require("buffer").Buffer));
                 },
-                { "./blob-read-stream": 2, "./iostream": 4, "./socket": 6, buffer: 11 }
+                { "./blob-read-stream": 2, "./iostream": 4, "./socket": 6, buffer: 11 },
             ],
             4: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     var util = require("util");
                     var Duplex = require("stream").Duplex;
                     var bind = require("component-bind");
@@ -263,7 +263,7 @@
                      *
                      * @api public
                      */
-                    IOStream.prototype.destroy = function() {
+                    IOStream.prototype.destroy = function () {
                         debug("destroy");
 
                         if (this.destroyed) {
@@ -287,7 +287,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._read = function(size) {
+                    IOStream.prototype._read = function (size) {
                         var push;
 
                         // We can not read from the socket if it's destroyed obviously ...
@@ -316,7 +316,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._onread = function(size) {
+                    IOStream.prototype._onread = function (size) {
                         var write = this.writeBuffer.shift();
                         if (write) return write();
 
@@ -330,7 +330,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._write = function(chunk, encoding, callback) {
+                    IOStream.prototype._write = function (chunk, encoding, callback) {
                         var self = this;
 
                         function write() {
@@ -354,7 +354,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._onwrite = function(chunk, encoding, callback) {
+                    IOStream.prototype._onwrite = function (chunk, encoding, callback) {
                         var self = this;
 
                         function push() {
@@ -376,7 +376,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._end = function() {
+                    IOStream.prototype._end = function () {
                         if (this.pushBuffer.length) {
                             // end after flushing buffer.
                             this.pushBuffer.push(bind(this, "_done"));
@@ -390,7 +390,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._done = function() {
+                    IOStream.prototype._done = function () {
                         this._readable = false;
 
                         // signal the end of the data.
@@ -407,7 +407,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._onfinish = function() {
+                    IOStream.prototype._onfinish = function () {
                         debug("_onfinish");
                         // Local socket just finished
                         // send 'end' event to remote
@@ -442,7 +442,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._onend = function() {
+                    IOStream.prototype._onend = function () {
                         debug("_onend");
                         this.readable = false;
                         this._readableState.ended = true;
@@ -467,7 +467,7 @@
                      *
                      * @api private
                      */
-                    IOStream.prototype._onerror = function(err) {
+                    IOStream.prototype._onerror = function (err) {
                         // check if the error came from remote stream.
                         if (!err.remote && this.socket) {
                             // notify the error to the corresponding remote stream.
@@ -477,10 +477,10 @@
                         this.destroy();
                     };
                 },
-                { "./uuid": 7, "component-bind": 12, debug: 14, stream: 35, util: 40 }
+                { "./uuid": 7, "component-bind": 12, debug: 14, stream: 35, util: 40 },
             ],
             5: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     var util = require("util");
                     var EventEmitter = require("events").EventEmitter;
                     var IOStream = require("./iostream");
@@ -500,7 +500,7 @@
                      *
                      * @api public
                      */
-                    Encoder.prototype.encode = function(v) {
+                    Encoder.prototype.encode = function (v) {
                         if (v instanceof IOStream) {
                             return this.encodeStream(v);
                         } else if (util.isArray(v)) {
@@ -511,7 +511,7 @@
                         return v;
                     };
 
-                    Encoder.prototype.encodeStream = function(stream) {
+                    Encoder.prototype.encodeStream = function (stream) {
                         this.emit("stream", stream);
 
                         // represent a stream in an object.
@@ -522,7 +522,7 @@
                         return v;
                     };
 
-                    Encoder.prototype.encodeArray = function(arr) {
+                    Encoder.prototype.encodeArray = function (arr) {
                         var v = [];
                         for (var i = 0, len = arr.length; i < len; i++) {
                             v.push(this.encode(arr[i]));
@@ -530,7 +530,7 @@
                         return v;
                     };
 
-                    Encoder.prototype.encodeObject = function(obj) {
+                    Encoder.prototype.encodeObject = function (obj) {
                         var v = {};
                         for (var k in obj) {
                             if (obj.hasOwnProperty(k)) {
@@ -551,7 +551,7 @@
                      *
                      * @api public
                      */
-                    Decoder.prototype.decode = function(v) {
+                    Decoder.prototype.decode = function (v) {
                         if (v && v.$stream) {
                             return this.decodeStream(v);
                         } else if (util.isArray(v)) {
@@ -562,14 +562,14 @@
                         return v;
                     };
 
-                    Decoder.prototype.decodeStream = function(obj) {
+                    Decoder.prototype.decodeStream = function (obj) {
                         var stream = new IOStream(obj.options);
                         stream.id = obj.$stream;
                         this.emit("stream", stream);
                         return stream;
                     };
 
-                    Decoder.prototype.decodeArray = function(arr) {
+                    Decoder.prototype.decodeArray = function (arr) {
                         var v = [];
                         for (var i = 0, len = arr.length; i < len; i++) {
                             v.push(this.decode(arr[i]));
@@ -577,7 +577,7 @@
                         return v;
                     };
 
-                    Decoder.prototype.decodeObject = function(obj) {
+                    Decoder.prototype.decodeObject = function (obj) {
                         var v = {};
                         for (var k in obj) {
                             if (obj.hasOwnProperty(k)) {
@@ -587,11 +587,11 @@
                         return v;
                     };
                 },
-                { "./iostream": 4, events: 16, util: 40 }
+                { "./iostream": 4, events: 16, util: 40 },
             ],
             6: [
-                function(require, module, exports) {
-                    (function(global, Buffer) {
+                function (require, module, exports) {
+                    (function (global, Buffer) {
                         var util = require("util");
                         var EventEmitter = require("events").EventEmitter;
                         var bind = require("component-bind");
@@ -662,7 +662,7 @@
                          * @return {Socket} self
                          * @api public
                          */
-                        Socket.prototype.emit = function(type) {
+                        Socket.prototype.emit = function (type) {
                             if (~exports.events.indexOf(type)) {
                                 return emit.apply(this, arguments);
                             }
@@ -670,7 +670,7 @@
                             return this;
                         };
 
-                        Socket.prototype.on = function(type, listener) {
+                        Socket.prototype.on = function (type, listener) {
                             if (~exports.events.indexOf(type)) {
                                 return on.apply(this, arguments);
                             }
@@ -685,14 +685,14 @@
                          * @param {String} event type
                          * @api private
                          */
-                        Socket.prototype._stream = function(type) {
+                        Socket.prototype._stream = function (type) {
                             debug("sending new streams");
 
                             var self = this;
                             var args = slice.call(arguments, 1);
                             var ack = args[args.length - 1];
                             if ("function" == typeof ack) {
-                                args[args.length - 1] = function() {
+                                args[args.length - 1] = function () {
                                     var args = slice.call(arguments);
                                     args = self.decoder.decode(args);
                                     ack.apply(this, args);
@@ -709,7 +709,7 @@
                          *
                          * @api private
                          */
-                        Socket.prototype._read = function(id, size) {
+                        Socket.prototype._read = function (id, size) {
                             this.sio.emit(exports.event + "-read", id, size);
                         };
 
@@ -718,7 +718,7 @@
                          *
                          * @api private
                          */
-                        Socket.prototype._write = function(id, chunk, encoding, callback) {
+                        Socket.prototype._write = function (id, chunk, encoding, callback) {
                             if (Buffer.isBuffer(chunk)) {
                                 if (this.forceBase64) {
                                     encoding = "base64";
@@ -735,11 +735,11 @@
                             this.sio.emit(exports.event + "-write", id, chunk, encoding, callback);
                         };
 
-                        Socket.prototype._end = function(id) {
+                        Socket.prototype._end = function (id) {
                             this.sio.emit(exports.event + "-end", id);
                         };
 
-                        Socket.prototype._error = function(id, err) {
+                        Socket.prototype._error = function (id, err) {
                             this.sio.emit(exports.event + "-error", id, err.message || err);
                         };
 
@@ -751,7 +751,7 @@
                          *
                          * @api private
                          */
-                        Socket.prototype._onstream = function(type, listener) {
+                        Socket.prototype._onstream = function (type, listener) {
                             if ("function" != typeof listener) {
                                 throw TypeError("listener must be a function");
                             }
@@ -762,7 +762,7 @@
                                 var args = slice.call(arguments);
                                 var ack = args[args.length - 1];
                                 if ("function" == typeof ack) {
-                                    args[args.length - 1] = function() {
+                                    args[args.length - 1] = function () {
                                         var args = slice.call(arguments);
                                         args = self.encoder.encode(args);
                                         ack.apply(this, args);
@@ -779,7 +779,7 @@
                             on.call(this, type, onstream);
                         };
 
-                        Socket.prototype._onread = function(id, size) {
+                        Socket.prototype._onread = function (id, size) {
                             debug('read: "%s"', id);
 
                             var stream = this.streams[id];
@@ -790,7 +790,7 @@
                             }
                         };
 
-                        Socket.prototype._onwrite = function(id, chunk, encoding, callback) {
+                        Socket.prototype._onwrite = function (id, chunk, encoding, callback) {
                             debug('write: "%s"', id);
 
                             var stream = this.streams[id];
@@ -806,7 +806,7 @@
                             stream._onwrite(chunk, encoding, callback);
                         };
 
-                        Socket.prototype._onend = function(id) {
+                        Socket.prototype._onend = function (id) {
                             debug('end: "%s"', id);
 
                             var stream = this.streams[id];
@@ -818,7 +818,7 @@
                             stream._end();
                         };
 
-                        Socket.prototype._onerror = function(id, message) {
+                        Socket.prototype._onerror = function (id, message) {
                             debug('error: "%s", "%s"', id, message);
 
                             var stream = this.streams[id];
@@ -832,7 +832,7 @@
                             stream.emit("error", err);
                         };
 
-                        Socket.prototype._ondisconnect = function() {
+                        Socket.prototype._ondisconnect = function () {
                             var stream;
                             for (var id in this.streams) {
                                 stream = this.streams[id];
@@ -845,7 +845,7 @@
                             }
                         };
 
-                        Socket.prototype._onencode = function(stream) {
+                        Socket.prototype._onencode = function (stream) {
                             if (stream.socket || stream.destroyed) {
                                 throw new Error("stream has already been sent.");
                             }
@@ -859,7 +859,7 @@
                             stream.socket = this;
                         };
 
-                        Socket.prototype._ondecode = function(stream) {
+                        Socket.prototype._ondecode = function (stream) {
                             var id = stream.id;
                             if (this.streams[id]) {
                                 this._error(id, new Error("Decoded stream already exists: " + id));
@@ -870,7 +870,7 @@
                             stream.socket = this;
                         };
 
-                        Socket.prototype.cleanup = function(id) {
+                        Socket.prototype.cleanup = function (id) {
                             delete this.streams[id];
                         };
                     }.call(
@@ -879,10 +879,10 @@
                         require("buffer").Buffer
                     ));
                 },
-                { "./iostream": 4, "./parser": 5, buffer: 11, "component-bind": 12, debug: 14, events: 16, util: 40 }
+                { "./iostream": 4, "./parser": 5, buffer: 11, "component-bind": 12, debug: 14, events: 16, util: 40 },
             ],
             7: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // UUID function from https://gist.github.com/jed/982883
                     // More lightweight than node-uuid
                     function b(
@@ -914,10 +914,10 @@
 
                     module.exports = b;
                 },
-                {}
+                {},
             ],
             8: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     "use strict";
 
                     exports.byteLength = byteLength;
@@ -1037,12 +1037,12 @@
                         return parts.join("");
                     }
                 },
-                {}
+                {},
             ],
-            9: [function(require, module, exports) {}, {}],
+            9: [function (require, module, exports) {}, {}],
             10: [
-                function(require, module, exports) {
-                    (function(global) {
+                function (require, module, exports) {
+                    (function (global) {
                         "use strict";
 
                         var buffer = require("buffer");
@@ -1153,11 +1153,11 @@
                         };
                     }.call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {}));
                 },
-                { buffer: 11 }
+                { buffer: 11 },
             ],
             11: [
-                function(require, module, exports) {
-                    (function(global) {
+                function (require, module, exports) {
+                    (function (global) {
                         /*!
                          * The buffer module from node.js, for the browser.
                          *
@@ -1212,9 +1212,9 @@
                                 var arr = new Uint8Array(1);
                                 arr.__proto__ = {
                                     __proto__: Uint8Array.prototype,
-                                    foo: function() {
+                                    foo: function () {
                                         return 42;
-                                    }
+                                    },
                                 };
                                 return (
                                     arr.foo() === 42 && // typed array instances can be augmented
@@ -1277,7 +1277,7 @@
                         Buffer.poolSize = 8192; // not used by this implementation
 
                         // TODO: Legacy, not needed anymore. Remove in next major version.
-                        Buffer._augment = function(arr) {
+                        Buffer._augment = function (arr) {
                             arr.__proto__ = Buffer.prototype;
                             return arr;
                         };
@@ -1306,7 +1306,7 @@
                          * Buffer.from(buffer)
                          * Buffer.from(arrayBuffer[, byteOffset[, length]])
                          **/
-                        Buffer.from = function(value, encodingOrOffset, length) {
+                        Buffer.from = function (value, encodingOrOffset, length) {
                             return from(null, value, encodingOrOffset, length);
                         };
 
@@ -1317,7 +1317,7 @@
                                 // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
                                 Object.defineProperty(Buffer, Symbol.species, {
                                     value: null,
-                                    configurable: true
+                                    configurable: true,
                                 });
                             }
                         }
@@ -1348,7 +1348,7 @@
                          * Creates a new filled Buffer instance.
                          * alloc(size[, fill[, encoding]])
                          **/
-                        Buffer.alloc = function(size, fill, encoding) {
+                        Buffer.alloc = function (size, fill, encoding) {
                             return alloc(null, size, fill, encoding);
                         };
 
@@ -1366,13 +1366,13 @@
                         /**
                          * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
                          * */
-                        Buffer.allocUnsafe = function(size) {
+                        Buffer.allocUnsafe = function (size) {
                             return allocUnsafe(null, size);
                         };
                         /**
                          * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
                          */
-                        Buffer.allocUnsafeSlow = function(size) {
+                        Buffer.allocUnsafeSlow = function (size) {
                             return allocUnsafe(null, size);
                         };
 
@@ -1739,9 +1739,7 @@
                             var str = "";
                             var max = exports.INSPECT_MAX_BYTES;
                             if (this.length > 0) {
-                                str = this.toString("hex", 0, max)
-                                    .match(/.{2}/g)
-                                    .join(" ");
+                                str = this.toString("hex", 0, max).match(/.{2}/g).join(" ");
                                 if (this.length > max) str += " ... ";
                             }
                             return "<Buffer " + str + ">";
@@ -2058,7 +2056,7 @@
                         Buffer.prototype.toJSON = function toJSON() {
                             return {
                                 type: "Buffer",
-                                data: Array.prototype.slice.call(this._arr || this, 0)
+                                data: Array.prototype.slice.call(this._arr || this, 0),
                             };
                         };
 
@@ -2906,10 +2904,10 @@
                         }
                     }.call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {}));
                 },
-                { "base64-js": 8, ieee754: 17, isarray: 20 }
+                { "base64-js": 8, ieee754: 17, isarray: 20 },
             ],
             12: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     /**
                      * Slice reference.
                      */
@@ -2925,20 +2923,20 @@
                      * @api public
                      */
 
-                    module.exports = function(obj, fn) {
+                    module.exports = function (obj, fn) {
                         if ("string" == typeof fn) fn = obj[fn];
                         if ("function" != typeof fn) throw new Error("bind() requires a function");
                         var args = slice.call(arguments, 2);
-                        return function() {
+                        return function () {
                             return fn.apply(obj, args.concat(slice.call(arguments)));
                         };
                     };
                 },
-                {}
+                {},
             ],
             13: [
-                function(require, module, exports) {
-                    (function(Buffer) {
+                function (require, module, exports) {
+                    (function (Buffer) {
                         // Copyright Joyent, Inc. and other Node contributors.
                         //
                         // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3050,10 +3048,10 @@
                         }
                     }.call(this, { isBuffer: require("../../is-buffer/index.js") }));
                 },
-                { "../../is-buffer/index.js": 19 }
+                { "../../is-buffer/index.js": 19 },
             ],
             14: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     /**
                      * This is the web browser implementation of `debug()`.
                      *
@@ -3098,7 +3096,7 @@
                      * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
                      */
 
-                    exports.formatters.j = function(v) {
+                    exports.formatters.j = function (v) {
                         return JSON.stringify(v);
                     };
 
@@ -3124,7 +3122,7 @@
                         // figure out the correct index to insert the CSS into
                         var index = 0;
                         var lastC = 0;
-                        args[0].replace(/%[a-z%]/g, function(match) {
+                        args[0].replace(/%[a-z%]/g, function (match) {
                             if ("%%" === match) return;
                             index++;
                             if ("%c" === match) {
@@ -3206,10 +3204,10 @@
                         } catch (e) {}
                     }
                 },
-                { "./debug": 15 }
+                { "./debug": 15 },
             ],
             15: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     /**
                      * This is the common logic for both the Node.js and web browser
                      * implementations of `debug()`.
@@ -3302,7 +3300,7 @@
 
                             // apply any `formatters` transformations
                             var index = 0;
-                            args[0] = args[0].replace(/%([a-z%])/g, function(match, format) {
+                            args[0] = args[0].replace(/%([a-z%])/g, function (match, format) {
                                 // if we encounter an escaped % then don't increase the array index
                                 if (match === "%%") return match;
                                 index++;
@@ -3404,10 +3402,10 @@
                         return val;
                     }
                 },
-                { ms: 21 }
+                { ms: 21 },
             ],
             16: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // Copyright Joyent, Inc. and other Node contributors.
                     //
                     // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3447,13 +3445,13 @@
 
                     // Obviously not all Emitters should be limited to 10. This function allows
                     // that to be increased. Set to zero for unlimited.
-                    EventEmitter.prototype.setMaxListeners = function(n) {
+                    EventEmitter.prototype.setMaxListeners = function (n) {
                         if (!isNumber(n) || n < 0 || isNaN(n)) throw TypeError("n must be a positive number");
                         this._maxListeners = n;
                         return this;
                     };
 
-                    EventEmitter.prototype.emit = function(type) {
+                    EventEmitter.prototype.emit = function (type) {
                         var er, handler, len, args, i, listeners;
 
                         if (!this._events) this._events = {};
@@ -3504,7 +3502,7 @@
                         return true;
                     };
 
-                    EventEmitter.prototype.addListener = function(type, listener) {
+                    EventEmitter.prototype.addListener = function (type, listener) {
                         var m;
 
                         if (!isFunction(listener)) throw TypeError("listener must be a function");
@@ -3550,7 +3548,7 @@
 
                     EventEmitter.prototype.on = EventEmitter.prototype.addListener;
 
-                    EventEmitter.prototype.once = function(type, listener) {
+                    EventEmitter.prototype.once = function (type, listener) {
                         if (!isFunction(listener)) throw TypeError("listener must be a function");
 
                         var fired = false;
@@ -3571,7 +3569,7 @@
                     };
 
                     // emits a 'removeListener' event iff the listener was removed
-                    EventEmitter.prototype.removeListener = function(type, listener) {
+                    EventEmitter.prototype.removeListener = function (type, listener) {
                         var list, position, length, i;
 
                         if (!isFunction(listener)) throw TypeError("listener must be a function");
@@ -3608,7 +3606,7 @@
                         return this;
                     };
 
-                    EventEmitter.prototype.removeAllListeners = function(type) {
+                    EventEmitter.prototype.removeAllListeners = function (type) {
                         var key, listeners;
 
                         if (!this._events) return this;
@@ -3644,7 +3642,7 @@
                         return this;
                     };
 
-                    EventEmitter.prototype.listeners = function(type) {
+                    EventEmitter.prototype.listeners = function (type) {
                         var ret;
                         if (!this._events || !this._events[type]) ret = [];
                         else if (isFunction(this._events[type])) ret = [this._events[type]];
@@ -3652,7 +3650,7 @@
                         return ret;
                     };
 
-                    EventEmitter.prototype.listenerCount = function(type) {
+                    EventEmitter.prototype.listenerCount = function (type) {
                         if (this._events) {
                             var evlistener = this._events[type];
 
@@ -3662,7 +3660,7 @@
                         return 0;
                     };
 
-                    EventEmitter.listenerCount = function(emitter, type) {
+                    EventEmitter.listenerCount = function (emitter, type) {
                         return emitter.listenerCount(type);
                     };
 
@@ -3682,11 +3680,11 @@
                         return arg === void 0;
                     }
                 },
-                {}
+                {},
             ],
             17: [
-                function(require, module, exports) {
-                    exports.read = function(buffer, offset, isLE, mLen, nBytes) {
+                function (require, module, exports) {
+                    exports.read = function (buffer, offset, isLE, mLen, nBytes) {
                         var e, m;
                         var eLen = nBytes * 8 - mLen - 1;
                         var eMax = (1 << eLen) - 1;
@@ -3719,7 +3717,7 @@
                         return (s ? -1 : 1) * m * Math.pow(2, e - mLen);
                     };
 
-                    exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
+                    exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
                         var e, m, c;
                         var eLen = nBytes * 8 - mLen - 1;
                         var eMax = (1 << eLen) - 1;
@@ -3771,10 +3769,10 @@
                         buffer[offset + i - d] |= s * 128;
                     };
                 },
-                {}
+                {},
             ],
             18: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     if (typeof Object.create === "function") {
                         // implementation from standard node.js 'util' module
                         module.exports = function inherits(ctor, superCtor) {
@@ -3784,25 +3782,25 @@
                                     value: ctor,
                                     enumerable: false,
                                     writable: true,
-                                    configurable: true
-                                }
+                                    configurable: true,
+                                },
                             });
                         };
                     } else {
                         // old school shim for old browsers
                         module.exports = function inherits(ctor, superCtor) {
                             ctor.super_ = superCtor;
-                            var TempCtor = function() {};
+                            var TempCtor = function () {};
                             TempCtor.prototype = superCtor.prototype;
                             ctor.prototype = new TempCtor();
                             ctor.prototype.constructor = ctor;
                         };
                     }
                 },
-                {}
+                {},
             ],
             19: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     /*!
                      * Determine if an object is a Buffer
                      *
@@ -3812,7 +3810,7 @@
 
                     // The _isBuffer check is for Safari 5-7 support, because it's missing
                     // Object.prototype.constructor. Remove this eventually
-                    module.exports = function(obj) {
+                    module.exports = function (obj) {
                         return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer);
                     };
 
@@ -3825,22 +3823,22 @@
                         return typeof obj.readFloatLE === "function" && typeof obj.slice === "function" && isBuffer(obj.slice(0, 0));
                     }
                 },
-                {}
+                {},
             ],
             20: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     var toString = {}.toString;
 
                     module.exports =
                         Array.isArray ||
-                        function(arr) {
+                        function (arr) {
                             return toString.call(arr) == "[object Array]";
                         };
                 },
-                {}
+                {},
             ],
             21: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     /**
                      * Helpers.
                      */
@@ -3864,7 +3862,7 @@
                      * @api public
                      */
 
-                    module.exports = function(val, options) {
+                    module.exports = function (val, options) {
                         options = options || {};
                         if ("string" == typeof val) return parse(val);
                         return options.long ? long(val) : short(val);
@@ -3961,11 +3959,11 @@
                         return Math.ceil(ms / n) + " " + name + "s";
                     }
                 },
-                {}
+                {},
             ],
             22: [
-                function(require, module, exports) {
-                    (function(process) {
+                function (require, module, exports) {
+                    (function (process) {
                         "use strict";
 
                         if (!process.version || process.version.indexOf("v0.") === 0 || (process.version.indexOf("v1.") === 0 && process.version.indexOf("v1.8.") !== 0)) {
@@ -4009,10 +4007,10 @@
                         }
                     }.call(this, require("_process")));
                 },
-                { _process: 23 }
+                { _process: 23 },
             ],
             23: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // shim for using process in browser
                     var process = (module.exports = {});
 
@@ -4030,7 +4028,7 @@
                     function defaultClearTimeout() {
                         throw new Error("clearTimeout has not been defined");
                     }
-                    (function() {
+                    (function () {
                         try {
                             if (typeof setTimeout === "function") {
                                 cachedSetTimeout = setTimeout;
@@ -4141,7 +4139,7 @@
                         runClearTimeout(timeout);
                     }
 
-                    process.nextTick = function(fun) {
+                    process.nextTick = function (fun) {
                         var args = new Array(arguments.length - 1);
                         if (arguments.length > 1) {
                             for (var i = 1; i < arguments.length; i++) {
@@ -4159,7 +4157,7 @@
                         this.fun = fun;
                         this.array = array;
                     }
-                    Item.prototype.run = function() {
+                    Item.prototype.run = function () {
                         this.fun.apply(null, this.array);
                     };
                     process.title = "browser";
@@ -4179,30 +4177,30 @@
                     process.removeAllListeners = noop;
                     process.emit = noop;
 
-                    process.binding = function(name) {
+                    process.binding = function (name) {
                         throw new Error("process.binding is not supported");
                     };
 
-                    process.cwd = function() {
+                    process.cwd = function () {
                         return "/";
                     };
-                    process.chdir = function(dir) {
+                    process.chdir = function (dir) {
                         throw new Error("process.chdir is not supported");
                     };
-                    process.umask = function() {
+                    process.umask = function () {
                         return 0;
                     };
                 },
-                {}
+                {},
             ],
             24: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = require("./lib/_stream_duplex.js");
                 },
-                { "./lib/_stream_duplex.js": 25 }
+                { "./lib/_stream_duplex.js": 25 },
             ],
             25: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // a duplex stream is just a stream that is both readable and writable.
                     // Since JS doesn't have multiple prototypal inheritance, this class
                     // prototypally inherits from Readable, and then parasitically from
@@ -4214,7 +4212,7 @@
 
                     var objectKeys =
                         Object.keys ||
-                        function(obj) {
+                        function (obj) {
                             var keys = [];
                             for (var key in obj) {
                                 keys.push(key);
@@ -4282,10 +4280,10 @@
                         }
                     }
                 },
-                { "./_stream_readable": 27, "./_stream_writable": 29, "core-util-is": 13, inherits: 18, "process-nextick-args": 22 }
+                { "./_stream_readable": 27, "./_stream_writable": 29, "core-util-is": 13, inherits: 18, "process-nextick-args": 22 },
             ],
             26: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // a passthrough stream.
                     // basically just the most minimal sort of Transform stream.
                     // Every written chunk gets output as-is.
@@ -4309,15 +4307,15 @@
                         Transform.call(this, options);
                     }
 
-                    PassThrough.prototype._transform = function(chunk, encoding, cb) {
+                    PassThrough.prototype._transform = function (chunk, encoding, cb) {
                         cb(null, chunk);
                     };
                 },
-                { "./_stream_transform": 28, "core-util-is": 13, inherits: 18 }
+                { "./_stream_transform": 28, "core-util-is": 13, inherits: 18 },
             ],
             27: [
-                function(require, module, exports) {
-                    (function(process) {
+                function (require, module, exports) {
+                    (function (process) {
                         "use strict";
 
                         module.exports = Readable;
@@ -4335,14 +4333,14 @@
                         /*<replacement>*/
                         var EE = require("events").EventEmitter;
 
-                        var EElistenerCount = function(emitter, type) {
+                        var EElistenerCount = function (emitter, type) {
                             return emitter.listeners(type).length;
                         };
                         /*</replacement>*/
 
                         /*<replacement>*/
                         var Stream;
-                        (function() {
+                        (function () {
                             try {
                                 Stream = require("st" + "ream");
                             } catch (_) {
@@ -4368,7 +4366,7 @@
                         if (debugUtil && debugUtil.debuglog) {
                             debug = debugUtil.debuglog("stream");
                         } else {
-                            debug = function() {};
+                            debug = function () {};
                         }
                         /*</replacement>*/
 
@@ -4481,7 +4479,7 @@
                         // This returns true if the highWaterMark has not been hit yet,
                         // similar to how Writable.write() returns true if you should
                         // write() some more.
-                        Readable.prototype.push = function(chunk, encoding) {
+                        Readable.prototype.push = function (chunk, encoding) {
                             var state = this._readableState;
 
                             if (!state.objectMode && typeof chunk === "string") {
@@ -4496,12 +4494,12 @@
                         };
 
                         // Unshift should *always* be something directly out of read()
-                        Readable.prototype.unshift = function(chunk) {
+                        Readable.prototype.unshift = function (chunk) {
                             var state = this._readableState;
                             return readableAddChunk(this, state, chunk, "", true);
                         };
 
-                        Readable.prototype.isPaused = function() {
+                        Readable.prototype.isPaused = function () {
                             return this._readableState.flowing === false;
                         };
 
@@ -4566,7 +4564,7 @@
                         }
 
                         // backwards compatibility.
-                        Readable.prototype.setEncoding = function(enc) {
+                        Readable.prototype.setEncoding = function (enc) {
                             if (!StringDecoder) StringDecoder = require("string_decoder/").StringDecoder;
                             this._readableState.decoder = new StringDecoder(enc);
                             this._readableState.encoding = enc;
@@ -4614,7 +4612,7 @@
                         }
 
                         // you can override either this method, or the async _read(n) below.
-                        Readable.prototype.read = function(n) {
+                        Readable.prototype.read = function (n) {
                             debug("read", n);
                             n = parseInt(n, 10);
                             var state = this._readableState;
@@ -4789,11 +4787,11 @@
                         // call cb(er, data) where data is <= n in length.
                         // for virtual (non-string, non-buffer) streams, "length" is somewhat
                         // arbitrary, and perhaps not very meaningful.
-                        Readable.prototype._read = function(n) {
+                        Readable.prototype._read = function (n) {
                             this.emit("error", new Error("not implemented"));
                         };
 
-                        Readable.prototype.pipe = function(dest, pipeOpts) {
+                        Readable.prototype.pipe = function (dest, pipeOpts) {
                             var src = this;
                             var state = this._readableState;
 
@@ -4927,7 +4925,7 @@
                         };
 
                         function pipeOnDrain(src) {
-                            return function() {
+                            return function () {
                                 var state = src._readableState;
                                 debug("pipeOnDrain", state.awaitDrain);
                                 if (state.awaitDrain) state.awaitDrain--;
@@ -4938,7 +4936,7 @@
                             };
                         }
 
-                        Readable.prototype.unpipe = function(dest) {
+                        Readable.prototype.unpipe = function (dest) {
                             var state = this._readableState;
 
                             // if we're not piping anywhere, then do nothing.
@@ -4990,7 +4988,7 @@
 
                         // set up data events if they are asked for
                         // Ensure readable listeners eventually get something
-                        Readable.prototype.on = function(ev, fn) {
+                        Readable.prototype.on = function (ev, fn) {
                             var res = Stream.prototype.on.call(this, ev, fn);
 
                             if (ev === "data") {
@@ -5020,7 +5018,7 @@
 
                         // pause() and resume() are remnants of the legacy readable stream API
                         // If the user uses them, then switch into old mode.
-                        Readable.prototype.resume = function() {
+                        Readable.prototype.resume = function () {
                             var state = this._readableState;
                             if (!state.flowing) {
                                 debug("resume");
@@ -5050,7 +5048,7 @@
                             if (state.flowing && !state.reading) stream.read(0);
                         }
 
-                        Readable.prototype.pause = function() {
+                        Readable.prototype.pause = function () {
                             debug("call pause flowing=%j", this._readableState.flowing);
                             if (false !== this._readableState.flowing) {
                                 debug("pause");
@@ -5069,12 +5067,12 @@
                         // wrap an old-style stream as the async data source.
                         // This is *not* part of the readable stream interface.
                         // It is an ugly unfortunate mess of history.
-                        Readable.prototype.wrap = function(stream) {
+                        Readable.prototype.wrap = function (stream) {
                             var state = this._readableState;
                             var paused = false;
 
                             var self = this;
-                            stream.on("end", function() {
+                            stream.on("end", function () {
                                 debug("wrapped end");
                                 if (state.decoder && !state.ended) {
                                     var chunk = state.decoder.end();
@@ -5084,7 +5082,7 @@
                                 self.push(null);
                             });
 
-                            stream.on("data", function(chunk) {
+                            stream.on("data", function (chunk) {
                                 debug("wrapped data");
                                 if (state.decoder) chunk = state.decoder.write(chunk);
 
@@ -5103,8 +5101,8 @@
                             // important when wrapping filters and duplexes.
                             for (var i in stream) {
                                 if (this[i] === undefined && typeof stream[i] === "function") {
-                                    this[i] = (function(method) {
-                                        return function() {
+                                    this[i] = (function (method) {
+                                        return function () {
                                             return stream[method].apply(stream, arguments);
                                         };
                                     })(i);
@@ -5113,13 +5111,13 @@
 
                             // proxy certain important events.
                             var events = ["error", "close", "destroy", "pause", "resume"];
-                            forEach(events, function(ev) {
+                            forEach(events, function (ev) {
                                 stream.on(ev, self.emit.bind(self, ev));
                             });
 
                             // when we try to consume some more bytes, simply unpause the
                             // underlying stream.
-                            self._read = function(n) {
+                            self._read = function (n) {
                                 debug("wrapped _read", n);
                                 if (paused) {
                                     paused = false;
@@ -5287,11 +5285,11 @@
                     isarray: 20,
                     "process-nextick-args": 22,
                     "string_decoder/": 36,
-                    util: 9
-                }
+                    util: 9,
+                },
             ],
             28: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // a transform stream is a readable/writable stream where you do
                     // something with the data.  Sometimes it's called a "filter",
                     // but that's not a great name for it, since that implies a thing where
@@ -5348,7 +5346,7 @@
                     util.inherits(Transform, Duplex);
 
                     function TransformState(stream) {
-                        this.afterTransform = function(er, data) {
+                        this.afterTransform = function (er, data) {
                             return afterTransform(stream, er, data);
                         };
 
@@ -5405,16 +5403,16 @@
                             if (typeof options.flush === "function") this._flush = options.flush;
                         }
 
-                        this.once("prefinish", function() {
+                        this.once("prefinish", function () {
                             if (typeof this._flush === "function")
-                                this._flush(function(er) {
+                                this._flush(function (er) {
                                     done(stream, er);
                                 });
                             else done(stream);
                         });
                     }
 
-                    Transform.prototype.push = function(chunk, encoding) {
+                    Transform.prototype.push = function (chunk, encoding) {
                         this._transformState.needTransform = false;
                         return Duplex.prototype.push.call(this, chunk, encoding);
                     };
@@ -5429,11 +5427,11 @@
                     // Call `cb(err)` when you are done with this chunk.  If you pass
                     // an error, then that'll put the hurt on the whole operation.  If you
                     // never call cb(), then you'll never get another chunk.
-                    Transform.prototype._transform = function(chunk, encoding, cb) {
+                    Transform.prototype._transform = function (chunk, encoding, cb) {
                         throw new Error("Not implemented");
                     };
 
-                    Transform.prototype._write = function(chunk, encoding, cb) {
+                    Transform.prototype._write = function (chunk, encoding, cb) {
                         var ts = this._transformState;
                         ts.writecb = cb;
                         ts.writechunk = chunk;
@@ -5447,7 +5445,7 @@
                     // Doesn't matter what the args are here.
                     // _transform does all the work.
                     // That we got here means that the readable side wants more data.
-                    Transform.prototype._read = function(n) {
+                    Transform.prototype._read = function (n) {
                         var ts = this._transformState;
 
                         if (ts.writechunk !== null && ts.writecb && !ts.transforming) {
@@ -5475,11 +5473,11 @@
                         return stream.push(null);
                     }
                 },
-                { "./_stream_duplex": 25, "core-util-is": 13, inherits: 18 }
+                { "./_stream_duplex": 25, "core-util-is": 13, inherits: 18 },
             ],
             29: [
-                function(require, module, exports) {
-                    (function(process) {
+                function (require, module, exports) {
+                    (function (process) {
                         // A bit simpler than readable streams.
                         // Implement an async ._write(chunk, encoding, cb), and it'll handle all
                         // the drain event emission and buffering.
@@ -5505,13 +5503,13 @@
 
                         /*<replacement>*/
                         var internalUtil = {
-                            deprecate: require("util-deprecate")
+                            deprecate: require("util-deprecate"),
                         };
                         /*</replacement>*/
 
                         /*<replacement>*/
                         var Stream;
-                        (function() {
+                        (function () {
                             try {
                                 Stream = require("st" + "ream");
                             } catch (_) {
@@ -5601,7 +5599,7 @@
                             this.bufferProcessing = false;
 
                             // the callback that's passed to _write(chunk,cb)
-                            this.onwrite = function(er) {
+                            this.onwrite = function (er) {
                                 onwrite(stream, er);
                             };
 
@@ -5643,12 +5641,12 @@
                             return out;
                         };
 
-                        (function() {
+                        (function () {
                             try {
                                 Object.defineProperty(WritableState.prototype, "buffer", {
-                                    get: internalUtil.deprecate(function() {
+                                    get: internalUtil.deprecate(function () {
                                         return this.getBuffer();
-                                    }, "_writableState.buffer is deprecated. Use _writableState.getBuffer " + "instead.")
+                                    }, "_writableState.buffer is deprecated. Use _writableState.getBuffer " + "instead."),
                                 });
                             } catch (_) {}
                         })();
@@ -5676,7 +5674,7 @@
                         }
 
                         // Otherwise people can pipe Writable streams, which is just wrong.
-                        Writable.prototype.pipe = function() {
+                        Writable.prototype.pipe = function () {
                             this.emit("error", new Error("Cannot pipe, not readable"));
                         };
 
@@ -5711,7 +5709,7 @@
                             return valid;
                         }
 
-                        Writable.prototype.write = function(chunk, encoding, cb) {
+                        Writable.prototype.write = function (chunk, encoding, cb) {
                             var state = this._writableState;
                             var ret = false;
 
@@ -5734,13 +5732,13 @@
                             return ret;
                         };
 
-                        Writable.prototype.cork = function() {
+                        Writable.prototype.cork = function () {
                             var state = this._writableState;
 
                             state.corked++;
                         };
 
-                        Writable.prototype.uncork = function() {
+                        Writable.prototype.uncork = function () {
                             var state = this._writableState;
 
                             if (state.corked) {
@@ -5924,13 +5922,13 @@
                             state.bufferProcessing = false;
                         }
 
-                        Writable.prototype._write = function(chunk, encoding, cb) {
+                        Writable.prototype._write = function (chunk, encoding, cb) {
                             cb(new Error("not implemented"));
                         };
 
                         Writable.prototype._writev = null;
 
-                        Writable.prototype.end = function(chunk, encoding, cb) {
+                        Writable.prototype.end = function (chunk, encoding, cb) {
                             var state = this._writableState;
 
                             if (typeof chunk === "function") {
@@ -5998,7 +5996,7 @@
                             this.next = null;
                             this.entry = null;
 
-                            this.finish = function(err) {
+                            this.finish = function (err) {
                                 var entry = _this.entry;
                                 _this.entry = null;
                                 while (entry) {
@@ -6025,11 +6023,11 @@
                     events: 16,
                     inherits: 18,
                     "process-nextick-args": 22,
-                    "util-deprecate": 37
-                }
+                    "util-deprecate": 37,
+                },
             ],
             30: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     "use strict";
 
                     var Buffer = require("buffer").Buffer;
@@ -6045,7 +6043,7 @@
                         this.length = 0;
                     }
 
-                    BufferList.prototype.push = function(v) {
+                    BufferList.prototype.push = function (v) {
                         var entry = { data: v, next: null };
                         if (this.length > 0) this.tail.next = entry;
                         else this.head = entry;
@@ -6053,14 +6051,14 @@
                         ++this.length;
                     };
 
-                    BufferList.prototype.unshift = function(v) {
+                    BufferList.prototype.unshift = function (v) {
                         var entry = { data: v, next: this.head };
                         if (this.length === 0) this.tail = entry;
                         this.head = entry;
                         ++this.length;
                     };
 
-                    BufferList.prototype.shift = function() {
+                    BufferList.prototype.shift = function () {
                         if (this.length === 0) return;
                         var ret = this.head.data;
                         if (this.length === 1) this.head = this.tail = null;
@@ -6069,12 +6067,12 @@
                         return ret;
                     };
 
-                    BufferList.prototype.clear = function() {
+                    BufferList.prototype.clear = function () {
                         this.head = this.tail = null;
                         this.length = 0;
                     };
 
-                    BufferList.prototype.join = function(s) {
+                    BufferList.prototype.join = function (s) {
                         if (this.length === 0) return "";
                         var p = this.head;
                         var ret = "" + p.data;
@@ -6084,7 +6082,7 @@
                         return ret;
                     };
 
-                    BufferList.prototype.concat = function(n) {
+                    BufferList.prototype.concat = function (n) {
                         if (this.length === 0) return bufferShim.alloc(0);
                         if (this.length === 1) return this.head.data;
                         var ret = bufferShim.allocUnsafe(n >>> 0);
@@ -6098,18 +6096,18 @@
                         return ret;
                     };
                 },
-                { buffer: 11, "buffer-shims": 10 }
+                { buffer: 11, "buffer-shims": 10 },
             ],
             31: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = require("./lib/_stream_passthrough.js");
                 },
-                { "./lib/_stream_passthrough.js": 26 }
+                { "./lib/_stream_passthrough.js": 26 },
             ],
             32: [
-                function(require, module, exports) {
-                    (function(process) {
-                        var Stream = (function() {
+                function (require, module, exports) {
+                    (function (process) {
+                        var Stream = (function () {
                             try {
                                 return require("st" + "ream"); // hack to fix a circular dependency issue when used with browserify
                             } catch (_) {}
@@ -6133,23 +6131,23 @@
                     "./lib/_stream_readable.js": 27,
                     "./lib/_stream_transform.js": 28,
                     "./lib/_stream_writable.js": 29,
-                    _process: 23
-                }
+                    _process: 23,
+                },
             ],
             33: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = require("./lib/_stream_transform.js");
                 },
-                { "./lib/_stream_transform.js": 28 }
+                { "./lib/_stream_transform.js": 28 },
             ],
             34: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = require("./lib/_stream_writable.js");
                 },
-                { "./lib/_stream_writable.js": 29 }
+                { "./lib/_stream_writable.js": 29 },
             ],
             35: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // Copyright Joyent, Inc. and other Node contributors.
                     //
                     // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6193,7 +6191,7 @@
                         EE.call(this);
                     }
 
-                    Stream.prototype.pipe = function(dest, options) {
+                    Stream.prototype.pipe = function (dest, options) {
                         var source = this;
 
                         function ondata(chunk) {
@@ -6282,11 +6280,11 @@
                     "readable-stream/passthrough.js": 31,
                     "readable-stream/readable.js": 32,
                     "readable-stream/transform.js": 33,
-                    "readable-stream/writable.js": 34
-                }
+                    "readable-stream/writable.js": 34,
+                },
             ],
             36: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     // Copyright Joyent, Inc. and other Node contributors.
                     //
                     // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6312,7 +6310,7 @@
 
                     var isBufferEncoding =
                         Buffer.isEncoding ||
-                        function(encoding) {
+                        function (encoding) {
                             switch (encoding && encoding.toLowerCase()) {
                                 case "hex":
                                 case "utf8":
@@ -6345,7 +6343,7 @@
                     // to reason about this code, so it should be split up in the future.
                     // @TODO There should be a utf8-strict encoding that rejects invalid UTF-8 code
                     // points as used by CESU-8.
-                    var StringDecoder = (exports.StringDecoder = function(encoding) {
+                    var StringDecoder = (exports.StringDecoder = function (encoding) {
                         this.encoding = (encoding || "utf8").toLowerCase().replace(/[-_]/, "");
                         assertEncoding(encoding);
                         switch (this.encoding) {
@@ -6387,7 +6385,7 @@
                     // currently works, but converting a String to a Buffer (via `new Buffer`, or
                     // Buffer#write) will replace incomplete surrogates with the unicode
                     // replacement character. See https://codereview.chromium.org/121173009/ .
-                    StringDecoder.prototype.write = function(buffer) {
+                    StringDecoder.prototype.write = function (buffer) {
                         var charStr = "";
                         // if our last write ended with an incomplete multibyte character
                         while (this.charLength) {
@@ -6457,7 +6455,7 @@
                     // the end of the given buffer. If so, it sets this.charLength to the byte
                     // length that character, and sets this.charReceived to the number of bytes
                     // that are available for this character.
-                    StringDecoder.prototype.detectIncompleteChar = function(buffer) {
+                    StringDecoder.prototype.detectIncompleteChar = function (buffer) {
                         // determine how many bytes we have to check at the end of this buffer
                         var i = buffer.length >= 3 ? 3 : buffer.length;
 
@@ -6489,7 +6487,7 @@
                         this.charReceived = i;
                     };
 
-                    StringDecoder.prototype.end = function(buffer) {
+                    StringDecoder.prototype.end = function (buffer) {
                         var res = "";
                         if (buffer && buffer.length) res = this.write(buffer);
 
@@ -6517,11 +6515,11 @@
                         this.charLength = this.charReceived ? 3 : 0;
                     }
                 },
-                { buffer: 11 }
+                { buffer: 11 },
             ],
             37: [
-                function(require, module, exports) {
-                    (function(global) {
+                function (require, module, exports) {
+                    (function (global) {
                         /**
                          * Module exports.
                          */
@@ -6590,25 +6588,25 @@
                         }
                     }.call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {}));
                 },
-                {}
+                {},
             ],
             38: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     arguments[4][18][0].apply(exports, arguments);
                 },
-                { dup: 18 }
+                { dup: 18 },
             ],
             39: [
-                function(require, module, exports) {
+                function (require, module, exports) {
                     module.exports = function isBuffer(arg) {
                         return arg && typeof arg === "object" && typeof arg.copy === "function" && typeof arg.fill === "function" && typeof arg.readUInt8 === "function";
                     };
                 },
-                {}
+                {},
             ],
             40: [
-                function(require, module, exports) {
-                    (function(process, global) {
+                function (require, module, exports) {
+                    (function (process, global) {
                         // Copyright Joyent, Inc. and other Node contributors.
                         //
                         // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6631,7 +6629,7 @@
                         // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
                         var formatRegExp = /%[sdj%]/g;
-                        exports.format = function(f) {
+                        exports.format = function (f) {
                             if (!isString(f)) {
                                 var objects = [];
                                 for (var i = 0; i < arguments.length; i++) {
@@ -6643,7 +6641,7 @@
                             var i = 1;
                             var args = arguments;
                             var len = args.length;
-                            var str = String(f).replace(formatRegExp, function(x) {
+                            var str = String(f).replace(formatRegExp, function (x) {
                                 if (x === "%%") return "%";
                                 if (i >= len) return x;
                                 switch (x) {
@@ -6674,10 +6672,10 @@
                         // Mark that a method should not be used.
                         // Returns a modified function which warns once by default.
                         // If --no-deprecation is set, then it is a no-op.
-                        exports.deprecate = function(fn, msg) {
+                        exports.deprecate = function (fn, msg) {
                             // Allow for deprecating things in the process of starting up.
                             if (isUndefined(global.process)) {
-                                return function() {
+                                return function () {
                                     return exports.deprecate(fn, msg).apply(this, arguments);
                                 };
                             }
@@ -6706,18 +6704,18 @@
 
                         var debugs = {};
                         var debugEnviron;
-                        exports.debuglog = function(set) {
+                        exports.debuglog = function (set) {
                             if (isUndefined(debugEnviron)) debugEnviron = process.env.NODE_DEBUG || "";
                             set = set.toUpperCase();
                             if (!debugs[set]) {
                                 if (new RegExp("\\b" + set + "\\b", "i").test(debugEnviron)) {
                                     var pid = process.pid;
-                                    debugs[set] = function() {
+                                    debugs[set] = function () {
                                         var msg = exports.format.apply(exports, arguments);
                                         console.error("%s %d: %s", set, pid, msg);
                                     };
                                 } else {
-                                    debugs[set] = function() {};
+                                    debugs[set] = function () {};
                                 }
                             }
                             return debugs[set];
@@ -6735,7 +6733,7 @@
                             // default options
                             var ctx = {
                                 seen: [],
-                                stylize: stylizeNoColor
+                                stylize: stylizeNoColor,
                             };
                             // legacy...
                             if (arguments.length >= 3) ctx.depth = arguments[2];
@@ -6771,7 +6769,7 @@
                             green: [32, 39],
                             magenta: [35, 39],
                             red: [31, 39],
-                            yellow: [33, 39]
+                            yellow: [33, 39],
                         };
 
                         // Don't use 'blue' not visible on cmd.exe
@@ -6784,7 +6782,7 @@
                             string: "green",
                             date: "magenta",
                             // "name": intentionally not styling
-                            regexp: "red"
+                            regexp: "red",
                         };
 
                         function stylizeWithColor(str, styleType) {
@@ -6804,7 +6802,7 @@
                         function arrayToHash(array) {
                             var hash = {};
 
-                            array.forEach(function(val, idx) {
+                            array.forEach(function (val, idx) {
                                 hash[val] = true;
                             });
 
@@ -6916,7 +6914,7 @@
                             if (array) {
                                 output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
                             } else {
-                                output = keys.map(function(key) {
+                                output = keys.map(function (key) {
                                     return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
                                 });
                             }
@@ -6929,13 +6927,7 @@
                         function formatPrimitive(ctx, value) {
                             if (isUndefined(value)) return ctx.stylize("undefined", "undefined");
                             if (isString(value)) {
-                                var simple =
-                                    "'" +
-                                    JSON.stringify(value)
-                                        .replace(/^"|"$/g, "")
-                                        .replace(/'/g, "\\'")
-                                        .replace(/\\"/g, '"') +
-                                    "'";
+                                var simple = "'" + JSON.stringify(value).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
                                 return ctx.stylize(simple, "string");
                             }
                             if (isNumber(value)) return ctx.stylize("" + value, "number");
@@ -6957,7 +6949,7 @@
                                     output.push("");
                                 }
                             }
-                            keys.forEach(function(key) {
+                            keys.forEach(function (key) {
                                 if (!key.match(/^\d+$/)) {
                                     output.push(formatProperty(ctx, value, recurseTimes, visibleKeys, key, true));
                                 }
@@ -6993,7 +6985,7 @@
                                         if (array) {
                                             str = str
                                                 .split("\n")
-                                                .map(function(line) {
+                                                .map(function (line) {
                                                     return "  " + line;
                                                 })
                                                 .join("\n")
@@ -7003,7 +6995,7 @@
                                                 "\n" +
                                                 str
                                                     .split("\n")
-                                                    .map(function(line) {
+                                                    .map(function (line) {
                                                         return "   " + line;
                                                     })
                                                     .join("\n");
@@ -7035,7 +7027,7 @@
 
                         function reduceToSingleString(output, base, braces) {
                             var numLinesEst = 0;
-                            var length = output.reduce(function(prev, cur) {
+                            var length = output.reduce(function (prev, cur) {
                                 numLinesEst++;
                                 if (cur.indexOf("\n") >= 0) numLinesEst++;
                                 return prev + cur.replace(/\u001b\[\d\d?m/g, "").length + 1;
@@ -7147,7 +7139,7 @@
                         }
 
                         // log is just a thin wrapper to console.log that prepends a timestamp
-                        exports.log = function() {
+                        exports.log = function () {
                             console.log("%s - %s", timestamp(), exports.format.apply(exports, arguments));
                         };
 
@@ -7166,7 +7158,7 @@
                          */
                         exports.inherits = require("inherits");
 
-                        exports._extend = function(origin, add) {
+                        exports._extend = function (origin, add) {
                             // Don't do anything if add isn't an object
                             if (!add || !isObject(add)) return origin;
 
@@ -7183,8 +7175,8 @@
                         }
                     }.call(this, require("_process"), typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {}));
                 },
-                { "./support/isBuffer": 39, _process: 23, inherits: 38 }
-            ]
+                { "./support/isBuffer": 39, _process: 23, inherits: 38 },
+            ],
         },
         {},
         [1]

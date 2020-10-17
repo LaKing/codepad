@@ -1,4 +1,3 @@
-
 const os = require("os");
 
 if (!ß.hash_typ) ß.hash_typ = "sha512";

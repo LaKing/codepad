@@ -2,8 +2,8 @@
 
 // @fortawesome/fontawesome-free
 
-ß.app.use(ß.express.static(ß.resolve_node_module_path('@fortawesome/fontawesome-free/css')));
-ß.app.use(ß.express.static(ß.resolve_node_module_path('/@fortawesome/fontawesome-free')));
+ß.app.use(ß.express.static(ß.resolve_node_module_path("@fortawesome/fontawesome-free/css")));
+ß.app.use(ß.express.static(ß.resolve_node_module_path("/@fortawesome/fontawesome-free")));
 
 // font-awesome
 

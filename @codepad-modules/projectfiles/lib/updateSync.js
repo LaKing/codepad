@@ -47,11 +47,11 @@ function traverseSync(path) {
 
 // DEPRECATED
 
-module.exports = async function() {
+module.exports = async function () {
     Ł("??");
-	
-  	await ß.alf.projectfiles.update();
-  
+
+    await ß.alf.projectfiles.update();
+
     //purgeSync();
     //traverseSync("");
     console.log("- projectfiles updateSync");

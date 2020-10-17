@@ -3,7 +3,7 @@
 var watching = {};
 var laststats;
 
-module.exports = function(projectfile, realpath) {
+module.exports = function (projectfile, realpath) {
     // add a whatch if enabled
     if (ß.server_watch) {
         // watchers have to be added only once on the realpath
@@ -24,12 +24,12 @@ module.exports = function(projectfile, realpath) {
                 // only process first in sequence
                 var current = "~ server-side edit " + projectfile + " @" + process.hrtime()[0];
                 ß.lib.projectfiles.opntc(current.split("@")[0]);
-				
-                ß.fs.readFile(realpath, "utf-8", function(err, data) {
+
+                ß.fs.readFile(realpath, "utf-8", function (err, data) {
                     Đ(err);
                     ß.ntc(current);
                     ß.editor[realpath].updateDocServerOperation(data);
-                  	return;
+                    return;
                 });
             });
         });

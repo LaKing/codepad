@@ -3,7 +3,7 @@ module.exports = function () {
         if (!err) {
             ß.ntc("loaded typohint_ignore db");
             ß.typohint_ignore = data;
-          	return;
+            return;
         }
     });
 };

@@ -36,12 +36,11 @@ function process_file_contents(file, data) {
 
 function process_js_block(file, data) {
     if (data.charAt(0) === "#") data = "//" + data;
-  	console.log(file);
     let tokens = [];
-  	try {
+    try {
         tokens = esprima.tokenize(data);
     } catch (err) {
-      	console.log("Can not tokenize", file);
+        console.log("Can not tokenize", file);
         //console.log(err);
         return;
     }
