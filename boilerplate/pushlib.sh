@@ -336,7 +336,7 @@ function show_errors() {
             uri="https://$HOST:9001/p/boilerplate.log/${f##*/}"
             echo -e '\e[31m error IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'  >> "$project_log"
             echo -e '\e[31m error IN \e[31m\e]8;;'"$uri"'\a'"${f##*/}"'\e]8;;\a\e[0m'
-            grep -i ERROR "$f" >> "$project_log"
+            grep -i ERROR "$f" | grep -oiE "ERROR.{0,200}" >> "$project_log"
             #((error_count++))
             error_count=$((error_count + $(grep -i ERROR "$f" | wc -l)))
         fi

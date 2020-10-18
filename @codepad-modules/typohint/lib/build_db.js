@@ -27,15 +27,17 @@ function load(file) {
 function process_file_contents(file, data) {
     // get extension and code blocks
     var ext = ß.path.extname(file).substring(1);
-    var db = ß.path.extname(file).substring(1);
     // evaluate code blocks
-    if (!ß.typohint_db[db]) ß.typohint_db[db] = {};
-    if (ext === "js") return process_js_block(file, data);
-    process_data(strip(data), ß.typohint_db[db]);
+    if (ext === "js") {
+        if (data.charAt(0) === "#") return process_js_block("//" + data);
+        return process_js_block(data);
+    }
+    if (ext === "vue" || ext === "ejs" || ext === "html") return process_mixed_block(data);
+
+    process_contents_block(strip(data), ext);
 }
 
-function process_js_block(file, data) {
-    if (data.charAt(0) === "#") data = "//" + data;
+function process_js_block(data) {
     let tokens = [];
     try {
         tokens = esprima.tokenize(data);
@@ -44,28 +46,60 @@ function process_js_block(file, data) {
         //console.log(err);
         return;
     }
-    for (let i in tokens) {
+    for (let i = 0; i < tokens.length; i++) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.
         if (type === "Identifier") process_word(tokens[i].value, ß.typohint_db["js-Identifier"]);
         if (type === "String") process_data(tokens[i].value, ß.typohint_db["js-String"]);
     }
 }
-/*
-function process_contents_block(data, db) {
+
+function process_contents_block(data, dbname) {
+    if (!ß.typohint_db[dbname]) ß.typohint_db[dbname] = {};
+    process_data(data, ß.typohint_db[dbname]);
+}
+
+function process_mixed_block(data) {
+    // we should use some tokenizer, but could not find one yet, so we use this quick and dirty way
+    // we have vue files and html files in mind ...
+    // we will split to lines and build blocks
     const lines = data.split("\n");
 
-    for (let l in lines) {
-        //console.log('--', l, lines[l]);
-        process_data(lines[l], db);
+    var current_block = "";
+    var current_dbname = "html";
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i] === "<script>") {
+            process_contents_block(current_block, current_dbname);
+            current_block = "";
+            current_dbname = "js";
+            continue;
+        }
+        if (lines[i] === "</script>") {
+            process_js_block(current_block, current_dbname);
+            current_block = "";
+            current_dbname = "html";
+            continue;
+        }
+        if (lines[i] === "<style scoped>" || lines[i] === "<style>") {
+            process_contents_block(current_block, current_dbname);
+            current_block = "";
+            current_dbname = "css";
+            continue;
+        }
+        if (lines[i] === "</style>") {
+            process_contents_block(current_block, current_dbname);
+            current_block = "";
+            current_dbname = "html";
+            continue;
+        }
+        current_block += lines[i] + "\n";
     }
 }
-*/
 
 function process_data(data, db) {
     const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
 
-    for (let a in arr) {
+    for (let a = 0; a < arr.length; a++) {
         let w = arr[a];
         if (w.length < 3) continue;
         if (w.length > 30) continue;

@@ -1,5 +1,6 @@
 const strip = require("strip-comments");
 const esprima = require("esprima");
+const Tokenizer = require("html-tokenizer");
 
 module.exports = function evaluate_file(file) {
     if (!ß.projectfiles[file]) return;
@@ -14,23 +15,28 @@ module.exports = function evaluate_file(file) {
             if (err) return đ(err);
             // we have a limit on file size under the files to be considered
             if (contents.length > 10000) return;
-            evaluate_file_contents(file, contents);
+            process_file_contents(file, contents);
         });
 };
 
-function evaluate_file_contents(file, data) {
+function process_file_contents(file, data) {
     // get extension and code blocks
     var ext = ß.path.extname(file).substring(1);
     var db = ß.path.extname(file).substring(1);
     // evaluate code bloacks
     if (!ß.typohint_db[db]) ß.typohint_db[db] = {};
-    if (ext === "js") return evaluate_js_block(file, data);
-    evaluate_contents_block(file, 1, strip(data, { preserveNewlines: true }), db);
+  	// simple js
+    if (ext === "js") {
+        if (data.charAt(0) === "#") return process_js_block(file, 0, "//" + data);
+        return process_js_block(file, 0, data);
+    }
+  	// html mixed with js, css
+    if (ext === "vue" || ext === "ejs" || ext === "html") return process_mixed_block(file, 0, data);
+  	// other code
+    process_contents_block(file, 0, strip(data, { preserveNewlines: true }), db);
 }
 
-function evaluate_js_block(file, data) {
-    if (data.charAt(0) === "#") data = "//" + data;
-
+function process_js_block(file, offset, data) {
     let tokens = [];
     try {
         tokens = esprima.tokenize(data, { loc: true });
@@ -42,16 +48,57 @@ function evaluate_js_block(file, data) {
     for (let i = 0; i < tokens.length; i++) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.
-        let pos = tokens[i].loc.start.line;
-
+      	// esprima uses linenumbers 1...n but we use in this file 0..n numbering
+        let pos = offset + Number(tokens[i].loc.start.line-1);
         if (type === "Identifier") evaluate_word(file, pos, tokens[i].value, "js-Identifier");
         if (type === "String") evaluate_contents(file, pos, tokens[i].value, "js-String");
     }
 }
 
-function evaluate_contents_block(file, offset, data, dbname) {
+function process_mixed_block(file, offset, data) {
+    // we should use some tokenizer, but could not find one yet, so we use this quick and dirty way
+    // we have vue files and html files in mind ...
+    // we will split to lines and build blocks
     const lines = data.split("\n");
 
+    var current_block = "";
+    var current_dbname = "html";
+    var current_offset = offset;
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i] === "<script>") {
+            process_contents_block(file, current_offset, current_block, current_dbname);
+            current_block = "";
+            current_dbname = "js";
+            current_offset = i + 1;
+            continue;
+        }
+        if (lines[i] === "</script>") {
+            process_js_block(file, current_offset, current_block, current_dbname);
+            current_block = "";
+            current_dbname = "html";
+            current_offset = i + 1;
+            continue;
+        }
+        if (lines[i] === "<style scoped>" || lines[i] === "<style>") {
+            process_contents_block(file, current_offset, current_block, current_dbname);
+            current_block = "";
+            current_dbname = "css";
+            current_offset = i + 1;
+            continue;
+        }
+        if (lines[i] === "</style>") {
+            process_contents_block(file, current_offset, current_block, current_dbname);
+            current_block = "";
+            current_dbname = "html";
+            current_offset = i + 1;
+            continue;
+        }
+        current_block += lines[i] + "\n";
+    }
+}
+
+function process_contents_block(file, offset, data, dbname) {
+    const lines = data.split("\n");
     for (let i = 0; i < lines.length; i++) {
         evaluate_contents(file, Number(offset + i), lines[i], dbname);
     }
@@ -81,7 +128,7 @@ function evaluate_word(file, pos, e, dbname) {
         if (is_similar(e, w) === true) ws[w] = db[w];
     }
     if (Object.keys(ws).length < 1) return;
-    ß.lib.typohint.register(file, pos, e, ws, dbname);
+    ß.lib.typohint.register(file, 1+pos, e, ws, dbname);
 }
 
 function is_similar(a, b) {
@@ -92,8 +139,6 @@ function is_similar(a, b) {
     if (a.length === b.length) return accepted_samelength(a, b);
     if (a.length > b.length) return accepted_longer_a(a, b);
     if (a.length < b.length) return accepted_longer_a(b, a);
-
-    return console.log("CHECK:", a, b);
 }
 
 function length_missmatch(a, b) {
