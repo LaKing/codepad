@@ -6,5 +6,5 @@ module.exports = function (msg, realpath) {
         msg: msg,
     });
     ß.io.of("/main").emit("err", msg);
-    ß.ntc("operr " + msg + " " + realpath);
+    ß.err("operr " + msg + " " + realpath);
 };

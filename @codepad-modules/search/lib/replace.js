@@ -5,8 +5,8 @@ module.exports = function (file, search, replace, callback) {
 
     ß.fs.readFile(fullpath, "utf-8", function (err, data) {
         if (err) {
-            đ(err);
-            ß.err(projectfile + " " + err.code);
+            //đ(err);
+            ß.err(file + " " + err.code);
             ß.lib.projectfiles.operr("ERROR in readFile " + file + " " + err.code, fullpath);
             return callback(err, "Error while reading the file.");
         }
@@ -16,7 +16,7 @@ module.exports = function (file, search, replace, callback) {
         ß.fs.writeFile(fullpath, that, function (err) {
             if (err) {
                 đ(err);
-                ß.err(projectfile + " " + err.code);
+                ß.err(file + " " + err.code);
                 ß.lib.projectfiles.operr("ERROR in writeFile " + file + " " + err.code, fullpath);
                 return callback(err, "Error while writing the file.");
             }

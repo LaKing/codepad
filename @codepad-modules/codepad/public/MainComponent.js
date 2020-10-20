@@ -96,8 +96,6 @@ export default {
             <div>
                 <button v-if="!show_commits" title="toggle local / commit history" class="btn" @click="show_commits = !show_commits"><i class="fas fa-user"></i></button>
                 <button v-if="show_commits" title="toggle local/commit history" class="btn" @click="show_commits = !show_commits"><i class="fab fa-git"></i></button>
-
-
                 <button v-disabled="!$store.getters.getNtcFilepath" title="Follow latest operation" class="btn" @click="pad($store.getters.getNtcFilepath)">
                     <i class="fas fa-exchange-alt"></i>
                 </button>

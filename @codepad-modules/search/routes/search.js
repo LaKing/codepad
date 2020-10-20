@@ -116,7 +116,6 @@ function send_ahead(req) {
     res_send += "<title>Search results</title>";
     res_send += '<meta charset="utf-8" />';
     res_send += '<link rel="stylesheet" href="/codemirror/theme/' + theme + '.css">';
-    res_send += '<link rel="stylesheet" type="text/css" href="/index.css" />';
     res_send += '<script type="text/javascript">';
     res_send += "    window.onload = toBottom;";
     res_send += "    function toBottom() {";
@@ -226,7 +225,7 @@ function express_search(req, res) {
     var replace_term = req.query.replace;
     var replace_file = "/" + req.params[0];
     ß.lib.search.replace(replace_file, search_term, replace_term, function (err, success) {
-        ß.lib.projectfiles.oplog(ß.lib.basicauth.username_by_req(req), "replaced " + search_term + " to " + replace_term + " in", replace_file);
+        ß.lib.projectfiles.oplog(ß.lib.basicauth.username_by_req(req), "replaced " + search_term + " to " + replace_term, replace_file);
         express_search(req, res);
     });
 });

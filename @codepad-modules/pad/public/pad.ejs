@@ -115,7 +115,7 @@
         gutters: ["CodeMirror-lint-markers"],
         lint: <%- lint_options %>,
         readOnly: <%- readonly %>,
-        highlightSelectionMatches:  {showToken: /\w/, annotateScrollbar: true} // TODO
+        highlightSelectionMatches:  {showToken: /\w/, annotateScrollbar: true} // TODO: this does not work ...
 
     });
 
@@ -140,6 +140,7 @@
   
   	socket.on('typohint', function(typohint_array) {
       	console.log('typohint_array', typohint_array);
+      	if (!<%- typohint %>) return console.log('typohint disabled');
       	for (let i in typohint_array) {
           	// we have the visual numbers in the array, and we need to use 0-indexed
       		let line = typohint_array[i].line-1;

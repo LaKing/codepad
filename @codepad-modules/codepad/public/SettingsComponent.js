@@ -15,7 +15,8 @@ export default {
         <br />
         <div class="boxed">
             <h3>Preferences</h3>
-            <button title="Enable trash" class="btn" @click="enable_trash()" style=""><i class="fa fa-trash"></i> Enable trash: {{$store.state.trash}}</button>
+            <button title="Enable trash" class="btn" @click="enable_trash()" style=""><i class="fa fa-trash"></i> Enable trash: {{$store.state.trash}}</button><br /><br />
+            <button title="Enable typohint" class="btn" @click="toggle_typohint()" style=""><i class="fa fa-i-cursor"></i> Enable typohint: {{$store.state.settings.TYPOHINT}}</button><br /><br />
         </div>
         <br />
         <div class="boxed">
@@ -70,7 +71,11 @@ export default {
             });
         },
         enable_trash() {
-        	this.$store.commit("enable_trash");	
+            this.$store.commit("enable_trash");
+        },
+        toggle_typohint() {
+          	let val = !this.$store.state.settings.TYPOHINT;
+            this.$socket.client.emit("set_typohint", val, function () {});
         },
     },
     computed: {},

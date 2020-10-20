@@ -8,4 +8,6 @@ module.exports = function (username, opname, filepath) {
     data.filepath = filepath;
 
     ß.io.of("/main").emit("ntc", data);
+    //ß.ntc("oplog " + username + " " + opname + " " + filepath);
+	ß.lib.projectfiles.ops(username, opname, filepath);
 };

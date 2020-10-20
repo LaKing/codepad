@@ -11,10 +11,15 @@ const preejs = ß.get_module_path("pad", "public/pre.ejs");
 const embedejs = ß.get_module_path("pad", "public/embed.ejs");
 
 ß.app.get("/p/*", function (req, res, next) {
+
     let theme = ß.THEME;
     const username = ß.lib.basicauth.username_by_req(req);
     if (ß.settings[username]) if (ß.settings[username].theme) theme = ß.settings[username].theme;
 
+  	// TODO participate in the modular system
+    let typohint = ß.TYPOHINT;
+    if (ß.settings[username]) if (ß.settings[username].typohint) typohint = ß.settings[username].typohint; 
+  
     var file = req.params[0];
     var filename = req.params[0].split("/").pop();
 
@@ -45,6 +50,7 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
             file: file,
             mode: mode.mode || "null",
             lint_options: lint_options,
+          	typohint: typohint
         });
     }
 

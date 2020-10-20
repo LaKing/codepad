@@ -10,7 +10,6 @@ function send_ahead(req) {
     res_send += "<title>hint page for typo's</title>";
     res_send += '<meta charset="utf-8" />';
     res_send += '<link rel="stylesheet" href="/codemirror/theme/' + theme + '.css">';
-    res_send += '<link rel="stylesheet" type="text/css" href="/index.css" />';
     res_send += '<script type="text/javascript">';
     res_send += "    window.onload = toBottom;";
     res_send += "    function toBottom() {";

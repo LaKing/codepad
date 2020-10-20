@@ -25,7 +25,7 @@ const store = new Vuex.Store({
         logline: "Codepad opened",
         // settings
         settings: { status: "Settings not loaded" },
-        trash: false,
+        trash: false
     },
     getters: {
         // ...
@@ -136,11 +136,12 @@ const store = new Vuex.Store({
             state.logline = data;
         },
         settings(state, data) {
+          	console.log("SETTINGS:", data);
             state.settings = data;
         },
         enable_trash(state, data) {
             state.trash = !state.trash;
-        },
+        }
     },
 });
 

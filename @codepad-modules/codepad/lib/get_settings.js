@@ -1,6 +1,7 @@
-// ß.settings[ß.lib.basicauth.username_by_socket(socket)].theme
+// const username = ß.lib.basicauth.username_by_socket(socket);
+// const settings = ß.lib.codepad.get.settings(username);
 
-function get_settings(username) {
+module.exports = function get_settings(username) {
     let settings = {};
 
     settings.NAME = ß.NAME;
@@ -35,26 +36,4 @@ function get_settings(username) {
     settings.TYPOHINT = typohint;
 
     return settings;
-}
-
-module.exports = function (socket) {
-    const username = ß.lib.basicauth.username_by_socket(socket);
-  
-    socket.emit("settings", get_settings(username));
-
-    socket.on("set_theme", (data, callback) => {
-        if (!ß.settings[username]) ß.settings[username] = {};
-        ß.settings[username].theme = data;
-        ß.lib.codepad.save_settings();
-        callback();
-    });
-
-    socket.on("set_typohint", (data, callback) => {
-        if (!ß.settings[username]) ß.settings[username] = {};
-        ß.settings[username].typohint = data;
-        ß.lib.codepad.save_settings();
-      
-        socket.emit("settings", get_settings(username));
-        callback();
-    });
 };

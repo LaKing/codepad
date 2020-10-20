@@ -56,7 +56,7 @@ else
         CWD="$BOILERPLATE_CWD"
         BPD="$BOILERPLATE_BPD"
     else
-        echo "Boilerplate variables could not be loaded, guessing defaults, should be fine."
+        echo "Boilerplate variables could not be loaded, using defaults."
     fi
 fi
 
@@ -73,18 +73,18 @@ readonly push_log="$VAR"/push.log
 readonly unit="$NAME.scope"
 
 ## working directory
-readonly uid="$(stat -c '%U' "$CWD")"
-readonly gid="$(stat -c '%G' "$CWD")"
-
-if [[ $uid == 0 ]]
-then
-    echo "UID error. There should be a non-root UID and GID for the project. Exiting."
-    exit 76
-fi
+readonly uid="$(id -u "$user")"
+readonly gid="$(id -g "$user")"
 
 if [[ $gid == 0 ]]
 then
-    echo "GID error. There should be a non-root UID and GID for the project. Exiting."
+    echo "UID error. There should be a non-root user for the project. Exiting."
+    exit 76
+fi
+
+if [[ $uid == 0 ]]
+then
+    echo "GID error. There should be a non-root user for the project. Exiting."
     exit 76
 fi
 
@@ -190,6 +190,18 @@ function terminate_process_service() {
         echo 'terminated..'
         return
     fi
+}
+
+function check_module_starters() {
+    echo @check_module_starters
+	for f in "$CWD"/*-modules/*/start.sh
+    do
+    	if [ -f "$f" ] 
+        then
+        	echo "# running $f" 
+        	/bin/bash "$f"
+        fi
+    done
 }
 
 function start_server() {
@@ -373,7 +385,7 @@ then
 	echo "source stop.sh"
     source stop.sh
 fi
-
+check_module_starters
 start_server
 sleep 1
 push_unlock

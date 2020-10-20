@@ -16,6 +16,15 @@ if (!ß.get_directory_list_by_filter)
         return list;
     };
 
+if (!ß.get_directory_list)
+    ß.get_directory_list = function (dir) {
+        var list = [];
+        fs.inDirsSync(dir, function (entry) {
+            list.push(entry);
+        });
+        return list;
+    };
+
 // create a list of files from a directory - with an optional filter. Returns an array.
 if (!ß.get_file_list_by_filter)
     ß.get_file_list_by_filter = function (dir, filterfn) {
@@ -66,37 +75,54 @@ if (!ß.cli_uplink)
         // module liberary directory
         if (!ß.MLD) ß.MLD = "/usr/local/share/boilerplate";
 
-        const stack_list = ß.get_directory_list_by_filter(ß.MLD, is_factory_module_lib);
-
-        if (stack_list.length > 0) ß.cli_commands.push("uplink [ " + stack_list.join(" | ") + " ]");
-
         const app_list = ß.get_file_list_by_filter(ß.MLD, is_module_list_json);
 
-        if (app_list.length > 0) ß.cli_commands.push("uplink [ " + app_list.join(" | ") + " ]");
+        if (app_list.length > 0) ß.cli_commands.push("uplink [ " + app_list.join(" | ") + " ] #");
+
+        const collection_list = ß.get_directory_list_by_filter(ß.MLD, is_factory_module_lib);
+
+        if (collection_list.length > 0) ß.cli_commands.push("uplink [ " + collection_list.join(" | ") + " ]");
+
+        let module_list = {};
+        for (let collection of collection_list) {
+            let list = ß.get_directory_list(ß.MLD + "/" + collection);
+            for (let m of list) {
+                if (!module_list[m]) module_list[m] = [];
+                module_list[m].push(collection);
+            }
+        }
+
+        if (Object.keys(module_list).length > 0) ß.cli_commands.push("uplink MODULE		# uplink any module, ~" + Object.keys(module_list).length + " available.");
 
         // TODO add a list of all boilerplate modules merged from all module folders
 
         if (ß.CMD === "uplink") {
             var found = false;
             if (ß.ARG) {
-                let path = ß.MLD + "/" + ß.ARG;
-                if (ß.fs.existsSync(path)) {
-                    ß.ntc("ß uplink " + ß.ARG);
-
-                    if (fs.isDirSync(path) && is_factory_module_lib(ß.ARG)) {
-                        ß.uplink(ß.MLD + "/" + ß.ARG, ß.CWD + "/" + ß.ARG);
-                        found = true;
+                if (module_list[ß.ARG]) {
+                    
+                    for (let dir of module_list[ß.ARG]) {
+                        ß.ntc("ß uplink " + dir + '/' + ß.ARG);
+                        ß.uplink(ß.MLD + "/" + dir + "/" + ß.ARG, ß.CWD + "/" + dir + "/" + ß.ARG);
                     }
-                    if (fs.isFileSync(path) && is_module_list_json(ß.ARG)) {
-                        found = true;
-                        let data = fs.readJsonSync(path, "utf-8");
-                        for (let i in data) {
-                            console.log(i);
-                            ß.uplink_with_filter(ß.MLD + "/" + i, ß.CWD + "/" + i, data[i]);
+                    found = true;
+                } else {
+                    let path = ß.MLD + "/" + ß.ARG;
+                    if (ß.fs.existsSync(path)) {
+                        ß.ntc("ß uplink " + ß.ARG);
+                        if (fs.isDirSync(path) && is_factory_module_lib(ß.ARG)) {
+                            ß.uplink(ß.MLD + "/" + ß.ARG, ß.CWD + "/" + ß.ARG);
+                            found = true;
+                        }
+                        if (fs.isFileSync(path) && is_module_list_json(ß.ARG)) {
+                            found = true;
+                            let data = fs.readJsonSync(path, "utf-8");
+                            for (let i in data) {
+                                console.log(i);
+                                ß.uplink_with_filter(ß.MLD + "/" + i, ß.CWD + "/" + i, data[i]);
+                            }
                         }
                     }
-
-                    ß.ntc("Next, executing all-modules-dnf.sh and all-modules-install.sh");
                 }
             } else {
                 for (let i in stack_list) {
@@ -111,7 +137,7 @@ if (!ß.cli_uplink)
                 ß.create_all_modules_script("dnf.sh");
                 ß.create_all_modules_script("install.sh");
                 ß.create_all_modules_script("npm.sh");
-				// go back to bash
+                // go back to bash
                 process.exit();
                 return;
             }

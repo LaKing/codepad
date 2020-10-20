@@ -5,4 +5,5 @@ module.exports = function (msg) {
         now: ß.now(),
         msg: msg,
     });
+    //ß.ntc("opntc " + msg);
 };
