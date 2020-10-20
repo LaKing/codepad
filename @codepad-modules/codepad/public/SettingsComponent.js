@@ -60,6 +60,7 @@ export default {
         display(key, param) {
             if (typeof param === "string") return key + ": " + param;
             if (typeof param === "number") return key + ": " + param;
+          	if (typeof param === "boolean") return key + ": " + param;
 
             if (Object.prototype.toString.call(param) == "[object Array]") {
                 return key + ": " + param.join(" ");

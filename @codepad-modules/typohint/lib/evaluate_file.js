@@ -25,14 +25,14 @@ function process_file_contents(file, data) {
     var db = ß.path.extname(file).substring(1);
     // evaluate code bloacks
     if (!ß.typohint_db[db]) ß.typohint_db[db] = {};
-  	// simple js
+    // simple js
     if (ext === "js") {
         if (data.charAt(0) === "#") return process_js_block(file, 0, "//" + data);
         return process_js_block(file, 0, data);
     }
-  	// html mixed with js, css
+    // html mixed with js, css
     if (ext === "vue" || ext === "ejs" || ext === "html") return process_mixed_block(file, 0, data);
-  	// other code
+    // other code
     process_contents_block(file, 0, strip(data, { preserveNewlines: true }), db);
 }
 
@@ -48,8 +48,8 @@ function process_js_block(file, offset, data) {
     for (let i = 0; i < tokens.length; i++) {
         let type = tokens[i].type;
         // if type is Numeric Keyword or Punctuator, then we are good.
-      	// esprima uses linenumbers 1...n but we use in this file 0..n numbering
-        let pos = offset + Number(tokens[i].loc.start.line-1);
+        // esprima uses linenumbers 1...n but we use in this file 0..n numbering
+        let pos = offset + Number(tokens[i].loc.start.line - 1);
         if (type === "Identifier") evaluate_word(file, pos, tokens[i].value, "js-Identifier");
         if (type === "String") evaluate_contents(file, pos, tokens[i].value, "js-String");
     }
@@ -103,9 +103,9 @@ function process_contents_block(file, offset, data, dbname) {
         evaluate_contents(file, Number(offset + i), lines[i], dbname);
     }
 }
-
+const regex = /[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g;
 function evaluate_contents(file, pos, data, dbname) {
-    const arr = data.replace(/[^a-zA-Z0-9_íÍöÖüÜóÓőŐúÚéÉáÁűŰ]+/g, " ").split(" ");
+    const arr = data.replace(regex, " ").split(" ");
 
     for (let a = 0; a < arr.length; a++) {
         let w = arr[a];
@@ -128,7 +128,10 @@ function evaluate_word(file, pos, e, dbname) {
         if (is_similar(e, w) === true) ws[w] = db[w];
     }
     if (Object.keys(ws).length < 1) return;
-    ß.lib.typohint.register(file, 1+pos, e, ws, dbname);
+  	
+  	if (e.match(/^\d/)) return;
+
+    ß.lib.typohint.register(file, 1 + pos, e, ws, dbname);
 }
 
 function is_similar(a, b) {
