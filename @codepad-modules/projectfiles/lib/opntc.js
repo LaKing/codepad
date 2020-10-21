@@ -6,4 +6,6 @@ module.exports = function (msg) {
         msg: msg,
     });
     //ß.ntc("opntc " + msg);
+    ß.lib.projectfiles.log(msg);
+
 };

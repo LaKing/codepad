@@ -128,8 +128,8 @@ function evaluate_word(file, pos, e, dbname) {
         if (is_similar(e, w) === true) ws[w] = db[w];
     }
     if (Object.keys(ws).length < 1) return;
-  	
-  	if (e.match(/^\d/)) return;
+
+    if (e.match(/^\d/)) return;
 
     ß.lib.typohint.register(file, 1 + pos, e, ws, dbname);
 }

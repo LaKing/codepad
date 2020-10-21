@@ -6,7 +6,10 @@ module.exports = function (socket) {
     socket.on("exec", function (arg) {
         ß.msg("[" + socket.username + "@" + ß.HOSTNAME + "]$ " + arg);
         ß.lib.projectfiles.opntc(socket.username + " execute " + arg);
-
+		
+      	// eg, push
+      	ß.run_hook(arg);
+      
         const x = spawn("/bin/bash", [arg]);
 
         x.stdout.on("data", (data) => {
