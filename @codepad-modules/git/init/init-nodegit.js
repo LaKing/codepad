@@ -1,5 +1,5 @@
 // boilerplate
-
+/*
 if (!ß.GITDIR) ß.GITDIR = ß.path.join(ß.PROJECTDIR, ".git");
 return;
 
@@ -22,7 +22,7 @@ async function init() {
         },
         message: "init"
     });
-    console.log(sha);*/
+    console.log(sha);
 }
 
 async function add() {
@@ -65,7 +65,7 @@ async function test(n) {
 
     files = await git.listFiles({ fs, dir });
     console.log(files);
-*/
+///
 
     let commits = await git.log({ fs, dir });
     Ł(commits.length);
@@ -90,3 +90,5 @@ add();
 //test(10);
 
 console.log("______________________ Complete ___________________");
+
+//*/

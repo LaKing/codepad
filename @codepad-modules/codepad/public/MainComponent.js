@@ -202,11 +202,13 @@ export default {
             window.open(t);
         },
         beautify(path) {
-            if (!path) path = this.$store.state.pad;
+          	if (!path) path = this.$store.state.pad;
             console.log("beautify", path);
             if (!path) return;
+			let _this = this;
+          
             this.$socket.client.emit("beautify", path, function (err, data) {
-                this.$socket.client.emit("typohint", path);
+                _this.$socket.client.emit("typohint", path);
             });
         },
         push() {

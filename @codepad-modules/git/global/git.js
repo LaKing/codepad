@@ -1,1 +1,1 @@
-if (!ß.git) ß.git = require("isomorphic-git");
+//if (!ß.git) ß.git = require("isomorphic-git");

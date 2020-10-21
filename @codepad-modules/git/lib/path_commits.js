@@ -3,7 +3,7 @@ const fs = ß.fs;
 const dir = ß.PROJECTDIR;
 
 module.exports = async function (path, callback) {
-    if (!ß.projectfiles[path]) return;
+ /*   if (!ß.projectfiles[path]) return;
     if (!ß.projectfiles[path].file) return;
     //if (ß.projectfiles[file].readonly) return;
     var commits = false;
@@ -38,7 +38,7 @@ module.exports = async function (path, callback) {
         }
         ß.projectfiles[path].git = commitsThatMatter;
     }
-
+*/
     if (callback) callback();
 };
 

@@ -1,4 +1,4 @@
-const git = ß.git;
+/*const git = ß.git;
 const fs = ß.fs;
 const dir = ß.PROJECTDIR;
 
@@ -40,4 +40,4 @@ const filepath = "test/me.sh";
     });
     Ł(Buffer.from(blob).toString("utf8"));
   */
-})();
+//})();

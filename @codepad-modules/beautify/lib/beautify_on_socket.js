@@ -21,6 +21,7 @@ const extensions = "js vue ts css scss html json ms yaml yml graphql";
 
 module.exports = function (socket) {
     socket.on("beautify", function (projectfile, callback) {
+ 
         if (!projectfile) projectfile = socket.projectfile;
         if (projectfile.charAt(0) !== "/") return console.error("Cannot beautify. Bad path.");
         if (!projectfile) return console.error("Cannot beautify. No parameter.");
@@ -47,13 +48,13 @@ module.exports = function (socket) {
             //ß.editor[realpath].updateDocServerOperation(data);
             // okay, instead of savingf it on the server side, we will send it to the client, and update the doc there.
 
-            ß.lib.projectfiles.oplog(socket.username, "beautify prettier", socket.projectfile);
-            ß.ntc(socket.username, "beautify prettier", socket.projectfile);
+            ß.lib.projectfiles.oplog(socket.username, "beautify prettier", projectfile);
+            ß.ntc(socket.username, "beautify prettier", projectfile);
             // we send it here in a callback
             callback(null, data);
         } catch (err) {
             let msg = err.message.split("\n")[0];
-            ß.lib.projectfiles.oplog(socket.username, "prettier error " + msg, socket.projectfile);
+            ß.lib.projectfiles.oplog(socket.username, "prettier error " + msg, projectfile);
             ß.err("prettier error", realpath, "\n", err);
         }
     });
