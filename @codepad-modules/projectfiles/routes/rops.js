@@ -24,18 +24,56 @@ function send_ahead(req) {
     res.writeHead(200);
     res.write(send_ahead(req));
 
+    res.write("<br><b>## OPEN FILES</b><br><br>");
+
+    // files
+    for (let i in ß.projectfiles) {
+        if (!ß.projectfiles[i].file) continue;
+
+        let users = {};
+
+        // check for files at users
+        if (ß.projectfiles[i].at)
+            // i is projectfile index
+
+            for (let u in ß.projectfiles[i].at) {
+                // u is username
+
+                for (let s in ß.projectfiles[i].at[u]) {
+                    // s is the socket id of the last edit
+
+                    // is that socket still here?
+                    for (let x in ß.io.of("/p").sockets) {
+                        if (ß.io.of("/p").sockets[x].id === s) {
+                            // yes: add it to our object to be sent
+                            users[u] = true;
+                        }
+                    }
+                }
+            }
+		// okay, now users has all usernames that are currently online, we can form a response
+        if (Object.keys(users).length > 0) {
+            res.write('<a class="CodeMirror-guttermarker" href="/p' + i + '" style="text-decoration: underline">' + i + "</a><br>");
+            for (let u of Object.keys(users)) {
+                res.write("<b>" + u + "</b><br>");
+            }
+        }
+    }
+
+    res.write("<br><b>## EDIT HISTORY</b><br><br>");
+
     for (let d in ß.ops) {
         for (let username in ß.ops[d]) {
-            res.write("<b>" + d + " " + username + "</b><br>");
+            res.write("# <i>" + d + "</i> <b>" + username + "</b><br>");
             for (let projectfile in ß.ops[d][username]) {
                 res.write('<a class="CodeMirror-guttermarker" href="/p' + projectfile + '" style="text-decoration: underline">' + projectfile + "</a><br>");
                 for (let operation in ß.ops[d][username][projectfile]) {
-                  	let a = ß.ops[d][username][projectfile][operation];
-                    res.write("<i>" + operation + "</i>: " + a[a.length -1 ] + "<br>");
+                    let a = ß.ops[d][username][projectfile][operation];
+                    res.write("<i>" + operation + "</i>: " + a[a.length - 1] + "<br>");
                 }
-              	res.write("<br>");
+                res.write("<br>");
             }
-          	res.write("<br><br>");
+            res.write("<br><br>");
         }
     }
 
