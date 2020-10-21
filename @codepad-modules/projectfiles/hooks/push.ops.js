@@ -1,3 +1,3 @@
 module.exports = function () {
-    ß.ops_date = ß.date();
+    ß.ops_date = ß.now();
 };

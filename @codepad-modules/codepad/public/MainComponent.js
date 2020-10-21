@@ -105,10 +105,12 @@ export default {
                 <div id="logline" class="ellipse" :title="$store.state.logline" @click=""><span v-html="$store.state.logline"></span></div>
             </div>
             <div>
-                <button title="show typographic hint page" class="btn newwindow" @click="window.open('/hint'),highlight_typo()"><i class="fas fa-i-cursor"></i></button>
                 <button title="static full log here" class="btn newwindow" @click="$store.commit('nopad');"><i class="fas fa-border-style"></i></button>
                 <button title="static full log in new window" class="btn newwindow" @click="window.open('/log')"><i class="fas fa-grip-lines"></i></button>
                 <button title="dynamic last-logs in new window" class="btn newwindow" @click="window.open('/logs')"><i class="fas fa-bars"></i></button>
+                <button title="show typographic hint page in new window" class="btn newwindow" @click="window.open('/hint')"><i class="fas fa-i-cursor"></i></button>
+                <button title="edit operations history new window" class="btn newwindow" @click="window.open('/ops')"><i class="fas fa-history"></i></button>
+
 
             </div>
         </div>
@@ -181,9 +183,6 @@ export default {
     methods: {
         pad(path) {
             this.$store.commit("pad", path);
-        },
-        highlight_typo() {
-            console.log("type", ß.projectfiles);
         },
         run() {
             var interpreter = "/raw";
