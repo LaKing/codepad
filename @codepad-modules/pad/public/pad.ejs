@@ -101,6 +101,7 @@
     var pad = '/<%- file %>';
     
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      	indentUnit: 4,
         lineNumbers: true,
         lineWrapping: true,
         theme: "<%- theme %>",
@@ -116,7 +117,6 @@
         lint: <%- lint_options %>,
         readOnly: <%- readonly %>,
         highlightSelectionMatches:  {showToken: /\w/, annotateScrollbar: true} // TODO: this does not work ...
-
     });
 
 

@@ -10,7 +10,11 @@ module.exports = function (socket) {
       	// eg, push
       	ß.run_hook(arg);
       
-        const x = spawn("/bin/bash", [arg]);
+      	let options = process.env;
+      	options.USER = socket.username;
+      	Ł(options);
+      
+        const x = spawn("/bin/bash", [arg], options);
 
         x.stdout.on("data", (data) => {
             console.log(`${data}`);

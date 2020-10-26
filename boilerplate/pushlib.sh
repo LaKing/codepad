@@ -65,6 +65,7 @@ echo "NAME: $NAME"
 echo "HOST: $HOST"
 echo "VAR:  $VAR"
 echo "CWD:  $CWD" 
+echo "USER:  $USER" 
 
 readonly project_log="$VAR"/project.log
 readonly project_pid="$VAR"/project.pid
@@ -93,7 +94,7 @@ fi
 if [[ $UID != 0 ]]
 then
     echo "ssh root@localhost push > $push_log"
-    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "/bin/bash /bin/push < /dev/null > $push_log"
+    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "USER=$USER" "/bin/bash /bin/push < /dev/null > $push_log"
     code=$?
     echo "ssh push command complete, exit $code"
     exit "$code"
@@ -395,5 +396,5 @@ await_processes_countdown
 show_errors
 check_process
 end="$(date +%s)"
-log "PUSH $NAME READY ($error_count errors, $((end-start)) sec)" 
+log "$USER PUSH $NAME READY ($error_count errors, $((end-start)) sec)" 
 

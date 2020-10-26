@@ -25,7 +25,7 @@ const dir = ß.PROJECTDIR;
     var filename = req.params[0].split("/").pop();
     var oid = req.params.oid;
 
-    Ł(entry, filename, req.params);
+    //Ł(entry, filename, req.params);
 
     var fullpath = ß.PROJECTDIR + "/" + entry;
     var path = "/" + entry;
