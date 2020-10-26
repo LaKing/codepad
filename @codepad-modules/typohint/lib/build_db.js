@@ -25,6 +25,7 @@ function load(file) {
 }
 
 function process_file_contents(file, data) {
+    ß.debug("Typohint build_db " + file);
     // get extension and code blocks
     var ext = ß.path.extname(file).substring(1);
     // evaluate code blocks
