@@ -9,8 +9,8 @@ Simple date functions
 `ß.DATE` and `ß.TIME` are constant stamps created at bootup  
 
 */
-ß.now = function() {
-    var now = new Date();
+ß.now = function(now) {
+    if (!now) now = new Date();
 
     var month = (now.getMonth() + 1);
     if (month < 10) month = '0' + month;
@@ -31,8 +31,8 @@ Simple date functions
     return now.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + min + ':' + sec;
 };
 
-ß.date = function() {
-    var now = new Date();
+ß.date = function(now) {
+    if (!now) now = new Date();
 
     var month = (now.getMonth() + 1);
     if (month < 10) month = '0' + month;
@@ -43,8 +43,8 @@ Simple date functions
     return now.getFullYear() + '-' + month + '-' + day;
 };
 
-ß.time = function() {
-    var now = new Date();
+ß.time = function(now) {
+    if (!now) now = new Date();
 
     var hour = now.getHours();
     if (hour < 10) hour = '0' + hour;

@@ -49,6 +49,7 @@ export default {
                       </dialog>
 
                     <button title="beautify F2" class="btn" @click="beautify(), topmenu=false" :disabled="fileReadonly()"><i class="fas fa-code"></i></button>
+					<button title="Git commits" class="btn" @click="commits(), topmenu=false" :disabled="fileReadonly()"><i class="fab fa-git"></i></button>
                     <div id="top-msg" class="mono">
                         <span :style="{maxWidth: top_msg_w}"><span>{{$store.getters.getPath}}</span></span>
                     </div>
@@ -75,8 +76,7 @@ export default {
                         <tree-component path="/" class="boxed"/>
                     </pane>
                     <pane size="20"v-if="$store.getters.getHistory" >
-                        <history-component v-if="!show_commits" class="boxed" />
-                        <commits-component v-if="show_commits" class="boxed" />
+                        <history-component class="boxed" />
                     </pane>
                 </splitpanes>
             </pane>
@@ -94,8 +94,6 @@ export default {
 
         <div id="logbar">
             <div>
-                <button v-if="!show_commits" title="toggle local / commit history" class="btn" @click="show_commits = !show_commits"><i class="fas fa-user"></i></button>
-                <button v-if="show_commits" title="toggle local/commit history" class="btn" @click="show_commits = !show_commits"><i class="fab fa-git"></i></button>
                 <button v-disabled="!$store.getters.getNtcFilepath" title="Follow latest operation" class="btn" @click="pad($store.getters.getNtcFilepath)">
                     <i class="fas fa-exchange-alt"></i>
                 </button>
@@ -144,7 +142,6 @@ export default {
             first_panesize: 20,
             window_size: window.innerWidth,
             edit_settings: false,
-            show_commits: false,
             btn_size: 40,
             topmenu: false,
             trash_folder_dialog: false,
@@ -202,14 +199,19 @@ export default {
             window.open(t);
         },
         beautify(path) {
-          	if (!path) path = this.$store.state.pad;
+            if (!path) path = this.$store.state.pad;
             console.log("beautify", path);
             if (!path) return;
-			let _this = this;
-          
+            let _this = this;
+
             this.$socket.client.emit("beautify", path, function (err, data) {
                 _this.$socket.client.emit("typohint", path);
             });
+        },
+        commits(path) {
+            if (!path) path = this.$store.state.pad;
+            if (!path) return;
+            window.open("/commits" + path);
         },
         push() {
             this.$socket.client.emit("exec", "push");

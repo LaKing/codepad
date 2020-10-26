@@ -30,7 +30,7 @@ function send_ahead(req) {
     res.setHeader("Content-Type", "text/html");
     res.writeHead(200);
     res.write(send_ahead(req));
-    res.write(ß.now() + " checking " + ß.git_commits.length + " commits<br>");
+    res.write(ß.now() + " - " + ß.git_commits.length + " commits<br>");
 	res.flush();
   
     ß.lib.git.path_commits(projectfile, function (err, commits) {
@@ -38,9 +38,9 @@ function send_ahead(req) {
         res.write('<a class="CodeMirror-guttermarker" href="/p/' + projectfile + '" style="text-decoration: underline">' + projectfile + "</a> </p>");
 
         for (let commit of commits) {
-          	let date_stamp = (new Date(commit.timestamp*1000)).toLocaleString();
+          	let date_stamp = new Date(commit.timestamp*1000);
           	
-            res.write('<b>'+ commit.name + "</b> - <i>" + date_stamp + '</i> - <b><a class="CodeMirror-guttermarker" href="/git/' + commit.oid + projectfile + '" style="text-decoration: underline">' + commit.message + "</a></b><br>");
+            res.write("<i>" + ß.now(date_stamp) + '</i> <b>' + commit.name + '</b> <a class="CodeMirror-guttermarker" href="/git/' + commit.oid + projectfile + '" >' + commit.message + "</a><br>");
         }
 
         res.write("<br>");
