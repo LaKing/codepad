@@ -5,7 +5,7 @@
 
 // note, await is is supported after node 7.10.1
 
-if (!ß.isdefined)
+if (!ß.isDefined)
     ß.isDefined = function(arg) {
         return new Promise(resolve => {
             if (ß[arg] !== undefined) return resolve();

@@ -38,7 +38,7 @@ function process(dir, p) {
             if (fs.isDirSync(path)) {
                 let condition_file = path + "/module-condition.js";
                 if (fs.existsSync(condition_file)) if (require(condition_file)() !== true) continue;
-
+                
                 if (!modules[module]) modules[module] = {};
                 modules[module][path] = p;
 

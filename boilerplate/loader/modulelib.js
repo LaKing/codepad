@@ -25,7 +25,7 @@ if (!ß.modules_subset_by_filter)
     };
 
 
-// `ß.priorized_modules_function(modules, process)` first argument is a modules object, second argument is a function to be called `process(module, dir, priority);` 
+// `ß.modules_process(modules, process)` first argument is a modules object, second argument is a function to be called `process(module, dir, priority);` 
 if (!ß.modules_process)
     ß.modules_process = function(modules, process) {
         for (let module in modules) {

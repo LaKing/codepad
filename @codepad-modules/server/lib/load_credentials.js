@@ -18,7 +18,7 @@ if (fs.existsSync(ß.CWD + '/localhost.key') && fs.existsSync(ß.CWD + '/localho
 	certificate = fs.readFileSync(moduledir + '/cert/localhost.crt', 'utf8');
 }
 
-module.exports = function() {
+module.exports = function load_credentials() {
     return {
         key: privateKey,
         cert: certificate

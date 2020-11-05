@@ -149,6 +149,7 @@ Wrong use of ł, second argument is not a string in at Object.<anonymous> (/srv/
 ```
 */
 
+// TODO: outdated, js has this in the most recent versions
 if (ß.DEBUG) {
     global.ł = function(obj, key) {
         if (typeof obj !== "object") {

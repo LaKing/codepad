@@ -12,7 +12,6 @@ module.exports = function (socket) {
       
       	let options = process.env;
       	options.USER = socket.username;
-      	Ł(options);
       
         const x = spawn("/bin/bash", [arg], options);
 

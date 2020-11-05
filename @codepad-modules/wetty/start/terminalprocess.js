@@ -88,12 +88,15 @@ function exec(socket, dir, cmd, arg) {
     ß.ntc(username + " [" + ß.path.basename(dir) + "] " + cmd + " " + arg.join(" "));
 
     let active = true;
-
+	let env = process.env;
+    env.USER = username;
+    
     var term = ß.pty.spawn(cmd, arg, {
         name: "xterm-256color",
         cols: 80,
         rows: 30,
         cwd: dir,
+        env: env
     });
 
     //console.log((new Date()) + " PID=" + term.pid + " STARTED on behalf of user=" + sshuser);

@@ -2,6 +2,8 @@
 
 start="$(date +%s)"
 
+
+
 ## make sure we are in the right folder
 #INSTALL_BIN="$(realpath "$BASH_SOURCE")"
 #INSTALL_DIR="${INSTALL_BIN:0:-8}"
@@ -223,10 +225,10 @@ function start_server() {
     ## make sure we have a right to bind to privileged port
     setcap cap_net_bind_service=+ep /usr/bin/node
     
-
     ## the host argument is just a comment, so we can see our hostname in the process starter
-    echo "systemd-run --unit $NAME --scope --uid=$user --gid=$user /bin/node --preserve-symlinks server.js $HOST 2>> $project_log 1>> $project_log &"
-    if systemd-run --unit "$NAME" --scope --uid="$user" --gid="$user" /bin/node --preserve-symlinks server.js "$HOST" 2>> "$project_log" 1>> "$project_log" &
+    ## TODO --diagnostic-dir boilerplate.log -- needs recent node versions.
+    echo "systemd-run --unit $NAME  --scope --uid=$user --gid=$user /bin/node --prof --preserve-symlinks server.js $HOST 2>> $project_log 1>> $project_log &"
+    if systemd-run --unit "$NAME" --scope --uid="$user" --gid="$user" /bin/node --prof --preserve-symlinks server.js "$HOST" 2>> "$project_log" 1>> "$project_log" &
     then
     	main_pid="$!"
         echo "systemd-run OK, main pid $main_pid"
