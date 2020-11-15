@@ -10,7 +10,8 @@ module.exports = async function (path, callback) {
     try {
         commits = await git.log({ fs, dir , depth: ß.GIT_DEPTH});
     } catch (error) {
-        ß.err(error);
+        ß.msg(" - no git commits");
+        ß.debug(error);
         if (callback) callback();
         return false;
     }
