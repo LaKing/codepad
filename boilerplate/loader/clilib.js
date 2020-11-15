@@ -75,9 +75,9 @@ if (!ß.cli_uplink)
         // module liberary directory
         if (!ß.MLD) ß.MLD = "/usr/local/share/boilerplate";
 
-        const app_list = ß.get_file_list_by_filter(ß.MLD, is_module_list_json);
+        const stack_file_list = ß.get_file_list_by_filter(ß.MLD, is_module_list_json);
 
-        if (app_list.length > 0) ß.cli_commands.push("uplink [ " + app_list.join(" | ") + " ] #");
+        if (stack_file_list.length > 0) ß.cli_commands.push("uplink [ " + stack_file_list.join(" | ") + " ]		# pre-defined stack");
 
         const collection_list = ß.get_directory_list_by_filter(ß.MLD, is_factory_module_lib);
 
@@ -100,13 +100,14 @@ if (!ß.cli_uplink)
             var found = false;
             if (ß.ARG) {
                 if (module_list[ß.ARG]) {
-                    
+                    // single module in multiple module-collections
                     for (let dir of module_list[ß.ARG]) {
-                        ß.ntc("ß uplink " + dir + '/' + ß.ARG);
-                        ß.uplink(ß.MLD + "/" + dir + "/" + ß.ARG, ß.CWD + "/" + dir + "/" + ß.ARG);
+                        ß.ntc("ß uplink " + dir + "/" + ß.ARG);
+                        ß.link(ß.MLD + "/" + dir + "/" + ß.ARG, ß.CWD + "/" + dir + "/" + ß.ARG);
                     }
                     found = true;
                 } else {
+                    // a module collection folder
                     let path = ß.MLD + "/" + ß.ARG;
                     if (ß.fs.existsSync(path)) {
                         ß.ntc("ß uplink " + ß.ARG);
@@ -125,18 +126,24 @@ if (!ß.cli_uplink)
                     }
                 }
             } else {
-                for (let i in stack_list) {
-                    if (ß.fs.existsSync(ß.MLD + "/" + stack_list[i])) {
-                        ß.ntc("ß uplink " + stack_list[i]);
-                        ß.uplink(ß.MLD + "/" + stack_list[i], ß.CWD + "/" + stack_list[i]);
-                        found = true;
+                // stack list
+                if (ß.fs.existsSync(ß.MLD + "/" + ß.ARG)) {
+                    let stack_list = ß.readJsonSync(ß.MLD + "/" + ß.ARG);
+                    for (let i in stack_list) {
+                        if (ß.fs.existsSync(ß.MLD + "/" + stack_list[i])) {
+                            ß.ntc("ß uplink " + stack_list[i]);
+                            ß.uplink(ß.MLD + "/" + stack_list[i], ß.CWD + "/" + stack_list[i]);
+                            found = true;
+                        }
                     }
                 }
             }
+                           
+            ß.create_all_modules_script("dnf.sh");
+            ß.create_all_modules_script("install.sh");
+            ß.create_all_modules_script("npm.sh");
+            
             if (found) {
-                ß.create_all_modules_script("dnf.sh");
-                ß.create_all_modules_script("install.sh");
-                ß.create_all_modules_script("npm.sh");
                 // go back to bash
                 process.exit();
                 return;

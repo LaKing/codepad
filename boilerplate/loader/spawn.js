@@ -81,7 +81,7 @@ if (!ß.bash_file)
         var child = child_process.spawn("/bin/bash", [file], options);
         console.log("- ", name, "/bin/bash", file, " - pid", child.pid);
         reg(" - " + name + " /bin/bash" + file + " - pid " + child.pid);
-        fs.writeFileSync(ß.BPLOG + "/bash-" + name + ".pid", child.pid);
+        fs.writeFileSync(ß.BPLOG + "/bash-" + name + ".pid", child.pid.toString());
 
         child.on("error", (err) => {
             console.log("ERROR on", name, "subprocess. ", err);
@@ -217,7 +217,8 @@ if (!ß.create_all_modules_script)
             // that object has values populated, selection complete so do the job now
             for (let me in that) {
                 let dir = ß.path.dirname(that[me]); //.split('/').pop().join();
-                shreg("cd " + dir + " && bash " + me);
+                if (bmf === "npm.sh") shreg("cd " + dir + " && pwd && rm -fr node_modules && rm -f package-lock.json && bash " + me);
+                else shreg("cd " + dir + " && pwd && bash " + me);
                 reg(module + " " + bmf + " " + me + " is " + that[me]);
             }
         }

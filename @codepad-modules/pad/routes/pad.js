@@ -32,7 +32,7 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
     var ext = "txt";
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
 
-    var lint_options = ß.LINT_OPTIONS || "{esversion: 9}";
+    var lint_options = ß.LINT_OPTIONS || "{esversion: 11}";
     var readonly = false;
 
     if (ß.projectfiles[path]) if (ß.projectfiles[path].readonly) readonly = true;

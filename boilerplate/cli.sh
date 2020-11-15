@@ -86,11 +86,12 @@ then
 	systemd-run --unit "$NAME" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
     
     ## we need to update our configurations according to the current modules
+    echo "To complete installation run:"
     echo "/bin/bash $CWD/all-modules-dnf.sh"
-    /bin/bash "$CWD/all-modules-dnf.sh"
+    #/bin/bash "$CWD/all-modules-dnf.sh"
     echo "/bin/bash $CWD/all-modules-install.sh"
-    /bin/bash "$CWD/all-modules-install.sh"
-    echo "OK, DONE. All GOOD. Press play on tape."
+    #/bin/bash "$CWD/all-modules-install.sh"
+    echo "DONE."
     exit
 fi
 

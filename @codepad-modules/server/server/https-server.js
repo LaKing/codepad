@@ -54,7 +54,7 @@ httpsServer.listen(port, function(err) {
     else ß.ntc(ß.MODE + " Server (re)start");
 
     // in case any other app wants to consume it
-    fs.writeFileSync(ß.VAR + "/https-server.port", port);
+    fs.writeFileSync(ß.VAR + "/https-server.port", port.toString());
 });
 
 process.on("SIGTERM", function() {

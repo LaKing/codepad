@@ -1,8 +1,8 @@
 /*ßoilerplate */
 
 function exit_with(arg) {
-	console.error(arg, "Exiting.");
-  	process.exit(10);
+    console.error(arg, "Exiting.");
+    process.exit(10);
 }
 
 // this is an exception for codepad instances
@@ -30,22 +30,24 @@ if (fs.existsSync(ß.PIDFILE)) {
     else console.error("! Incorrect pid in " + ß.PIDFILE + " pidfile:", pidcontent, "current pid:", process.pid);
 }
 */
-
+let pid = process.pid.toString();
 // write a pidfile
-fs.writeFileSync(ß.PIDFILE, process.pid);
-ß.fs.chownSync(ß.PIDFILE, ß.UID, ß.GID);
+fs.writeFileSync(ß.PIDFILE, pid, function (err) {
+    ß.fs.chownSync(ß.PIDFILE, ß.UID, ß.GID);
+	if (err) return console.log(err);
 
-if (process.ppid) console.log("- wrote pid:", process.pid, "- ppid: ", process.ppid, "- user:", process.env.USER);
-else console.log("- wrote pid:", process.pid, "- user:", process.env.USER);
+    if (process.ppid) console.log("- wrote pid:", process.pid, "- ppid: ", process.ppid, "- user:", process.env.USER);
+    else console.log("- wrote pid:", process.pid, "- user:", process.env.USER);
+});
 
 // STOP Signals to listen for
-process.on("SIGTERM", function() {
+process.on("SIGTERM", function () {
     try {
         fs.unlinkSync(ß.PIDFILE);
     } catch (e) {}
 });
 
-process.on("SIGUSR1", function() {
+process.on("SIGUSR1", function () {
     try {
         fs.unlinkSync(ß.PIDFILE);
     } catch (e) {}

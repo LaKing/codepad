@@ -41,7 +41,7 @@ if (!ß.BUILD_VERSION) {
             .readFileSync(ß.CWD + "/version", "utf-8")
             .replace(/\r?\n?/g, "")
             .trim();
-    else ß.fs.writeFileSync(ß.CWD + "/version", ß.BUILD_VERSION);
+    else ß.fs.writeFileSync(ß.CWD + "/version", ß.BUILD_VERSION.toString());
 }
 
 // `ß.VAR` has the path for runtime variables eg.: `/var/codepad-project`

@@ -1,7 +1,6 @@
 /*ßoilerplate */
 
 var watching = {};
-var laststats;
 
 module.exports = function (projectfile, realpath) {
     // add a whatch if enabled
@@ -10,6 +9,9 @@ module.exports = function (projectfile, realpath) {
         if (watching[realpath]) return;
         watching[realpath] = true;
 
+        // debugging watch 
+        ß.projectfiles[projectfile].watch = realpath;
+        
         ß.fs.watch(realpath, (eventType, filename) => {
             ß.fs.lstat(realpath, (err, stats) => {
                 if (err) return;

@@ -18,8 +18,10 @@ else
     exit 16
 fi
 
-## we will override this in install-defaults
+## we can override this in install-defaults
+NAME="$(basename "$INSTALL_DIR")"
 user=codepad
+slice=codepad
 
 if [[ -f boilerplate/install-defaults.sh ]]
 then
@@ -28,7 +30,6 @@ then
 fi
 
 ## some reasonable defaults if the boilerplate variables can not be loaded
-NAME="$(basename "$INSTALL_DIR")"
 HOST="$HOSTNAME"
 VAR="/var/$NAME"
 CWD="/srv/$NAME"
@@ -225,10 +226,14 @@ function start_server() {
     ## make sure we have a right to bind to privileged port
     setcap cap_net_bind_service=+ep /usr/bin/node
     
+    rm -fr /srv/codepad-project/isolate-*-v8.log
+    
     ## the host argument is just a comment, so we can see our hostname in the process starter
-    ## TODO --diagnostic-dir boilerplate.log -- needs recent node versions.
-    echo "systemd-run --unit $NAME  --scope --uid=$user --gid=$user /bin/node --prof --preserve-symlinks server.js $HOST 2>> $project_log 1>> $project_log &"
-    if systemd-run --unit "$NAME" --scope --uid="$user" --gid="$user" /bin/node --prof --preserve-symlinks server.js "$HOST" 2>> "$project_log" 1>> "$project_log" &
+    ## TODO --diagnostic-dir boilerplate.log -- does not work
+    ## --trace-warnings --diagnostic-dir=/var/codepad-project --prof
+    ## 
+    echo "systemd-run --unit $NAME  --scope --uid=$user --gid=$user -p MemoryMax=8G -p MemoryHigh=4G -p CPUQuota=600% /bin/node --preserve-symlinks server.js $HOST 2>> $project_log 1>> $project_log &"
+    if systemd-run --unit "$NAME" --slice="$slice" --scope --uid="$user" --gid="$user" -p MemoryMax=8G -p MemoryHigh=4G -p CPUQuota=600% /bin/node  --preserve-symlinks server.js "$HOST" 2>> "$project_log" 1>> "$project_log" &
     then
     	main_pid="$!"
         echo "systemd-run OK, main pid $main_pid"
@@ -377,7 +382,10 @@ function show_errors() {
 log "PUSH $NAME $cv $HOSTNAME:$CWD $NOW $user as $USER"
 
 ## make sure all folders have the proper rights
+
+echo "chown -R $uid:$gid $CWD" 2> /dev/null
 chown -R "$uid":"$gid" "$CWD" 2> /dev/null
+echo "chmod -R +X $CWD 2> /dev/null"
 chmod -R +X $CWD 2> /dev/null
 
 increment_version
@@ -388,6 +396,7 @@ then
 	echo "source stop.sh"
     source stop.sh
 fi
+
 check_module_starters
 start_server
 sleep 1

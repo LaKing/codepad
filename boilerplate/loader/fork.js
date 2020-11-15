@@ -38,7 +38,7 @@ if (!ß.fork_file)
 
         var child = child_process.fork(file, argv, option);
 
-        fs.writeFileSync(ß.BPLOG + "/fork-" + name + ".pid", child.pid);
+        fs.writeFileSync(ß.BPLOG + "/fork-" + name + ".pid", child.pid.toString());
         console.log("- forked", name, "with pid", child.pid);
 
         child.on("error", err => {

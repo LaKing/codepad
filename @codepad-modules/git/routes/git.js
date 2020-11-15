@@ -34,7 +34,7 @@ const dir = ß.PROJECTDIR;
     var ext = "txt";
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
 
-    var lint_options = ß.LINT_OPTIONS || "{esversion: 9}";
+    var lint_options = ß.LINT_OPTIONS || "{esversion: 11}";
     var readonly = true;
 
     ß.lib.git.content_by_oid(entry, oid, function(err, data) {
