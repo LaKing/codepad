@@ -49,6 +49,8 @@ function stat(path, entry) {
                     ß.projectfiles[p].realpath = realpath;
                     ß.projectfiles[p].size = stats.size;
                     if (acc_err) ß.projectfiles[p].readonly = true;
+                    // add a whatch
+                    else ß.lib.projectfiles.filewatch(p);
                 }
             });
         });

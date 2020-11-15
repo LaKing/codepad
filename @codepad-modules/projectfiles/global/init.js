@@ -12,3 +12,5 @@ if (ß.server_watch === false || ß.server_watch === true) {
 } else ß.server_watch = true;
 
 ß.file_write_operation_inprogress = {};
+
+if (!ß.BLACKLIST_WATCH_EXTENSIONS) ß.BLACKLIST_WATCH_EXTENSIONS = "";

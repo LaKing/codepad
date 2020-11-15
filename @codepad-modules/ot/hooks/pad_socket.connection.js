@@ -11,19 +11,27 @@ function proceed(socket) {
 
     // otherwise create the folders, the file, the editor, the watch
     ß.lib.projectfiles.create(realpath, function () {
-        ß.fs.readFile(realpath, "utf-8", function (err, data) {
-            if (err) return đ(err);
-            if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
-            var mayWrite = function (_, cb) {
-                cb(true);
-            };
-            // create and add an editor
-            ß.editor[realpath] = new EditorSocketIOServer(data, [], projectfile, mayWrite);
-            ß.lib.projectfiles.opntc(projectfile + " opened");
-            ß.editor[realpath].addClient(socket);
-
-            // add a whatch
-            ß.lib.projectfiles.filewatch(projectfile, realpath);
+        ß.fs.access(realpath, ß.fs.constants.W_OK, (acc_err) => {
+            ß.fs.readFile(realpath, "utf-8", function (err, data) {
+                if (err) return đ(err);
+                if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
+                var mayWrite = function (_, cb) {
+                    cb(true);
+                };
+                // create and add an editor
+                if (acc_err) {
+                    ß.projectfiles[projectfile].readonly = true;
+                    mayWrite = function (_, cb) {
+                        cb(false);
+                    };
+                }
+                ß.editor[realpath] = new EditorSocketIOServer(data, [], projectfile, mayWrite);
+                ß.lib.projectfiles.opntc(projectfile + " opened");
+                ß.editor[realpath].addClient(socket);
+				ß.projectfiles[projectfile].realpath = realpath;
+                // add a whatch
+                if (!acc_err) ß.lib.projectfiles.filewatch(projectfile);
+            });
         });
     });
 }

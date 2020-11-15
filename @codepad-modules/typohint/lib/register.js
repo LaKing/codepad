@@ -30,5 +30,5 @@ module.exports = function (file, pos, word, ws, dbname) {
 
         all_words += " | " + w;
     }
-    console.log(word + " -> " + biggest_key + " ? " + dbname + " " + file + ":" + pos + " [ " + all_words.substring(3) + " ]");
+    //console.log(word + " -> " + biggest_key + " ? " + dbname + " " + file + ":" + pos + " [ " + all_words.substring(3) + " ]");
 };
