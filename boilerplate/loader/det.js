@@ -182,7 +182,7 @@ if (ß.DEBUG) {
         }
         if (typeof key !== "string") return null;
         return key.split(".").reduce(function(o, x) {
-            Ł(o, x);
+            //Ł(o, x);
             return typeof o == "undefined" || o === null ? o : o[x];
         }, obj);
     };
