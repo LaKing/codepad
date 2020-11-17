@@ -76,8 +76,10 @@ if (!ß.GND) ß.GND = process.config.variables.node_prefix + "/lib/node_modules/
 if (!ß.HOSTNAME) {
     ß.HOSTNAME = require("os").hostname();
     // hostname should be FQDN, if not, well, pre-set this value, or I assume its one of our containers .)
-    if (ß.HOSTNAME.indexOf(".") < 1) ß.HOSTNAME += ".d250.hu";
-}
+    if (ß.HOSTNAME.indexOf(".") < 0) ß.HOSTNAME += ".d250.hu";
+} 
+
+console.log(" - ß.HOSTNAME", ß.HOSTNAME);
 
 // Modules Root Directory
 if (!ß.MRD) ß.MRD = ß.CWD;
