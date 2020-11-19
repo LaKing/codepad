@@ -138,7 +138,8 @@
         location.reload();
     });
   
-  	socket.on('typohint', function(typohint_array) {
+     /*
+     socket.on('typohint', function(typohint_array) {
       	console.log('typohint_array', typohint_array);
       	if (!<%- typohint %>) return console.log('typohint disabled');
       	for (let i in typohint_array) {
@@ -151,7 +152,7 @@
 			editor.markText({line: line, ch: startch}, {line: line, ch: startch + (typohint_array[i].word.length) }, {className: "typohint", attributes: {title: info}});   
         };
     });
-  
+  */
     socket.on('doc', function(data) {
         pad = data.pad;
         editor.setValue(data.str);
