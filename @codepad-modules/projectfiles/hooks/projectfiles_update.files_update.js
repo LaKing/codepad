@@ -1,3 +1,4 @@
 module.exports = function () {
-    ß.lib.projectfiles.update();
+    ß.projectfiles_changed = false;
+    //ß.lib.projectfiles.update();
 };

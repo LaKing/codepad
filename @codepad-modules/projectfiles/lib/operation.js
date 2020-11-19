@@ -1,8 +1,9 @@
 /*ßoilerplate */
 
 module.exports = function (socket, revision, operation) {
+    if (!revision) revision = 0;
     var filepath = socket.projectfile;
-    var username = socket.username || "Guest";
+    var username = socket.username;
 
     if (!filepath) return;
     if (!ß.projectfiles[filepath]) return;
@@ -13,6 +14,6 @@ module.exports = function (socket, revision, operation) {
     if (!ß.projectfiles[filepath].at[username]) ß.projectfiles[filepath].at[username] = {};
 
     ß.projectfiles[filepath].at[username][socket.id] = revision;
-
-    ß.lib.projectfiles.send_files();
+    if (operation === "closed") delete ß.projectfiles[filepath].at[username][socket.id];
+    ß.lib.projectfiles.send();
 };

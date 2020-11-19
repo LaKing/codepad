@@ -1,7 +1,5 @@
-// the stamper
+// timestamp write operations
 
-module.exports = function (realpath) {
-    // timestamp write operations
-    ß.file_write_operation_inprogress[realpath] = process.hrtime()[0];
-    //Ł(realpath, ß.file_write_operation_inprogress[realpath]);
+module.exports = function (path) {
+    ß.projectfiles[path].edit = process.hrtime()[0];
 };

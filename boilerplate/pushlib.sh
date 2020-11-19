@@ -3,7 +3,6 @@
 start="$(date +%s)"
 
 
-
 ## make sure we are in the right folder
 #INSTALL_BIN="$(realpath "$BASH_SOURCE")"
 #INSTALL_DIR="${INSTALL_BIN:0:-8}"
@@ -21,13 +20,13 @@ fi
 ## we can override this in install-defaults
 NAME="$(basename "$INSTALL_DIR")"
 user=codepad
-slice=codepad
+slice=boilerplate
 
-if [[ -f boilerplate/install-defaults.sh ]]
-then
-	echo 'Loading install defaults'
-    source boilerplate/install-defaults.sh
-fi
+#if [[ -f boilerplate/install-defaults.sh ]]
+#then
+#	echo 'Loading install defaults'
+#    source boilerplate/install-defaults.sh
+#fi
 
 ## some reasonable defaults if the boilerplate variables can not be loaded
 HOST="$HOSTNAME"

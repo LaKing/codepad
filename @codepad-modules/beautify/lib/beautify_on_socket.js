@@ -44,10 +44,7 @@ module.exports = function (socket) {
         if (extensions.split(" ").indexOf(ext) < 0) return;
         try {
             var data = ß.prettier.format(ß.editor[realpath].document, options);
-            //ß.lib.projectfiles.save(projectfile, data);
-            //ß.editor[realpath].updateDocServerOperation(data);
             // okay, instead of savingf it on the server side, we will send it to the client, and update the doc there.
-
             ß.lib.projectfiles.oplog(socket.username, "beautify prettier", projectfile);
             ß.ntc(socket.username, "beautify prettier", projectfile);
             // we send it here in a callback

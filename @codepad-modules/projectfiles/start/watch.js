@@ -1,11 +1,14 @@
+ß.projectdir_watch.on("all", (event, path) => {
+    if (ß.lib.projectfiles[event]) return ß.lib.projectfiles[event](path);
+    ß.debug("projectdir_watch:", event, path);
+});
+
 setInterval(function () {
-    // check if there is anyone connected
-    if (Object.keys(ß.io.of("/main").sockets).length < 1) return;
+    // check if there is anyone connected on a main socket
+    if (ß.io.of("/main").sockets.size < 1) return;
 
-    ß.lib.projectfiles.check();
+    if (ß.projectfiles_changed === false) return;
+    ß.projectfiles_changed = false;
 
-    if (ß.filetree_changed === false) return;
-    ß.filetree_changed = false;
-
-    ß.lib.projectfiles.send_files();
-}, 500);
+    ß.lib.projectfiles.send();
+}, 100);

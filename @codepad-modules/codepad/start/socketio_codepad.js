@@ -38,7 +38,13 @@ main_io.on("connection", function (socket) {
 
 const pad_io = ß.io.of("/p");
 pad_io.on("connection", function (socket) {
-    socket.projectfile = ß.lib.pad.projectfile_by_socket(socket);
+    
+    let projectfile = ß.lib.pad.projectfile_by_socket(socket);
+    socket.projectfile = projectfile;
+    
+    // use namespace AND rooms
+    socket.join(projectfile);
+    
     add_socket_functions(socket, "pad");
     socket.REGISTERED = "pad";
 });
