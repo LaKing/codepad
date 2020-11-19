@@ -34,7 +34,8 @@
         try {
             wrapped = new WrappedOperation(TextOperation.fromJSON(operation), selection && Selection.fromJSON(selection));
         } catch (exc) {
-            return console.error(projectfile, "WrappedOperation: ", exc);
+            if (ß.DEBUG) return console.error(projectfile, "WrappedOperation: ", exc);
+            return console.error(projectfile, "WrappedOperation: error");
         }
 
         var wrappedPrime;
@@ -43,7 +44,8 @@
 
             // ...
         } catch (exc) {
-            return console.error(projectfile, revision, wrapped, "receiveOperation: ", exc);
+            if (ß.DEBUG) return console.error(projectfile, revision, wrapped, "receiveOperation: ", exc);
+            return console.error(projectfile, revision, "receiveOperation: error");
         }
 
         // @LAB dont flood the console

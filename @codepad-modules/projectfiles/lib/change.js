@@ -16,9 +16,6 @@ module.exports = function (path) {
         //if (err) return
         Đ(err);
 
-        var current = "~ server-side edit " + path + " @" + process.hrtime()[0] + " change " + path;
-        ß.lib.projectfiles.opntc(current.split("@")[0]);
-
         ß.fs.readFile(realpath, "utf-8", function (err, data) {
             Đ(err);
 
@@ -27,7 +24,9 @@ module.exports = function (path) {
             if (ß.editor[realpath]) {
                 if (ß.editor[realpath].document !== data) {
                     ß.editor[realpath].updateDocServerOperation(data);
-                    ß.ntc(current);
+                    ß.ntc("~ server-side filechange " + path);
+                    ß.lib.projectfiles.oplog("server-side", "filechange", path);
+
                 }
             }
 
