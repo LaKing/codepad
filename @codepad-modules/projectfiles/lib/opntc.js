@@ -6,7 +6,6 @@ module.exports = function (msg) {
         now: now,
         msg: msg,
     });
-    Ł(now, "opntc " + msg);
     ß.lib.projectfiles.log(msg);
 
 };
