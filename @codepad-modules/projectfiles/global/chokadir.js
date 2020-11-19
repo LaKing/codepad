@@ -7,6 +7,6 @@ if (ß.server_watch === false || ß.server_watch === true) {
 
 let options = {};
 options.cwd = ß.PROJECTDIR;
-options.ignored = ['**/*.pem'];
+options.ignored = ['**/*.pem', '.git/*'];
 
 if (ß.server_watch) ß.projectdir_watch = ß.chokidar.watch(ß.PROJECTDIR, options);
