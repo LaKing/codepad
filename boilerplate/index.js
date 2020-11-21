@@ -13,30 +13,33 @@ if (!global.ß) global.ß = {};
 if (!global.$$$) global.$$$ = ß;
 
 if (!ß.MODE) {
-	if (process.env.NODE_ENV === "production") ß.MODE = "production";
-	else ß.MODE = "development";
+    if (process.env.NODE_ENV === "production") ß.MODE = "production";
+    else ß.MODE = "development";
 }
-
 
 console.log("Starting ßoilerplate on node", process.versions.node, process.platform, ß.MODE, process.cwd());
 
-require('./loader');
+require("./loader");
 
 //ß.debug("- " + Object.keys(ß).length + " ß.keys defined");
 
 ß.boot();
 
-ß.load('init');
-ß.load('server');
-ß.load('start');
+ß.load("init");
+ß.load("server");
+ß.load("start");
 
 // background subprocesses may be defined in fork directories
 //if (process.argv.indexOf("--restart-server") >= 0) ß.ntc("Skipping forks, restart-server");
-//else 
+//else
 ß.fork("fork");
 
 // application started.
 if (ß.DEBUG) {
-    ß.load('debug');
+    ß.load("debug");
     ß.debug_namespace();
 }
+
+ß.create_all_modules_script("dnf.sh");
+ß.create_all_modules_script("install.sh");
+ß.create_all_modules_script("npm.sh");

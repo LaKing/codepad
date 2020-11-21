@@ -222,7 +222,7 @@ if (!ß.create_all_modules_script)
                 reg(module + " " + bmf + " " + me + " is " + that[me]);
             }
         }
-
+        
         fs.writeFileSync(logfile, log);
         ß.fs.chownSync(logfile, ß.UID, ß.GID);
 

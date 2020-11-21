@@ -161,17 +161,16 @@ function express_search(req, res) {
     
   */
 
-    const x = spawn(
-        "/bin/grep",
-        ["--exclude-dir=.git", "--exclude-dir=log", "--exclude-dir=node_modules", "--exclude-dir=var", "--exclude-dir=cert", "-InRowE", ".{0,100}" + search_term + ".{0,100}"],
-        options
-    );
+    const arguments = ["--exclude-dir=.git", "--exclude-dir=log", "--exclude-dir=node_modules", "--exclude-dir=var", "--exclude-dir=cert", "-InRowE", ".{0,100}" + search_term + ".{0,100}"];
+    
+    const x = spawn("/bin/grep", arguments, options);
 
     res.setHeader("Content-Type", "text/html");
     res.writeHead(200);
     res.write(send_ahead(req));
     res.write(ß.now() + "<p>Search <b>" + search_term + "</b> " + (replace_term || "") + "</p> <br><br>");
-
+	res.write(ß.now() + "<p>/bin/grep" + arguments.join(' ') + "</p> <br><br>");
+    
     for (var f in ß.projectfiles) {
         if (f.indexOf(search_term) >= 0 || (ß.projectfiles[f].at && ß.projectfiles[f].at[search_term]))
             res.write('<b><a class="CodeMirror-guttermarker" href="/p' + f + '" style="text-decoration: underline">' + f + "</a> </b><br>");
@@ -208,9 +207,9 @@ function express_search(req, res) {
     });
 
     setTimeout(function () {
-        stderr += "Search-process timeout";
+        stderr += "Search-process timeout after 30s";
         x.kill();
-    }, 15000);
+    }, 30000);
 }
 
 ß.app.get("/search", function (req, res, next) {

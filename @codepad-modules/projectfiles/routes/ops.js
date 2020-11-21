@@ -19,12 +19,31 @@ function send_ahead(req) {
     return res_send;
 }
 
-ß.app.get("/ops", function (req, res, next) {
+ß.app.get("/ops", async function (req, res, next) {
     res.setHeader("Content-Type", "text/html");
     res.writeHead(200);
     res.write(send_ahead(req));
 
+    res.write("<br><b>## EDIT HISTORY</b><br><br>");
+
+    for (let d in ß.ops) {
+        for (let username in ß.ops[d]) {
+            res.write("# <i>" + d + "</i> <b>" + username + "</b><br>");
+            for (let projectfile in ß.ops[d][username]) {
+                res.write('<a class="CodeMirror-guttermarker" href="/p' + projectfile + '" style="text-decoration: underline">' + projectfile + "</a><br>");
+                for (let operation in ß.ops[d][username][projectfile]) {
+                    let a = ß.ops[d][username][projectfile][operation];
+                    res.write("<i>" + operation + "</i>: " + a[a.length - 1] + "<br>");
+                }
+                res.write("<br>");
+            }
+            res.write("<br><br>");
+        }
+    }
+
     res.write("<br><b>## OPEN FILES</b><br><br>");
+
+    let sockets = await ß.io.of("/p").allSockets();
 
     // files
     for (let i in ß.projectfiles) {
@@ -43,37 +62,21 @@ function send_ahead(req) {
                     // s is the socket id of the last edit
 
                     // is that socket still here?
-                    for (let x in ß.io.of("/p").sockets) {
-                        if (ß.io.of("/p").sockets[x].id === s) {
+                    for (let x of sockets) {
+                        if (x === s) {
                             // yes: add it to our object to be sent
                             users[u] = true;
                         }
                     }
                 }
             }
-		// okay, now users has all usernames that are currently online, we can form a response
+        // okay, now users has all usernames that are currently online, we can form a response
         if (Object.keys(users).length > 0) {
             res.write('<a class="CodeMirror-guttermarker" href="/p' + i + '" style="text-decoration: underline">' + i + "</a><br>");
             for (let u of Object.keys(users)) {
                 res.write("<b>" + u + "</b><br>");
             }
-        }
-    }
-
-    res.write("<br><b>## EDIT HISTORY</b><br><br>");
-
-    for (let d in ß.ops) {
-        for (let username in ß.ops[d]) {
-            res.write("# <i>" + d + "</i> <b>" + username + "</b><br>");
-            for (let projectfile in ß.ops[d][username]) {
-                res.write('<a class="CodeMirror-guttermarker" href="/p' + projectfile + '" style="text-decoration: underline">' + projectfile + "</a><br>");
-                for (let operation in ß.ops[d][username][projectfile]) {
-                    let a = ß.ops[d][username][projectfile][operation];
-                    res.write("<i>" + operation + "</i>: " + a[a.length - 1] + "<br>");
-                }
-                res.write("<br>");
-            }
-            res.write("<br><br>");
+            res.write("<br>");
         }
     }
 
