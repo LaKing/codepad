@@ -167,7 +167,7 @@ function express_search(req, res) {
         "--exclude-dir=var",
         "--exclude-dir=cert",
         "-InRowE",
-        "'.{0,100}" + search_term + ".{0,100}'",
+        ".{0,100}" + search_term + ".{0,100}",
     ];
 
     const x = spawn("/bin/grep", arguments, options);
