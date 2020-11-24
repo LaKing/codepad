@@ -191,7 +191,7 @@ if (!ß.create_all_modules_script)
         reg("// ------------------- " + bmf + " ----------------------");
 
         var sh = "";
-        const shfile = ß.CWD + "/all-modules-" + bmf;
+        const shfile = ß.VAR + "/all-modules-" + bmf;
 
         // we will also create a shell file, to have a way to exec commands by bash
         function shreg(msg) {

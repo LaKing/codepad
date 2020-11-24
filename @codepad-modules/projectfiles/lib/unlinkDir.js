@@ -5,8 +5,6 @@ module.exports = function (path) {
 
     path = "/" + path;
 
-    console.log("unlink_dir", path);
-
     delete ß.projectfiles[path];
     ß.projectfiles_changed = true;
     //ß.lib.projectfiles.send();

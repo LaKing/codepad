@@ -1,8 +1,9 @@
 const git = ß.git;
 const fs = ß.fs;
-const dir = ß.PROJECTDIR;
+const dir = ß.GIT_DIR;
 
 module.exports = async function (path, callback) {
+    if (!dir) return;
     const commitsThatMatter = [];
     var commits = ß.git_commits;
 

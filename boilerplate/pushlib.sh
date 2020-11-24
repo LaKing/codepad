@@ -96,7 +96,7 @@ fi
 if [[ $UID != 0 ]]
 then
     echo "ssh root@localhost push > $push_log"
-    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "USER=$USER" "/bin/bash /bin/push < /dev/null > $push_log"
+    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "USER=$USER" "/bin/bash /bin/push < /dev/null" #> $push_log"
     code=$?
     echo "ssh push command complete, exit $code"
     exit "$code"
@@ -280,6 +280,8 @@ function check_process() {
             echo "Running on PID $main_pid"
             return
         else
+           echo "ERROR Main pid $main_pid inactive."
+           cat "$project_log"
            log "EXIT Main pid $main_pid inactive."
            ((error_count++))
            exit 169

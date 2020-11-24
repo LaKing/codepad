@@ -1,10 +1,18 @@
 // ß.git_commits
-ß.lib.git.git_commits();
+
+// the folder containing the .git repo.
+if (!ß.GIT_DIR) ß.GIT_DIR = ß.PROJECTDIR;    
+
+if (!ß.fs.existsSync(ß.GIT_DIR + '/.git')) {
+	ß.GIT_DIR = false;
+}
 
 
-  	// commits is an array
-  
-  /*
+if (ß.GIT_DIR) ß.lib.git.git_commits();
+
+
+// commits is an array
+/*
   
 payload: 'tree c06c7a66e18715f2da0c8e8023ecaeca82fb86a5\n' +
 'parent 01520f0e32396e2f067c794239166ede866ab805\n' +
@@ -23,4 +31,4 @@ author: [Object],
 committer: [Object]
 },
   
-  */
+*/

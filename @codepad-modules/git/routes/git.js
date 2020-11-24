@@ -8,15 +8,22 @@ const preejs = ß.get_module_path("pad", "public/pre.ejs");
 const embedejs = ß.get_module_path("pad", "public/embed.ejs");
 const gitejs = ß.get_module_path("git", "public/git.ejs");
 
-//ß.io.of('/main').emit("files", ß.projectfiles);
-    
-
 
 const git = ß.git;
 const fs = ß.fs;
 const dir = ß.PROJECTDIR;
 
-ß.app.get("/git/:oid/*", function(req, res, next) {
+ß.app.get("/git/:oid/*", function (req, res, next) {
+    // do we have a git repo at all?
+    if (!ß.GIT_DIR) {
+        res.setHeader("Content-Type", "text/html");
+        res.writeHead(200);
+        res.write(send_ahead(req));
+        res.write("<br>[No .git directory in the project]<br><br></body>");
+        res.end();
+        return;
+    }
+
     let theme = ß.THEME;
     const username = ß.lib.basicauth.username_by_req(req);
     if (ß.settings[username]) if (ß.settings[username].theme) theme = ß.settings[username].theme;
@@ -37,7 +44,7 @@ const dir = ß.PROJECTDIR;
     var lint_options = ß.LINT_OPTIONS || "{esversion: 11}";
     var readonly = true;
 
-    ß.lib.git.content_by_oid(entry, oid, function(err, data) {
+    ß.lib.git.content_by_oid(entry, oid, function (err, data) {
         var mode = CodeMirror.findModeByFileName(filename);
 
         res.render(gitejs, {
@@ -46,61 +53,8 @@ const dir = ß.PROJECTDIR;
             file: entry,
             data: data,
             mode: mode.mode,
-            lint_options: lint_options
+            lint_options: lint_options,
         });
     });
-  
-    /*
-    var mode = CodeMirror.findModeByFileName(filename);
-    if (mode) {
-        if (mode.mode !== 'null')
-            res.render(padejs, {
-              	readonly: readonly,
-                theme: theme,
-                file: entry,
-                mode: mode.mode,
-              	lint_options: lint_options
-            });
-        else res.render(txtejs, {
-            readonly: readonly,
-            theme: theme,
-            file: entry
-        });
-        return;
-    }
 
-    //if (ext === 'pdf') return res.sendFile(fullpath);
-    var ent = entry.toLowerCase();
-
-  
-      if (ext === 'log') {
-        ß.fs.readFile(fullpath, 'utf8', function(err, data) {
-            đ(err);
-            if (err) return res.render(errejs, {
-                theme: theme,
-                file: entry,
-                code: err.code
-            });
-            res.render(preejs, {
-                txt: ß.lib.ansi.html(data)
-            });
-        });
-        return;
-    }
-  
-    if (ext === 'txt' || ext === 'log' || ext === 'csr' || ext === 'crt' || ext === 'key' || ext === 'pem' || ext === 'pid' || ent === 'version' || ent === 'license') {
-        ß.fs.readFile(fullpath, function(err, data) {
-            đ(err);
-            if (err) return res.render(errejs, {
-                theme: theme,
-                file: entry,
-                code: err.code
-            });
-            res.render(preejs, {
-                txt: data
-            });
-        });
-        return;
-    }
-//*/
 });

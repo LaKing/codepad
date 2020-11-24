@@ -119,3 +119,28 @@ function exec(socket, dir, cmd, arg) {
         ß.debug("- wetty socket disconnect" + username);
     });
 }
+
+
+/*
+
+BUG
+
+nov 23 15:29:14 marton-devel node[48533]: marton [szamlazzhu] mc lib
+nov 23 15:29:14 marton-devel node[48533]: marton [szamlazzhu] bash npm.sh
+nov 23 15:29:14 marton-devel node[48533]: marton [szamlazzhu] bash npm.sh
+nov 23 15:29:17 marton-devel node[48533]: marton [szamlazzhu] mc lib
+nov 23 15:29:18 marton-devel node[48533]: marton [szamlazzhu] bash npm.sh
+nov 23 15:29:36 marton-devel node[48533]: ┏━━━━━━━━━━━━━━━━━━━━━━━━━━ Exception Error ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+nov 23 15:29:36 marton-devel node[48533]: ┠────   resizing must be done using positive cols and rows
+nov 23 15:29:36 marton-devel node[48533]: ┠─ Error: resizing must be done using positive cols and rows
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at UnixTerminal.resize (/var/codepad/var/pty/node_modules/node-pty/lib/unixTerminal.js:235:19)
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at Socket.<anonymous> (/usr/local/share/boilerplate/@codepad-modules/wetty/start/terminalprocess.js:112:24)
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at Socket.emit (events.js:315:20)
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at Socket.onevent (/usr/local/share/boilerplate/@server-modules/socketio/node_modules/socket.io/dist/socket.js:253:20)
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at Socket._onpacket (/usr/local/share/boilerplate/@server-modules/socketio/node_modules/socket.io/dist/socket.js:216:22)
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at /usr/local/share/boilerplate/@server-modules/socketio/node_modules/socket.io/dist/client.js:205:28
+nov 23 15:29:36 marton-devel node[48533]: ┠─     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+nov 23 15:29:36 marton-devel node[48533]: ┗━━━━ EXITING with code 100
+
+
+*/

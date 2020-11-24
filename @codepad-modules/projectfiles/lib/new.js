@@ -13,6 +13,9 @@ module.exports = function new_projectfil(socket) {
         ß.fs.access(realpath, ß.fs.constants.W_OK, (acc_err) => {
             ß.fs.readFile(realpath, "utf-8", function (err, data) {
                 if (err) return đ(err);
+                
+                console.log("~ new: " + realpath);
+                
                 if (!ß.projectfiles[projectfile]) ß.projectfiles[projectfile] = {};
                 // ot needs this function
                 var mayWrite = function (_, cb) {
