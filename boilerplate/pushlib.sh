@@ -45,21 +45,6 @@ if [[ -f env.sh ]]
 then
     echo 'Loading env.sh'
     source env.sh
-else
-
-    ## load boilerplate variables
-    if [[ -f var/boilerplate.sh ]]
-    then
-        echo "Loading boilerplate variables"
-        source var/boilerplate.sh
-        NAME="$BOILERPLATE_NAME"
-        HOST="$BOILERPLATE_HOSTNAME"
-        VAR="$BOILERPLATE_VAR"
-        CWD="$BOILERPLATE_CWD"
-        BPD="$BOILERPLATE_BPD"
-    else
-        echo "Boilerplate variables could not be loaded, using defaults."
-    fi
 fi
 
 ## just to make sure we are in the right folders, and have the right defaults
@@ -382,10 +367,25 @@ function show_errors() {
 
 log "PUSH $NAME $cv $HOSTNAME:$CWD $NOW $user as $USER"
 
+## make sure all folders are reset
+
+echo "mkdir -p $VAR/boilerplate.log"
+mkdir -p "$VAR/boilerplate.log" 2> /dev/null
+
+echo "rm -fr $VAR/boilerplate.log/*"
+rm -fr "$VAR"/boilerplate.log/* 2> /dev/null
+
+echo "ln -s $VAR $CWD/var"
+ln -s "$VAR" "$CWD"/var 2> /dev/null
+
 ## make sure all folders have the proper rights
 
 echo "chown -R $uid:$gid $CWD" 2> /dev/null
 chown -R "$uid":"$gid" "$CWD" 2> /dev/null
+
+echo "chown -R $uid:$gid $VAR" 2> /dev/null
+chown -R "$uid":"$gid" "$VAR" 2> /dev/null
+
 echo "chmod -R +X $CWD 2> /dev/null"
 chmod -R +X $CWD 2> /dev/null
 

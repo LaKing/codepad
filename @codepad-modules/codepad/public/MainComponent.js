@@ -85,8 +85,9 @@ export default {
                     <pane size="80" v-if="$store.getters.getPad">
                         <iframe :src="$store.getters.getPad"></iframe>
                     </pane>
-                    <pane size="20" class="bottom-align" style="overflow: auto" id="logs-container">
+                    <pane size="20" class="bottom-align" style="overflow: auto; overflow-anchor: none;" id="logs-container">
                         <div class="logs" v-html="$store.getters.getLogs"></div>
+                        <div id="anchor" style="overflow-anchor: auto; height: 1px;"></div>
                     </pane>
                 </splitpanes>
             </pane>

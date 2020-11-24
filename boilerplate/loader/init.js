@@ -51,25 +51,21 @@ if (!ß.VAR) ß.VAR = ß.CWD + "/var"; //"/var/" + ß.NAME;
 process.env.VAR = ß.VAR;
 console.log(" - ß.VAR", ß.VAR);
 
-try {
-    // we should remove it if it is not a symlink ...
-    if (ß.fs.existsSync(ß.CWD + "/boilerplate.log")) ß.fs.removeSync(ß.CWD + "/boilerplate.log");
-} catch (err) {
-    console.log(err.code, err.syscall, err.path);
-}
-
 // We reset bplog every time.
 if (!ß.BPLOG) ß.BPLOG = ß.VAR + "/boilerplate.log";
-ß.fs.removeSync(ß.BPLOG);
+//ß.fs.removeSync(ß.BPLOG);
 ß.fs.mkdirpSync(ß.BPLOG);
 ß.fs.chownSync(ß.BPLOG, ß.UID, ß.GID);
+console.log(" - ß.BPLOG", ß.BPLOG);
 
+/*
 try {
     // needed to see logs in codepad
     if (!ß.fs.existsSync(ß.CWD + "/boilerplate.log")) ß.fs.symlinkSync(ß.BPLOG, ß.CWD + "/boilerplate.log", "dir");
 } catch (err) {
     console.log(err.code, err.syscall, err.path);
 }
+*/
 
 // Global node modules directory
 if (!ß.GND) ß.GND = process.config.variables.node_prefix + "/lib/node_modules/";

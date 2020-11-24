@@ -109,7 +109,11 @@ function exec(socket, dir, cmd, arg) {
         //console.log((new Date()) + " PID=" + term.pid + " ENDED");
     });
     socket.on("resize", function (data) {
-        if (term) term.resize(data.col, data.row);
+        if (!term) return;
+        if (data.col < 1) return console.log("Wetty resize error, col:", data.col);
+        if (data.row < 1) return console.log("Wetty resize error, row:", data.row);
+
+        term.resize(data.col, data.row);
     });
     socket.on("input", function (data) {
         if (term) term.write(data);
