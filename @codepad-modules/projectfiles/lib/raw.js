@@ -1,4 +1,5 @@
 module.exports = function (event, path, details) {
     path = "/" + path;
-	console.log('Raw event info:', event, path, details);
+    // rename events?
+	//console.log('Raw event info:', event, path, details);
 };

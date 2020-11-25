@@ -81,7 +81,7 @@ fi
 if [[ $UID != 0 ]]
 then
     echo "ssh root@localhost push > $push_log"
-    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "USER=$USER" "/bin/bash /bin/push < /dev/null" #> $push_log"
+    ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@localhost "USER=$USER" "/bin/bash /bin/push < /dev/null > $push_log"
     code=$?
     echo "ssh push command complete, exit $code"
     exit "$code"
