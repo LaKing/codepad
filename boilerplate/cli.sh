@@ -87,9 +87,9 @@ then
     
     ## we need to update our configurations according to the current modules
     echo "To complete installation run:"
-    echo "/bin/bash $CWD/all-modules-dnf.sh"
+    echo "/bin/bash $CWD/var/all-modules-dnf.sh"
     #/bin/bash "$CWD/all-modules-dnf.sh"
-    echo "/bin/bash $CWD/all-modules-install.sh"
+    echo "/bin/bash $CWD/var/all-modules-install.sh"
     #/bin/bash "$CWD/all-modules-install.sh"
     echo "DONE."
     exit

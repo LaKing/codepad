@@ -16,6 +16,14 @@
     var Selection = require(node_module + "selection");
     var util = require("util");
 
+    EditorSocketIOServer.prototype.compareDocServerOperation = function (content) {
+        return this.document === content;
+    };
+    
+    EditorSocketIOServer.prototype.getDocServerOperation = function () {
+        return this.document;
+    };
+    
     // a hackish way of server update
     // the proper way would be to apply the new docuemnt as operation ... maybe, one day.
     EditorSocketIOServer.prototype.updateDocServerOperation = function (content) {
@@ -26,7 +34,7 @@
         // send relaod to clients
         ß.lib.projectfiles.reload(this.docId);
     };
-
+    
     EditorSocketIOServer.prototype.onOperation = function (socket, revision, operation, selection) {
         let projectfile = socket.projectfile;
 

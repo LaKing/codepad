@@ -13,6 +13,7 @@ module.exports = function (projectfile, callback) {
                     ß.lib.projectfiles.operr("ERROR in mkdirp " + path + " " + err.code, realpath);
                     return callback(err, realpath);
                 }
+                console.log("Write blank file", projectfile);
                 ß.fs.writeFile(realpath, "", function (err) {
                     if (err) {
                         ß.err(realpath + " " + err.code);
