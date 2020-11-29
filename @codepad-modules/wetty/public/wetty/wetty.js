@@ -67,5 +67,5 @@ socket.on("disconnect", function () {
     console.log("Socket.io connection closed");
 
     // LAB addition to codepad
-    location.reload();
+    // location.reload();
 });
