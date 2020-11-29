@@ -51,7 +51,7 @@ fi
 echo "NAME: $NAME"
 echo "HOST: $HOST"
 echo "VAR:  $VAR"
-echo "CWD:  $CWD" 
+echo "CWD:  $CWD"
 echo "USER:  $USER" 
 
 readonly project_log="$VAR"/project.log
@@ -375,8 +375,8 @@ mkdir -p "$VAR/boilerplate.log" 2> /dev/null
 echo "rm -fr $VAR/boilerplate.log/*"
 rm -fr "$VAR"/boilerplate.log/* 2> /dev/null
 
-echo "ln -s $VAR $CWD/var"
-ln -s "$VAR" "$CWD"/var 2> /dev/null
+#echo "ln -s $VAR $CWD/var"
+#ln -s "$VAR" "$CWD"/var 2> /dev/null
 
 ## make sure all folders have the proper rights
 
