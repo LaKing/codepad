@@ -18,7 +18,7 @@ var homedir = os.homedir();
     const ip = socket.handshake.headers["x-forwarded-for"];
     const username = ß.lib.basicauth.username_by_socket(socket);
 
-    ß.debug("+ wetty socket-connection " + username + " ip:" + ip + " ", uri);
+    ß.msg("+ wetty socket-connection " + username + " ip:" + ip + " ", uri);
 
     if (!ß.pty) return ß.err("No ß.pty");
     if (process.getuid() == 0) return ß.err("wetty shell: no terminal allowed when started as root");
