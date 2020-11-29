@@ -2,6 +2,8 @@ var term;
 var socket = io(location.origin, {
     path: "/wetty/socket.io",
 });
+
+// we nedd a buffer so that we can catch incoming data even if there is no instance of the dispay
 var buf = "";
 
 function Wetty(argv) {
@@ -43,29 +45,29 @@ socket.on("connect", function () {
         term.prefs_.set("use-default-window-copy", true);
 
         term.runCommandClass(Wetty, document.location.hash.substr(1));
-        socket.emit("resize", {
-            col: term.screenSize.width,
-            row: term.screenSize.height,
-        });
 
         if (buf && buf != "") {
             term.io.writeUTF16(buf);
             buf = "";
         }
+
+        socket.emit("init");
     });
 });
 
 socket.on("output", function (data) {
-    if (!term) {
-        buf += data;
-        return;
-    }
+    if (!term) return (buf += data);
     term.io.writeUTF16(data);
 });
 
-socket.on("disconnect", function () {
-    console.log("Socket.io connection closed");
+socket.on("exit-code", function (code, callback) {
+    if (!term) return (buf += " EXIT " + code);
+    term.io.writeUTF16(" EXIT " + code);
+    callback();
+});
 
-    // LAB addition to codepad
+socket.on("disconnect", function () {
+    if (!term) return (buf += " .. DISCONNECTED");
+    term.io.writeUTF16(" .. DISCONNECTED");
     // location.reload();
 });
