@@ -61,6 +61,8 @@ socket.on("output", function (data) {
 });
 
 socket.on("exit-code", function (code, callback) {
+    if (code === 0) code += " OK!";
+    else code += " ERROR! ";
     if (!term) return (buf += " EXIT " + code);
     term.io.writeUTF16("# EXIT " + code);
     callback();
