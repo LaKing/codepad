@@ -1,15 +1,4 @@
-// ß.git_commits
-
-// the folder containing the .git repo.
-if (!ß.GIT_DIR) ß.GIT_DIR = ß.PROJECTDIR;    
-
-if (!ß.fs.existsSync(ß.GIT_DIR + '/.git')) {
-	ß.GIT_DIR = false;
-}
-
-
 if (ß.GIT_DIR) ß.lib.git.git_commits();
-
 
 // commits is an array
 /*

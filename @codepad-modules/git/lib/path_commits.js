@@ -3,10 +3,10 @@ const fs = ß.fs;
 const dir = ß.GIT_DIR;
 
 module.exports = async function (path, callback) {
-    if (!dir) return;
     const commitsThatMatter = [];
     var commits = ß.git_commits;
-
+    
+    if (!dir) return callback(null, commitsThatMatter);
     if (!ß.projectfiles[path]) return callback(null, commitsThatMatter);
     if (!ß.projectfiles[path].file) return callback(null, commitsThatMatter);
     if (ß.projectfiles[path].readonly) return callback(null, commitsThatMatter);
@@ -17,32 +17,45 @@ module.exports = async function (path, callback) {
     let count_min = ß.GIT_MIN_COMMITS_HISTORY;
     let count_opt = 1 + ß.GIT_OPT_COMMITS_HISTORY;
 
-  if (commits) {
+    if (commits) {
         let lastSHA = null;
         let lastCommit = null;
         for (const commit of commits) {
-          
             // count limiter
             if (count_max <= 0) break;
-			count_max--;
+            count_max--;
             count_min--;
             try {
                 const o = await git.readObject({ fs, dir, oid: commit.oid, filepath });
                 //console.log(path, o.oid, commit.oid, count_min, count_opt, count_max, commitsThatMatter.length);
                 if (o.oid !== lastSHA) {
-                    if (lastSHA !== null) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message, timestamp: commit.commit.author.timestamp, name: commit.commit.author.name });
+                    if (lastSHA !== null)
+                        commitsThatMatter.push({
+                            oid: lastCommit.oid,
+                            message: lastCommit.commit.message,
+                            timestamp: commit.commit.author.timestamp,
+                            name: commit.commit.author.name,
+                        });
                     lastSHA = o.oid;
 
                     // count limiter
                     count_opt--;
-                    if (count_min <= 0) if (count_opt <= 0) {
-                        if (lastCommit) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message, timestamp: commit.commit.author.timestamp, name: commit.commit.author.name });
-                        break;
-                    }
+                    if (count_min <= 0)
+                        if (count_opt <= 0) {
+                            if (lastCommit)
+                                commitsThatMatter.push({
+                                    oid: lastCommit.oid,
+                                    message: lastCommit.commit.message,
+                                    timestamp: commit.commit.author.timestamp,
+                                    name: commit.commit.author.name,
+                                });
+                            break;
+                        }
                 }
             } catch (err) {
                 // file no longer there
-                if (lastCommit) commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message, timestamp: commit.commit.author.timestamp, name: commit.commit.author.name });
+                if (lastCommit)
+                    commitsThatMatter.push({ oid: lastCommit.oid, message: lastCommit.commit.message, timestamp: commit.commit.author.timestamp, name: commit.commit.author.name });
                 break;
             }
             lastCommit = commit;

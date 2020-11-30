@@ -30,9 +30,20 @@ slice=boilerplate
 
 ## some reasonable defaults if the boilerplate variables can not be loaded
 HOST="$HOSTNAME"
+
+## sorry, if you have no dot in your hostname, I must assume you are on my container.
+if [[ $HOSTNAME == *.* ]]
+then
+	HOST="$HOSTNAME"
+else
+	HOST="$HOSTNAME.d250.hu"
+fi
+
 VAR="/var/$NAME"
 CWD="/srv/$NAME"
 BPD="/srv/$NAME/boilerplate"
+
+
 
 ## there should be a var folder or a symlink to the var folder
 if [[ ! -d var ]]

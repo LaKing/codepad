@@ -45,6 +45,7 @@ function send_ahead(req) {
     res.flush();
 
     ß.lib.git.path_commits(projectfile, function (err, commits) {
+
         res.write("<p>Last ~" + commits.length + " git commits of ");
         res.write('<a class="CodeMirror-guttermarker" href="/p/' + projectfile + '" style="text-decoration: underline">' + projectfile + "</a> </p>");
 
