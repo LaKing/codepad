@@ -25,11 +25,13 @@
     };
     
     // a hackish way of server update
-    // the proper way would be to apply the new docuemnt as operation ... maybe, one day.
+    // the proper way would be to apply the new document as operation ... maybe, one day.
     EditorSocketIOServer.prototype.updateDocServerOperation = function (content) {
         // whatever operations we had, we will throw them away.
         this.operations = [];
-        // and update the document
+        // and update the document only if necessery
+        if (this.document === content) return;
+        // it is necessery    
         this.document = content;
         // send relaod to clients
         ß.lib.projectfiles.reload(this.docId);
