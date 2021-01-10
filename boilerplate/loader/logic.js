@@ -50,9 +50,9 @@ function get_module_logic(module, dir) {
                 ß.logic[module][name] = require(path + "/" + files[i]);
                 ß.logic_path[module][name] = path + "/" + files[i];
 
-              	// logic functions should be simple, and by convention start with a get, as the just return a value.
-                if (name.substring(0, 3) !== "get")
-                    console.log("WARNING By convention, logic function '" + name + "' should be starting with get and use a camelCase. Please rename: " + path + "/" + files[i]);
+              	// logic functions should be camelCase
+                if (/^([a-z]+)(([A-Z]([a-z]+))+)$/.test(name) === false)
+                    console.log("WARNING logic function '" + name + "' should be camelCase. Please rename: " + path + "/" + files[i]);
                 
               	// we can assign the logic directly to the ß namespace.
                 if (ß[name]) reg("! ß." + name + " already definded. Cannot alias ß.logic." + module + "." + name);

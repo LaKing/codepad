@@ -98,8 +98,8 @@ if (!ß.write_namespace_files)
               	es5_data += "_ß.logic['" + module + "']['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
                 es6_data += "_ß.logic['" + module + "']['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
               	// direct path
-                es5_data += "_ß['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
-                es6_data += "_ß['" + logic + "'] = require('" + ß.logic_path[module][logic] + "');\n\n";
+                es5_data += "_ß['" + logic + "'] = _ß.logic['" + module + "']['" + logic + "'];\n\n";
+                es6_data += "_ß['" + logic + "'] = _ß.logic['" + module + "']['" + logic + "'];\n\n";
             });
         });
 

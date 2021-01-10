@@ -93,7 +93,7 @@ function get_module_lib(module, dir) {
     if (!ß.lib_path[module]) ß.lib_path[module] = {};
     if (!ß.alf_path[module]) ß.alf_path[module] = {};
 
-  	// handle the lib folders first
+  	// handle the alf folders first
     let alf_path = dir + "/alf";
     if (fs.isDirSync(alf_path)) {
       	// so first of all read all files

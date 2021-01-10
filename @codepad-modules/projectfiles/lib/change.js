@@ -11,6 +11,9 @@ module.exports = function (path) {
 
     //console.log("~ server-side change detected on " + path);
     ß.fs.realpath(ß.path.join(ß.PROJECTDIR, path), function (err, realpath) {
+        
+        // TODO Error: ENOENT: no such file or directory, lstat '/var/codepad-project/project.pid'
+        
         Đ(err);
         ß.fs.readFile(realpath, "utf-8", function (err, data) {
             Đ(err);

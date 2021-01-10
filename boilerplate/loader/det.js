@@ -261,8 +261,8 @@ Both functions can be part of production-ready code, but encountering them indic
 
 // The determinator displays the error in the logs, but execution will continue, ...
 global.đ = function(err) {
-    if (err === null) return arguments;
-    if (err === undefined) return arguments;
+    if (err === null) return err;
+    if (err === undefined) return err;
     //if (!(err instanceof Error)) return arguments;
 
     const stack = new Error().stack;
@@ -297,13 +297,13 @@ global.đ = function(err) {
 
     logger.error("┗━━━━ đ ", from);
 
-    return arguments;
+    return err;
 };
 
 // The detonator function will blow up current execution in a controlled manner
 global.Đ = function(err) {
-    if (err === null) return arguments;
-    if (err === undefined) return arguments;
+    if (err === null) return err;
+    if (err === undefined) return err;
     //if (!(err instanceof Error)) return arguments;
 
     const stack = new Error().stack;
