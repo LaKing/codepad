@@ -81,12 +81,19 @@ fi
 
 if [[ $1 == uplink ]]
 then
+	if systemctl --quiet is-active "$NAME.scope"
+	then
+		echo "A systemd process scope is active. Stopping ..."
+    	echo "systemctl stop $NAME.scope"
+    	systemctl stop $NAME.scope
+    fi
+    
 	## no privileges needed, but running in the NAME scope
 	echo "# systemd-run --unit $NAME --scope --uid=$uid --gid=$gid /bin/node --preserve-symlinks boilerplate/cli.js $@"
 	systemd-run --unit "$NAME" --scope --uid="$uid" --gid="$gid" /bin/node --preserve-symlinks boilerplate/cli.js $@
     
     ## we need to update our configurations according to the current modules
-    echo "To complete installation run:"
+    echo "To complete installation after new modules are added, it is recommended to run:"
     echo "/bin/bash $CWD/var/all-modules-dnf.sh"
     #/bin/bash "$CWD/all-modules-dnf.sh"
     echo "/bin/bash $CWD/var/all-modules-install.sh"

@@ -6,7 +6,7 @@ module.exports = function (path) {
     // keep out self-triggered file changes.
     if (ß.projectfiles[path])
         if (ß.projectfiles[path].edit) {
-            if (process.hrtime()[0] - ß.projectfiles[path].edit < 2) return; //console.log("self-service", path);
+            if (process.hrtime()[0] - ß.projectfiles[path].edit < 10) return; //console.log("self-service", path);
         }
 
     //console.log("~ server-side change detected on " + path);
