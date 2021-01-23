@@ -7,6 +7,7 @@ import SettingsComponent from "/SettingsComponent.js";
 // https://antoniandre.github.io/splitpanes/
 const { Splitpanes, Pane } = splitpanes;
 //$store.state.dir==='/' ||
+
 export default {
     template: `
 <div>
@@ -58,8 +59,9 @@ export default {
 
             
             <div id="right-top-icons">
-			<div id="center-top-icons" class="d-inline" v-if="window_size>845">
+			<div id="center-top-icons" class="d-inline" v-if="window_size>845">            
                 <div id="search" class="d-inline">
+                    <button title="copy search text" id="copy_button" class="btn" :disabled="!search_input" @click="copy_text()"><i class="fa fa-copy"></i></button>
                     <input id="right_search" v-model="search_input" v-on:keyup.enter="search()" placeholder="Search regexp .." autocomplete="off" />
                     <button title="search and replace" id="right_button" class="btn" :disabled="!search_input" @click="search()"><i class="fa fa-search"></i></button>
                     <input id="right_replace" :disabled="!search_input" v-model="replace_input" v-on:keyup.enter="search()" placeholder="Replace .." autocomplete="off" />
@@ -293,6 +295,17 @@ export default {
         show_button(i) {
             if (this.window_size < 768) return true;
             return ((this.window_size - 5) * this.first_panesize) / 100 > i * this.btn_size;
+        },
+        copy_text() {
+            /* Get the text field */
+            var copyText = document.getElementById("right_search");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
         },
     },
 };
