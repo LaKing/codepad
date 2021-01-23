@@ -17,7 +17,7 @@ Markdown, including GFM and MDX
 YAML
 */
 
-const extensions = "js vue ts css scss html json ms yaml yml graphql";
+const extensions = "js mjs vue ts css scss html json ms yaml yml graphql";
 
 module.exports = function (socket) {
     socket.on("beautify", function (projectfile, callback) {
