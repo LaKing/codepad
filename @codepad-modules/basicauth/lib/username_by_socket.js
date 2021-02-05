@@ -13,7 +13,7 @@ module.exports = function(socket) {
   
   	// by base64
     if (!socket.handshake.headers.authorization) return undefined;
-    var userpass = new Buffer(socket.handshake.headers.authorization.split(' ')[1], 'base64').toString().split(":");
+    var userpass = Buffer.from(socket.handshake.headers.authorization.split(' ')[1], 'base64').toString().split(":");
     return userpass.shift();
 
 };

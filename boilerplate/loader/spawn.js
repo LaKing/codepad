@@ -90,7 +90,7 @@ if (!ß.bash_file)
         child.on("close", (code) => {
             if (code === 0) console.log("[ OK ]", name);
             if (code !== 0) console.log(name, " - exit with error code", code);
-            fs.unlink(ß.BPLOG + "/bash-" + name + ".pid");
+            if (fs.existsSync(ß.BPLOG + "/bash-" + name + ".pid")) fs.unlink(ß.BPLOG + "/bash-" + name + ".pid");
             delete child.pid;
         });
 
@@ -128,13 +128,13 @@ if (!ß.bash_file_sync)
             cwd: dir,
             stdio: ["ignore", out, err],
         };
-      
+
         console.log("- ", name, "/bin/bash", file);
         reg(" - " + name + " /bin/bash" + file);
 
         var ret = child_process.spawnSync("/bin/bash", [file], options);
 
-      	if (ret.stdout) console.log(ret.stdout);
+        if (ret.stdout) console.log(ret.stdout);
         if (ret.stderr) console.error(ret.stderr);
         if (ret.status > 0) ß.err("Status:" + ret.status);
 
@@ -222,11 +222,10 @@ if (!ß.create_all_modules_script)
                 reg(module + " " + bmf + " " + me + " is " + that[me]);
             }
         }
-        
+
         fs.writeFileSync(logfile, log);
         ß.fs.chownSync(logfile, ß.UID, ß.GID);
 
         fs.writeFileSync(shfile, sh);
         ß.fs.chownSync(shfile, ß.UID, ß.GID);
-
     };

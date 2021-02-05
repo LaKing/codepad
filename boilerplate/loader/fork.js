@@ -13,14 +13,10 @@ const fs = ß.fs;
 const child_process = require("child_process");
 
 if (!ß.fork_file)
-    ß.fork_file = function(file, name, argv, option) {
+    ß.fork_file = function (file, name, argv, option) {
         if (file.split(".").pop() !== "js") return console.log("Can not fork non-js file:", file);
 
-        if (!name)
-            name = file
-                .split("/")
-                .pop()
-                .split(".")[0];
+        if (!name) name = file.split("/").pop().split(".")[0];
 
         if (!option) option = {};
         if (!option.stdio)
@@ -28,37 +24,36 @@ if (!ß.fork_file)
                 0, // Use parent's stdin for child
                 fs.openSync(ß.BPLOG + "/fork-" + name + ".stdout.log", "w"), // stdout
                 fs.openSync(ß.BPLOG + "/fork-" + name + ".stderr.log", "w"), // stderr to a file
-                "ipc" //Forked processes must have an IPC channel
+                "ipc", //Forked processes must have an IPC channel
             ];
 
         if (!argv) argv = [];
-        
-      	if (process.argv.indexOf("--restart-server") >= 0) argv.push("--restart-server");
 
+        if (process.argv.indexOf("--restart-server") >= 0) argv.push("--restart-server");
 
         var child = child_process.fork(file, argv, option);
 
         fs.writeFileSync(ß.BPLOG + "/fork-" + name + ".pid", child.pid.toString());
         console.log("- forked", name, "with pid", child.pid);
 
-        child.on("error", err => {
+        child.on("error", (err) => {
             ß.err("ERROR on", name, "subprocess. ", err);
         });
 
-        child.on("close", code => {
+        child.on("close", (code) => {
             //if (code === 0) console.log('[ OK ]', name);
             if (code !== 0) console.log(name, " - exit with error code", code);
-            fs.unlink(ß.BPLOG + "/fork-" + name + ".pid");
+            if (fs.existsSync(ß.BPLOG + "/fork-" + name + ".pid")) fs.unlink(ß.BPLOG + "/fork-" + name + ".pid");
             delete child.pid;
         });
 
-        process.on("SIGTERM", function() {
+        process.on("SIGTERM", function () {
             if (!child.pid) return;
             console.log("child process kill", name, child.pid);
             child.kill();
         });
 
-        process.on("SIGUSR1", function() {
+        process.on("SIGUSR1", function () {
             if (!child.pid) return;
             console.log("child process kill", name, child.pid);
             child.kill();
@@ -116,7 +111,7 @@ function load_module_dir(module, dir, bmf, that) {
 */
 
 if (!ß.fork)
-    ß.fork = function(bmf) {
+    ß.fork = function (bmf) {
         reg("// ------------------- " + bmf + " ----------------------");
         ß.debug("- Fork " + bmf + " ...");
 
