@@ -185,11 +185,12 @@ export default {
             this.$store.commit("pad", path);
         },
         run() {
-            var interpreter = "/raw";
+            var interpreter = "raw";
             var extension = this.$store.state.pad.split(".").pop();
 
             if (extension === "sh") interpreter = "bash";
             if (extension === "js") interpreter = "node";
+            if (extension === "mjs") interpreter = "node";
             if (extension === "php") interpreter = "php";
             if (extension === "rb") interpreter = "ruby";
 
