@@ -62,7 +62,7 @@ if (!ß.fs.inDirsSync)
         }
     };
 
-function traverse_path_process_files(path, process) {
+function traverseFilesSync(path, process) {
     function traverse_recursive(__path) {
       	// __path will be a relative path
 		// on the combined path, call the recursion for directories
@@ -79,7 +79,7 @@ function traverse_path_process_files(path, process) {
 }
 
 
-// @DOC `ß.fs.traverse_path_process_files` is a recursive sync function that will process all files starting with the given path.
+// @DOC `ß.fs.traverseFilesSync` is a recursive sync function that will process all files starting with the given path.
 
 // export on fs
-if (!ß.fs.traverse_path_process_files) ß.fs.traverse_path_process_files = traverse_path_process_files;
+if (!ß.fs.traverseFilesSync) ß.fs.traverseFilesSync = traverseFilesSync;
