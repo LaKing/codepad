@@ -1,0 +1,25 @@
+<div id="app">
+
+ <pre> {{ info }} </pre>
+
+</div>
+
+<script src="/vue.js"></script>
+<script src="/axios.js"></script>
+
+<script>
+
+var app = new Vue({
+  el: '#app',
+  data () {
+    return {
+      info: ''
+    };
+  },
+  mounted () {
+    axios
+      .get('/session.json')
+      .then(response => (this.info = response));
+  }
+});
+</script>

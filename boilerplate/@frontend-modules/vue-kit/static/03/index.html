@@ -1,0 +1,74 @@
+<div id="app">
+
+    <h4>The app has {{ session_data.main }} </h4>
+
+    <div>
+        <input type="text" v-model="session_data.main"><br><br>
+        <button name="Valami" v-on:click="save_session()">Save</button>
+    </div>
+
+
+
+    <h4>The app has a Component </h4>
+    <the-component v-on:msg="n = $event"></the-component>
+
+
+    <pre> {{ session_data }} </pre>
+
+</div>
+
+<script src="/vue.js"></script>
+<script src="/axios.js"></script>
+
+<script>
+    Vue.component('the-component', {
+        data: function() {
+            return {
+                n: 10
+            };
+        },
+        template: '<div><p>The component has its own n: {{ n }}, </p><button v-on:click="n++; $emit(' + "'msg'" + ', n)">The button-counter component has its own n: {{ n }}, click to increment and emit to app.</button><br> Note that only the first html is displayed from the template, so we put it into a div.</div>'
+    });
+
+
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                session_data: {
+                    main: ""
+                },
+                info: '',
+                n: 0
+            };
+        },
+        mounted() {
+            console.log('mounted()');
+            this.load_session();
+        },
+
+        methods: {
+
+            load_session: function() {
+                console.log('load_session', this.session_data);
+                axios.get('/session.json').then(response => (this.session_data = response.data.data));
+            },
+
+            save_session: function(event) {
+
+                console.log('save_session', this.session_data);
+                axios({
+                        method: 'post',
+                        url: '/session-data',
+                        data: this.session_data
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        alert(response.data);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            }
+        }
+    });
+</script>

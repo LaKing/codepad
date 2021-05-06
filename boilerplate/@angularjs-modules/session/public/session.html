@@ -1,0 +1,17 @@
+<div class="container page-content">
+    <p align="center">
+        <font size="6px" face="Arial">You are at: {{page}}</font>
+
+        <br> Current session is
+        <pre>
+{{session | json}} 
+</pre>
+        <b>##&en We are very english ##&hu Magyaros a dolog ##</b>
+    </p>
+
+    <div class="form-group">
+        <label for="comment">Test:</label>
+        <textarea class="form-control" rows="5" id="comment" ng-model="session.data.teststring"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary" ng-click="session_save()">Save</button>
+</div>

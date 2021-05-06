@@ -1,0 +1,119 @@
+<div id="app">
+
+    <h4>The app has {{ main }} </h4>
+
+    <div>
+        <input type="text" v-model="main"><br><br>
+        <button name="Valami" v-on:click="save_session()">Save session</button>
+    </div>
+
+
+    <h4>The app has a Component </h4>
+    <the-component v-on:msg="n = $event"></the-component>
+
+    <h4>Vuex store {{_main}}</h4>
+
+    <p>{{ _count }}</p>
+    <p>
+        <button @click="increment">+</button>
+        <button @click="decrement">-</button>
+        <button @click="set_main">!</button>
+    </p>
+
+
+</div>
+
+<script src="/vue.js"></script>
+<script src="/vuex.js"></script>
+<script src="/axios.js"></script>
+
+<script>
+    Vue.component('the-component', {
+        data: function() {
+            return {
+                n: 10
+            };
+        },
+      	methods: {
+        	doit() {
+              	this.n = this.$store.state.count;
+            	this.n = this.n * 10;  
+            }
+        },
+      	// Note that only the first html is displayed from the template, so we put it into a div.
+        template: '<div><p>The component has its own n: {{ n }}, </p><button v-on:click="doit()">component-button</button><br> </div>'
+    });
+
+
+    const store = new Vuex.Store({
+        state: {
+            count: 0,
+            main: 'loading'
+        },
+        mutations: {
+            increment: state => state.count++,
+            decrement: state => state.count--,
+            set_main: (state, payload) => state.main = payload
+        }
+    });
+
+
+    var app = new Vue({
+        el: '#app',
+        store: store,
+        data() {
+            return {
+                main: "",
+                count: 0,
+            };
+        },
+        mounted() {
+            console.log('mounted()');
+            this.load_session();
+        },
+
+        methods: {
+
+            load_session: function() {
+                console.log('load_session', this.session_data);
+                axios.get('/session.json').then(function(response) {
+                    store.state.count = response.data.data.count || 0;
+                    store.state.main = response.data.data.main || 'loaded';
+                });
+            },
+
+            save_session: function(event) {
+                console.log('save_session', store.state);
+                axios({
+                        method: 'post',
+                        url: '/session-data',
+                        data: store.state
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            },
+
+            increment() {
+                store.commit('increment');
+            },
+            decrement() {
+                store.commit('decrement');
+            },
+            set_main() {
+                store.commit('set_main', this.main);
+            }
+
+        },
+        computed: {
+            _count() {
+                return store.state.count;
+            },
+            _main() {
+                return store.state.main;
+            }
+        },
+    });
+</script>

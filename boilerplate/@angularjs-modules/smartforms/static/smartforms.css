@@ -1,0 +1,16 @@
+.form-upload-field {
+    margin-top: 6px;
+}
+
+.smartforms-alert {
+    min-height: 34px;
+    max-height: 90px;
+    padding: 6px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.smartforms-progress {
+    height: 38px !important;
+}

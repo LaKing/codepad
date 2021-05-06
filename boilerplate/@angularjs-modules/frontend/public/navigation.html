@@ -1,0 +1,25 @@
+<div ng-if="admin && session.is_admin" ng-include="'/admin-navigation.html'" class="container text-center animation fadeIn">
+</div>
+<br>
+<div ng-if="!session.passport.user" class="container text-center animation fadeIn">
+    <p>##&en Login and Registration ##&hu Bejelentkezés és regisztráció ##</p>
+    <a href="" ng-click="go2('login')" class="btn btn-primary"> Login</a>
+    <a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
+    <a href="/auth/google" class="btn btn-danger"><span class="fa fa-google-plus"></span> Google+</a>
+    <br><br>
+</div>
+<br>
+<div class="container text-center animation fadeIn">
+    <a href="/hu" ng-if="session.lang==='en'" class="btn btn-primary"> Magyarul</a>
+    <a href="/en" ng-if="session.lang!=='en'" class="btn btn-primary"> English</a>
+</div>
+<br>
+<div ng-if="session.passport.user" class="container text-center animation fadeIn">
+    <a href="" ng-click="go2('main')" class="btn btn-primary"> Main</a>
+    <a href="" ng-if="session.passport.user" ng-click="go2('profile')" class="btn btn-primary"> Profile</a>
+    <a href="" ng-click="go2('session')" class="btn btn-primary"> Session</a>
+    <a href="" ng-if="session.passport.user" ng-click="go2('payment')" class="btn btn-primary"> Payment</a>
+    <a href="/logout" ng-if="session.passport.user" class="btn btn-primary"> Logout</a>
+    <a href="/admin" ng-if="session.is_admin" class="btn btn-primary"> Admin</a>
+</div>
+<br>

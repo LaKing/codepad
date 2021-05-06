@@ -1,0 +1,17 @@
+/* alertService*/
+
+.alertServiceAlerts {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 16000000;
+}
+
+.alertServiceAlert {
+    height: 38px;
+    width: 300px;
+    padding: 7px;
+    margin-bottom: 0px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}

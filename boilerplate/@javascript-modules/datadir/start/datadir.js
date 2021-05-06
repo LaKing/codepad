@@ -1,0 +1,1 @@
+ß.link(ß.DATADIR_PATH, ß.VAR + "/vue/src/datadir");

@@ -1,0 +1,48 @@
+<div ng-repeat="(part, form) in formDefs track by $index">
+    <h4>{{form.label}}</h4>
+    <br>
+    <form class="form-horizontal" ng-repeat="e in form.definitions track by $index">
+        <div class="form-group warn-{{ !formResp[part][e.field] }} row" title="{{e.title || e.label || form.label }}">
+            <label class="control-label col-xs-2">{{ e.label || e.title  }}</label>
+            <div class="col-xs-4" ng-if="e.input && e.uedit && !e.multi">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="{{e.glyph || 'fa fa-question-circle' }}">{{e.signo}}</i></span>
+                    <input type="{{e.itype || 'text'}}" ng-model="formResp[part][e.field]" ng-change="edited(true)" class="form-control" placeholder="{{e.label || e.label || 'Input ' + $index }}">
+                </div>
+            </div>
+            <div class="col-xs-4" ng-if="e.input && e.uedit && e.multi">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="{{e.glyph || 'fa fa-question-circle'}}">{{e.signo}}</i></span>
+                    <textarea rows="3" ng-model="formResp[part][e.field]" ng-change="edited(true)" class="form-control" placeholder="{{ e.value || e.label || '...'}}" required></textarea>
+                </div>
+            </div>
+            <div class="col-xs-4" ng-if="e.files && e.uedit">
+                <button ng-if="!status[part][e.field]" href="#" class="smartforms-alert {{ formResp[part][e.field] ? 'alert-success' : 'alert-info' }} col-xs-12" ngf-min-size="min" ngf-max-size="max" ngf-pattern="e.types" ngf-select="edited(false); upload($file,part,e.field);">{{ formResp[part][e.field] || e.value || e.title || e.label || 'File' }}</button>
+                <div ng-if="status[part][e.field]" class="progress">
+                    <div class="smartforms-progress progress-bar progress-bar-info" role="progressbar" style="width: {{status[part][e.field]}}%">
+                        <span class="sr-only">{{ status[part][e.field] }}% </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4" ng-if="!e.uedit">
+                <div class="smartforms-alert alert-success" role="alert">
+                    {{formResp[part][e.field] || e.value || e.title || e.label || '-'}}
+                </div>
+            </div>
+            <div ng-if="!empty(fail(formResp[part],e))" class="smartforms-alert alert alert-info col-xs-4" role="alert">
+                <span class="fa fa-exclamation-circle"></span> {{fail(formResp[part],e)}}
+            </div>
+
+        </div>
+    </form>
+    <br>
+</div>
+<div class="row">
+    <div class="col-xs-4">
+    </div>
+    <button ng-if="empty(fails(formResp,formDefs))" ng-disabled="!formEdit" type="button" class="btn btn-primary col-xs-4" ng-click="formSave()">{{ formSaveTitle || '##&en Save ##&hu Mentés ##' }}</button>
+    <div ng-if="!empty(fails(formResp,formDefs))" class="smartforms-alert alert-info col-xs-4 " role="alert">
+        <span class="fa fa-exclamation-circle"></span> {{ fails(formResp,formDefs) }}
+    </div>
+
+</div>

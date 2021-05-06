@@ -1,0 +1,43 @@
+<div id="app">
+
+  <h4>The app has n = {{ n }} </h4>
+  <br>
+  <button v-on:click="n++">Increment the app's n = {{ n }}</button>
+  <br><br>
+  <button v-on:click="n=0">Set n to 0</button>
+  <br><br>
+  <h4>The app has a button-counter component </h4>
+  <button-counter v-on:msg="n = $event"></button-counter>
+  <br><br>
+  <h4>The app has a slot-box component </h4>
+  <slot-box>
+      Slot Box has a number: {{ n }}.
+	</slot-box>
+
+</div>
+
+<script src="/vue.js"></script>
+<script>
+// Define a new component called button-counter
+
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      n: 10
+    };
+  },
+  template: '<div><p>The button-counter component has its own n: {{ n }}, </p><button v-on:click="n++; $emit(' + "'msg'" + ', n)">The button-counter component has its own n: {{ n }}, click to increment and emit to app.</button><br> Note that only the first html is displayed from the template, so we put it into a div.</div>'
+});
+
+Vue.component('slot-box', {
+  template: '<div ><strong>Slot:</strong><slot></slot></div>'
+});
+
+//var cd = new Vue({ el: '#components-demo' });
+var app = new Vue({ 
+  el: '#app',
+  data: {
+   	n: 0
+  }              
+});
+</script>

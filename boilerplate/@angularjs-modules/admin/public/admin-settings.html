@@ -1,0 +1,6 @@
+<div ng-controller="settingsController" class="container content-box-large">
+    <div ng-jsoneditor ng-model="settingsjson" options="jsoneditoroptions" style="height: 600px;"></div>
+    <br><br>
+    <button type="button" class="btn btn-primary" ng-click="toggle_jsoneditor()"><i class="fa fa-check-circle"></i> View</button>
+    <button type="button" class="btn btn-primary" ng-click="save_settings(settings)"><i class="fa fa-check-circle"></i> Save</button>
+</div>

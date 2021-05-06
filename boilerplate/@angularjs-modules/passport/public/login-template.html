@@ -1,0 +1,44 @@
+<div class="container" style="max-width:600px;margin:auto;">
+
+    <div class="text-center panel panel-default">
+        <div class="panel-heading">{{login_message}}
+        </div>
+        <div class="panel-body">
+            <div ng-show="!reg_b && !log_b" class="input-group" title="##&en A local login method is to use your email adress. ##&hu A helyi bejelentkezéshez használja e-mail címét. ##">
+                <span class="input-group-addon"><i class="fa fa-fw fa-envelope"></i></span>
+                <input ng-model="email" type="text" class="form-control" id="unameTxt" placeholder="##&en E-mail address ##&hu e-mail cím ##">
+                <span class="input-group-btn"><button class="btn btn-default" type="button" ng-disabled="!login_check()" ng-click="post_email()"><i class="fa fa-fw fa-arrow-right"></i> ##&en next ##&hu tovább ##</button></span>
+            </div>
+
+            <div ng-show="reg_b || log_b" class="input-group" title="##&en Use the password for the local login method. ##&hu A bejelentkezéshez tartozó jelszó megadásával léphet be. ##">
+                <span class="input-group-addon"><i class="fa fa-fw fa-lock"></i></span>
+                <input ng-model="password" type="password" class="form-control" id="passTxt" placeholder="##&en password ##&hu jelszó ##" />
+                <span class="input-group-btn"><button class="btn btn-default" type="button" ng-disabled="!login_check()" ng-click="login()"><i class="fa fa-fw fa-arrow-right"></i> ##&en next ##&hu tovább ##</button></span>
+            </div>
+
+            <br>
+
+            <a ng-show="!reg_b && !log_b" href="/auth/facebook" class="btn btn-default" title="##&en Log in with your facebook account ##&hu Bejelentkezés facebook fiók segítségével ##"><i class="fa fa-fw fa-facebook"></i> Facebook - login</a>
+            <a ng-show="!reg_b && !log_b" href="/auth/google" class="btn btn-default" title="##&en Log in with your google-plus account ##&hu Bejelentkezés google-plus fiók segítségével ##"><i class="fa fa-fw fa-google-plus"></i> Google+ - login</a>
+
+            <button class="btn btn-default" ng-show="reg_b || log_b" ng-click="reg_b=false;log_b=false" info=" ##&en back to the previous part ##&hu vissza az előző részhez ##"><i class="fa fa-fw fa-arrow-left"></i> ##&en back ##&hu vissza ##</button>
+
+            <div class="btn-group" role="group" aria-label="...">
+                <button class="btn btn-default" ng-show="reg_b || log_b" ng-disabled="!password_check()" ng-click="rem=!rem" info="##&en Remember me, or use a one time login in this browser ##&hu Belépve marad, vagy csak egyszeri belépés ebben a böngészőben ##">
+                <i class="fa fa-fw fa-{{ rem ? 'user-plus' : 'user-times' }}"></i>
+                </button>
+
+                <button class="btn btn-default" ng-if="log_b" ng-disabled="!password_check()" ng-click="login()" info="##&en login with a password ##&hu bejelentkezés jelszóval ##">##&en login ##&hu bejelentkezés ##<i class="fa fa-fw fa-sign-in"></i></button>
+
+                <button class="btn btn-default" ng-if="reg_b" ng-click="login()" info="##&en register this email address ##&hu e-mail cím regisztrálása ##">##&en register ##&hu regisztráció ##<i class="fa fa-fw fa-sign-in"></i></button>
+            </div>
+
+            <button class="btn btn-default" ng-show="log_b" ng-click="send_email()" info="##&en Send me an email to log me in ##&hu Email kérése a belépéshez ##"><i class="fa fa-fw fa-envelope"></i> ##&en request e-mail ##&hu e-mail kérése ##</button>
+
+
+        </div>
+        <div class="panel-footer">
+            ##&en By loggin in, you accept our <a href="/{{host}}-privacypolicy.pdf">privacy policy</a> and our <a href="/{{host}}-termsofservice.pdf">terms of service</a> ## ##&hu Bejelentkezésável elfogadja <a href="/{{host}}-adatkezeles.pdf">adatkezelési nyilatkozatunkat</a>            és <a href="/{{host}}-aszf.pdf">Ászf.</a> feltételeinket ##
+        </div>
+    </div>
+</div>

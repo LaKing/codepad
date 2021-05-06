@@ -1,0 +1,140 @@
+<div id="app">
+
+    <h4>The app has {{ main }} </h4>
+    <button name="Fiction" v-on:click="fiction()">Fiction!</button>
+    
+    <h4>The app has a Component </h4>
+    <the-component></the-component>
+
+    <h4>Vuex store {{_main}}</h4>
+
+    <p>{{ _count }}</p>
+    <p>
+        <button @click="increment">+</button>
+        <button @click="decrement">-</button>
+      	<input type="text" v-model="main">
+        <button @click="set_main">!</button>
+    </p>
+
+    <button name="Save" v-on:click="save()">Save obj to session!</button>
+    <pre>{{ _pre }}</pre>
+
+</div>
+
+<script src="/vue.js"></script>
+<script src="/vuex.js"></script>
+<script src="/axios.js"></script>
+
+<script>
+    Vue.component('the-component', {
+        data: function() {
+            return {
+                n: 10
+            };
+        },
+        methods: {
+            doit() {
+
+                this.$store.commit('increment');
+
+                this.n++;
+            }
+        },
+        // Note that only the first html is displayed from the template, so we put it into a div.
+        template: '<div><p>The component has its own n: {{ n }}, </p><button v-on:click="doit()">component-button</button><br> </div>'
+    });
+
+
+    const store = new Vuex.Store({
+        state: {
+            count: 0,
+            main: 'loading',
+            obj: {}
+        },
+        mutations: {
+            increment: state => state.count++,
+            decrement: state => state.count--,
+            set_count: (state, payload) => state.count = payload,
+            set_main: (state, payload) => state.main = payload,
+            set_obj: (state, payload) => state.obj = payload
+        },
+        actions: {
+            save_to_session: function(event) {
+                console.log('save_to_session', this.state);
+                axios({
+                        method: 'post',
+                        url: '/session-data',
+                        data: this.state.obj
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+            },
+            load_from_session: function(context) {
+                console.log('load_from_session', this.state);
+                axios.get('/session.json').then(function(response) {
+                    console.log('load_from_session', response);
+                    //context.commit('set_main', response.data.data.main);
+                    //context.commit('set_count', response.data.data.count);
+                    // ez sajnos nem megy
+                    context.commit('set_obj', response.data.data);
+                });
+            }
+        }
+    });
+
+
+    var app = new Vue({
+        el: '#app',
+        store: store,
+        data() {
+            return {
+                main: "",
+                count: 0,
+            };
+        },
+        mounted() {
+            console.log('mounted()');
+            //this.load_session();
+            this.$store.dispatch('load_from_session');
+        },
+
+        methods: {
+            increment() {
+                store.commit('increment');
+            },
+            decrement() {
+                store.commit('decrement');
+            },
+            set_main() {
+                store.commit('set_main', this.main);
+            },
+            fiction() {
+                console.log('Fiction!');
+                store.commit('set_main',  Math.random().toString(36).substring(7));
+                store.commit('set_count', Math.floor(Math.random() * 10));
+                store.commit('set_obj', {
+                    valami:  Math.random().toString(36).substring(7),
+                    akarmi:  Math.random().toString(36).substring(7)
+                });
+            },
+            save() {
+                console.log('save_to_session!');
+                this.$store.dispatch('save_to_session');
+            }
+        },
+        computed: {
+            _count() {
+                return store.state.count;
+            },
+            _main() {
+                return store.state.main;
+            },
+            _pre() {
+                return store.state;
+            }
+        },
+    });
+</script>

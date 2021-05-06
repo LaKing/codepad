@@ -1,0 +1,34 @@
+{
+    "promo": {
+        "label": "##&en Promo ##&hu Promo ##",
+        "definitions": [{
+            "field": "name",
+            "label": "##&en Name ##&hu Megnevezés ##",
+            "check": "name",
+            "glyph": "fa fa-fw fa-anchor",
+            "uedit": true,
+            "input": true,
+            "oblig": true,
+            "mongo": "string"
+        }, {
+            "field": "text",
+            "label": "##&en Text ##&hu TEXT ##",
+            "check": "text",
+            "glyph": "fa fa-fw fa-align-left",
+            "uedit": true,
+            "input": true,
+            "oblig": true,
+            "multi": true,
+            "mongo": "string"
+        }, {
+            "field": "image",
+            "title": "##&en Image file .jpg ##&hu Képfile .jpg ##",
+            "label": "##&en File ##&hu File  ##",
+            "types": ".jpg",
+            "check": "file",
+            "uedit": true,
+            "files": true,
+            "oblig": true
+        }]
+    }
+}

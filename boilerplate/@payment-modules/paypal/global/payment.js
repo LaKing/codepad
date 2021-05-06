@@ -1,0 +1,1 @@
+if (!ß.PAYMENT) ß.PAYMENT = "paypal";

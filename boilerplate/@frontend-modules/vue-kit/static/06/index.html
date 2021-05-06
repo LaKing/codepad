@@ -1,0 +1,48 @@
+<div id="app">
+
+    <h1> Automatic session model </h1>
+    <input v-model="session_main"><br><br>
+  
+    <pre>{{ state_pre }}</pre>
+
+</div>
+
+<script src="/vue.js"></script>
+<script src="/vuex.js"></script>
+<script src="/axios.js"></script>
+
+<script src="store.js"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        store: store,
+        data() {
+            return {
+            };
+        },
+        mounted() {
+            console.log('mounted()');
+            this.$store.dispatch('load_session');
+        },
+        methods: {
+
+        },
+        computed: {
+ 			state_pre() {
+                return this.$store.state;
+            },
+            session_main: {
+                get() {
+                    return this.$store.state.session.main;
+                },
+                set(value) {
+                    this.$store.commit('set_session', {
+                        main: value
+                    });
+                    this.$store.dispatch('save_session');
+                }
+            }
+        },
+    });
+</script>

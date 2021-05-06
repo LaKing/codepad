@@ -1,0 +1,11 @@
+/* boilerplate admin.css */
+
+.alerts {
+    width: 500px;
+    position: absolute;
+    z-index: 10;
+}
+
+.header .topbar{
+   margin:10px auto;
+}

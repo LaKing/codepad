@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+<head>
+    <title><%= ß.HOSTNAME %> /user </title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/font-awesome.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="page-header text-center">
+            <h1><span class="fa fa-anchor"></span> ##&en User page ##&hu Felhasználó oldala ##</h1>
+            <a href="/" class="btn btn-default btn-sm">##&en Home ##&hu Főoldal ##</a>
+            <a href="/logout" class="btn btn-default btn-sm">##&en Logout ##&hu Kijelentkezés ##</a>
+            <a href="/delete" class="btn btn-danger btn-sm">##&en Delete ##&hu Törlés a rendszerből ##</a>
+            <br><br>
+            <strong>id</strong>:<%= user._id %><br>
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger">
+                    <%= message %>
+                </div>
+                <% } %>
+        </div>
+        
+		<% if (ß.USE_PASSPORT) { %>
+            <!-- LOCAL INFORMATION -->
+            <div class="well">
+              <div class="row">
+                <div class="col-md-4">
+                    <h3><span class="fa fa-user"></span> E-mail</h3>
+
+                    <% if (user.local.email) { %>
+                        <p>
+                                <strong>e-mail</strong>:
+                                <%= user.local.email %><br>
+                                <% if (user.local.verified) { %>
+                                <strong>##&en verified ##&hu megerősítve ##</strong>
+                                <% } %>
+                        </p>
+
+                        <a href="/unlink/local" class="btn btn-default">##&en Unlink ##&hu Leválasztás ##</a>
+                        <% } else { %>
+                            <a href="/connect/local" class="btn btn-default">##&en Connect ## Email ##&hu kapcsolás ##</a>
+                            <% } %>
+      
+      			</div>
+                <div class="col-md-4">
+                <br>
+                <form class="form" action="/post-email-update.json" method="post">
+                   <div class="form-group">
+                     <label>##&en Set Email ##&hu Új E-mail cím beállítása ##</label>
+                     <input type="email" class="form-control" name="email">
+                   </div>
+                   <button type="submit" class="btn btn-default">##&en Submit email address change ##&hu Email-cím változtatás ##</button>
+                </form>
+                </div>
+                <div class="col-md-4">
+                <br>
+                   <form class="form" action="/post-password-update.json" method="post">
+                   <div class="form-group">
+                     <label>##&en Set password ##&hu Új jelszó beállítása ##</label>
+                     <input type="password" class="form-control" name="password">
+                   </div>
+                   <button type="submit" class="btn btn-default">##&en Submit password change ##&hu Jelszóváltoztatás ##</button>
+                </form>
+				</div>
+              </div>
+            </div>
+         <% } %>
+         <% if (ß.USE_PASSPORT_FACEBOOK) { %>
+            <!-- FACEBOOK INFORMATION -->
+                <div class="well">
+                    <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                    <!-- check if the user has this token (is the user authenticated with this social account) -->
+                    <% if (user.facebook.token) { %>
+                        <p>
+                            <strong>id</strong>:
+                            <%= user.facebook.id %><br>
+                                <strong>token</strong>:
+                                <%= user.facebook.token %><br>
+                                    <strong>email</strong>:
+                                    <%= user.facebook.email %><br>
+                                        <strong>name</strong>:
+                                        <%= user.facebook.name %><br>
+                        </p>
+
+                        <a href="/unlink/facebook" class="btn btn-primary">##&en Unlink ##&hu Leválasztás ##</a>
+                        <% } else { %>
+                            <a href="/connect/facebook" class="btn btn-primary">##&en Connect ## Facebook ##&hu kapcsolás ##</a>
+                            <% } %>
+
+                </div>
+         <% } %>
+         <% if (ß.USE_PASSPORT_GOOGLE) { %>
+            <!-- GOOGLE INFORMATION -->
+                <div class="well">
+                    <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+
+                    <% if (user.google.token) { %>
+                        <p>
+                            <strong>id</strong>:
+                            <%= user.google.id %><br>
+                                <strong>token</strong>:
+                                <%= user.google.token %><br>
+                                    <strong>email</strong>:
+                                    <%= user.google.email %><br>
+                                        <strong>name</strong>:
+                                        <%= user.google.name %>
+                        </p>
+
+                        <a href="/unlink/google" class="btn btn-danger">##&en Unlink ##&hu Leválasztás ##</a>
+                        <% } else { %>
+                            <a href="/connect/google" class="btn btn-danger">##&en Connect ## Google ##&hu kapcsolás ##</a>
+                            <% } %>
+
+                </div>
+         <% } %>
+    </div>
+</body>
+
+</html>
