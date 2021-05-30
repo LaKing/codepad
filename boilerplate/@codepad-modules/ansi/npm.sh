@@ -1,1 +1,0 @@
-npm install ansi_up

@@ -1,1 +1,0 @@
-npm install animate.css

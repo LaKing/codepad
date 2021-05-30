@@ -1,1 +1,0 @@
-ß.link(ß.CLOUDDIR_PATH, ß.VAR + "/vue/src/clouddir");

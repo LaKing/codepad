@@ -1,1 +1,0 @@
-if (!ß.paymentlib) ß.paymentlib = {};

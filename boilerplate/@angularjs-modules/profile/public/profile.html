@@ -1,9 +1,0 @@
-<div ng-if="!session.passport.user">
-    <div boiler-login></div>
-</div>
-<div ng-if="session.passport.user" class="container page-content">
-    <div ng-controller="profile">
-        <div smart-form definition="forms" response="$root.session.user" onsave="save"></div>
-    </div>
-    <br>
-</div>
