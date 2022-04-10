@@ -129,8 +129,10 @@
               	     socket.emit('typohint', pad, function(err, data) {
             	});
             });
-
-
+        },
+        F4: function(cm) {
+            console.log("F4 handler", pad);
+			if (pad.indexOf('@') > 0) window.location.href = "https://bp-devel.d250.hu:9001/p/" + pad; // or
         }
     });
 

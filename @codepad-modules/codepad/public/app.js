@@ -31,7 +31,7 @@ const store = new Vuex.Store({
         // ...
         isOpen: (state) => (path) => {
             // make sure the opened pad is visible expanded
-            if (state.pad) if (state.pad.substring(0, path.length + 1) === path + "/") return true;
+            //if (state.pad) if (state.pad.substring(0, path.length + 1) === path + "/") return true;
 
             return state.opened.includes(path);
         },

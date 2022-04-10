@@ -1,6 +1,7 @@
 ß.projectdir_watch.on("all", (event, path) => {
+        console.log("projectdir_watch:", event, path);
+
     if (ß.lib.projectfiles[event]) return ß.lib.projectfiles[event](path);
-    console.log("projectdir_watch:", event, path);
 });
 
 ß.projectdir_watch.on("raw", ß.lib.projectfiles.raw);

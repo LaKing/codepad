@@ -16,10 +16,10 @@ export default {
     <div id="main" v-if="!edit_settings" :class="window_size< 768 ? 'mobile-size':''">
         <div id="topbar" class="">
 			<button @click="topmenu=!topmenu" class="btn" v-if="window_size<768"><i class="fas fa-bars"></i></button>
-            <div id="center-left-icons" :class="[topmenu ? 'topmenu' : '']">
+            <div id="center-projectfilesleft-icons" :class="[topmenu ? 'topmenu' : '']">
 				
                 <div v-if="topmenu || window_size>768" :style="{width :first_panesize+'vw', whiteSpace:'nowrap', overflow:'hidden',marginBottom: '-8px'}" class="d-inline">
-                    <button title="Home" class="btn" @click="$store.commit('home'), topmenu=false"><i class="fas fa-home"></i></button>
+                    <button title="Home" class="btn" @click="$store.commit('home'), topmenu=false, home()"><i class="fas fa-home"></i></button>
                     <button title="Shell" class="btn" @click="window.open('/shell'), topmenu=false"><i class="fas fa-terminal"></i></button>
 					<button title="Upload" class="btn" v-if="show_button(3)" @click="file(), topmenu=false" :disabled="folderReadonly()"><i class="fas fa-upload"></i></button>
 					<button title="Trash folder" v-if="show_button(4)" class="btn" @click="trash_folder_dialog=true, topmenu=false" :disabled="folderReadonly()  || !$store.state.trash"><i class="fas fa-trash"></i></button>
@@ -181,6 +181,9 @@ export default {
         },
     },
     methods: {
+        home() {
+           this.$socket.client.emit("home");
+        },
         pad(path) {
             this.$store.commit("pad", path);
         },

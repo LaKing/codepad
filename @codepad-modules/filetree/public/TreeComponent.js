@@ -3,7 +3,7 @@ export default {
     template: `
 <div class="children filetree">
 	<div v-for="p in folders" :key="p">
-        <div class="folder button" @click="dir(p)" @contextmenu="folder_handler($event, p)"><i :class="[ro_folder(p)?'far':'fas', op(p)?'fa-folder-open':'fa-folder']"></i> {{get_name(p)}}</div>
+        <div class="folder button" @click="dir(p)" @contextmenu="folder_handler($event, p)"><i :class="[ro_folder(p)?'far':'fas', $store.getters.isOpen(p)?'fa-folder-open':'fa-folder']"></i> {{get_name(p)}}</div>
 		<tree-component :path="p" v-if="$store.getters.isOpen(p)"/>
     </div>
     <div v-for="p in files" :key="p">
@@ -47,9 +47,6 @@ export default {
             if (!path) path = "";
             e.preventDefault();
             window.open("/mc" + path);
-        },
-        op(path) {
-            return this.$store.state.dir === path;
         },
         ro_file: function (path) {
             if (this.$store.state.files[path].ro) return true;
