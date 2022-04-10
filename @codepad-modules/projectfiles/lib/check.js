@@ -20,6 +20,8 @@ module.exports = function (path) {
                 else delete ß.projectfiles[path].readonly;
 
                 if (realpath.startsWith("/usr/local/share/boilerplate/@")) ß.projectfiles[path].boilerplate = true;
+
+                ß.projectfiles_changed = true;
             });
         });
     });
