@@ -15,10 +15,11 @@ module.exports = function (path) {
                 ß.projectfiles[path].realpath = realpath;
                 ß.projectfiles[path].size = stats.size;
                 ß.projectfiles[path].edit = process.hrtime()[0];
-                
+
                 if (acc_err) ß.projectfiles[path].readonly = true;
                 else delete ß.projectfiles[path].readonly;
-                
+
+                if (realpath.startsWith("/usr/local/share/boilerplate/@")) ß.projectfiles[path].boilerplate = true;
             });
         });
     });

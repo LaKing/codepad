@@ -33,10 +33,14 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
     if (dot > -1) ext = filename.substring(dot + 1, filename.length).toLowerCase();
 
     var lint_options = ß.LINT_OPTIONS || "{esversion: 11}";
+    
     var readonly = false;
-
     if (ß.projectfiles[path]) if (ß.projectfiles[path].readonly) readonly = true;
+	
+    var boilerplate = false;
+    if (ß.projectfiles[path]) if (ß.projectfiles[path].boilerplate) boilerplate = true;
 
+    
     //Ł(ß.projectfiles[path].size);
 
     var mode = CodeMirror.findModeByFileName(filename);
@@ -50,7 +54,8 @@ const embedejs = ß.get_module_path("pad", "public/embed.ejs");
             file: file,
             mode: mode.mode || "null",
             lint_options: lint_options,
-          	typohint: typohint
+          	typohint: typohint,
+            boilerplate: boilerplate
         });
     }
 

@@ -24,6 +24,8 @@ module.exports = function (path) {
                 
                 if (acc_err) ß.projectfiles[path].readonly = true;
                 
+                if (realpath.startsWith('/usr/local/share/boilerplate/@')) ß.projectfiles[path].boilerplate = true;
+                
                 ß.projectfiles_changed = true;
                 //ß.lib.projectfiles.send();
             });
